@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#050b14" />
-  <title>ONE WORLD</title><link rel="manifest" href="manifest.json" />
-  
+  <title>ONE WORLD</title>
+  <link rel="manifest" href="manifest.json" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
@@ -19,7 +19,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.6);
     }
 
-    /* 3D GLOBE SPLASH */
     #splash-screen {
       position: fixed; inset: 0; background: radial-gradient(circle at center, #0d1f3c 0%, #030712 100%);
       display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5000;
@@ -35,7 +34,6 @@
       background: #2563eb; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer;
     }
 
-    /* AUTH SCREEN */
     #auth-screen {
       display: none; flex-direction: column; justify-content: center; align-items: center;
       height: 100dvh; padding: 20px; background: #0b141a;
@@ -58,12 +56,12 @@
       color: #fff; font-weight: 600; font-size: 15px; margin-top: 6px; cursor: pointer;
     }
 
-    /* APP SCREEN */
     #app-screen { display: none; flex-direction: column; height: 100dvh; background: #0b141a; }
     header {
       height: 56px; background: #1f2c34; padding: 0 16px; display: flex;
       align-items: center; justify-content: space-between; border-bottom: 1px solid #222d34;
     }
+    .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; }
     .page { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
     .page.active { display: flex; }
     .pad { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -78,15 +76,15 @@
     .bar input { flex: 1; padding: 10px 14px; border-radius: 20px; border: none; background: #2a3942; color: #fff; outline: none; }
     .bar button { background: #2563eb; color: #fff; border: none; padding: 0 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
     nav { height: 58px; background: #1f2c34; display: flex; border-top: 1px solid #222d34; }
-    .nav-btn { flex: 1; background: transparent; border: none; color: #8696a0; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; }
+    .nav-btn { position: relative; flex: 1; background: transparent; border: none; color: #8696a0; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; }
     .nav-btn.active { color: #3b82f6; font-weight: 700; }
+    .badge { position: absolute; top: 6px; right: 28%; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; display: none; }
   </style>
 </head>
 <body>
 
   <div id="toast"></div>
 
-  <!-- 1. 3D ROTATING GLOBE INTRO -->
   <div id="splash-screen">
     <canvas id="globeCanvas" width="240" height="240"></canvas>
     <div class="splash-title">ONE WORLD</div>
@@ -94,7 +92,6 @@
     <button class="btn-enter" onclick="enterApp()">Enter App →</button>
   </div>
 
-  <!-- 2. LOGIN / SIGNUP -->
   <div id="auth-screen">
     <div class="auth-box">
       <h2 style="text-align:center;">🌍 ONE WORLD</h2>
@@ -118,10 +115,9 @@
     </div>
   </div>
 
-  <!-- 3. MAIN APP -->
   <div id="app-screen">
     <header>
-      <strong>🌍 ONE WORLD</strong>
+      <strong><span class="live-dot"></span>ONE WORLD</strong>
       <button onclick="doLogout()" style="background:#334155; color:#fff; border:none; padding:5px 10px; border-radius:8px; font-size:11px;">Logout</button>
     </header>
 
@@ -175,13 +171,12 @@
     <nav>
       <button class="nav-btn active" onclick="goPage('home', this)"><span>🏠</span>Home</button>
       <button class="nav-btn" onclick="goPage('chat', this)"><span>🌍</span>Chat</button>
-      <button class="nav-btn" onclick="goPage('inbox', this)"><span>💬</span>Inbox</button>
+      <button class="nav-btn" onclick="goPage('inbox', this)"><span class="badge" id="dm-badge"></span><span>💬</span>Inbox</button>
       <button class="nav-btn" onclick="goPage('profile', this)"><span>👤</span>Profile</button>
     </nav>
   </div>
 
   <script>
-    // 3D Rotating Globe
     const c = document.getElementById('globeCanvas');
     const ctx = c.getContext('2d');
     let rot = 0;
@@ -219,16 +214,17 @@
       document.getElementById('splash-screen').style.display = 'none';
       checkUser();
     }
-    setTimeout(enterApp, 2800);
+    setTimeout(enterApp, 2400);
 
     const sb = window.supabase.createClient("https://hqxzfccywgdiimjvgrmt.supabase.co", "sb_publishable_4tGIrCOEl8v2FXm3GCjGeQ_m1MQn1r4");
-    let me = null, myProf = null, mode = 'login', dmUser = null;
-    const shownIds = new Set();
+    let me = null, myProf = null, mode = 'login', dmUser = null, syncTimer = null, lastDmCount = -1;
+    const shownGlobal = new Set();
+    const shownDm = new Set();
 
     function toast(msg, ok = false) {
       const t = document.getElementById('toast');
       t.textContent = msg; t.style.background = ok ? '#10b981' : '#ef4444';
-      t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 4500);
+      t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 4000);
     }
 
     function setMode(m) {
@@ -271,9 +267,9 @@
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('app-screen').style.display = 'flex';
         await loadProfile();
-        loadUsers();
-        loadGlobal();
-        listenLive();
+        await loadUsers();
+        await syncGlobal();
+        startAutoSync();
       } else {
         await sb.auth.signOut();
         me = null;
@@ -313,23 +309,14 @@
           <div><strong>${u.username}</strong> <span style="font-size:11px;color:#60a5fa;">(${u.country || 'Global'})</span><div style="font-size:12px;color:#8696a0;">${u.bio || ''}</div></div>
           <button onclick="openDM('${u.id}','${u.username}')" style="background:#2563eb;color:#fff;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;">Chat</button>
         </div>
-      `).join('') || '<p style="font-size:13px;color:#8696a0;">Abhi koi aur member nahi hai. Incognito tab mein doosra account banayein!</p>';
+      `).join('') || '<p style="font-size:13px;color:#8696a0;">Abhi koi aur member nahi hai.</p>';
       document.getElementById('home-users').innerHTML = list;
       document.getElementById('inbox-users').innerHTML = list;
     }
 
-    async function loadGlobal() {
-      const { data, error } = await sb.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
-      if (error) return toast(error.message);
-      const box = document.getElementById('g-box');
-      box.innerHTML = '';
-      shownIds.clear();
-      if (data) data.forEach(addGlobalUI);
-    }
-
     function addGlobalUI(m) {
-      if (m.id && shownIds.has(m.id)) return;
-      if (m.id) shownIds.add(m.id);
+      if (!m || (m.id && shownGlobal.has(m.id))) return;
+      if (m.id) shownGlobal.add(m.id);
       const box = document.getElementById('g-box');
       const isMe = m.user_id === me.id;
       const d = document.createElement('div');
@@ -337,6 +324,12 @@
       d.innerHTML = `${!isMe ? `<div class="msg-name">${m.username || 'User'}</div>` : ''}${m.content}<div class="msg-time">${new Date(m.created_at || Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
       box.appendChild(d);
       box.scrollTop = box.scrollHeight;
+    }
+
+    async function syncGlobal() {
+      if (!me) return;
+      const { data } = await sb.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
+      if (data) data.forEach(addGlobalUI);
     }
 
     async function sendGlobal() {
@@ -355,11 +348,14 @@
 
     function openDM(id, name) {
       dmUser = { id, name };
+      shownDm.clear();
+      document.getElementById('dm-box').innerHTML = '';
+      document.getElementById('dm-badge').style.display = 'none';
       goPage('inbox', document.querySelectorAll('.nav-btn')[2]);
       document.getElementById('dm-list').style.display = 'none';
       document.getElementById('dm-view').style.display = 'flex';
       document.getElementById('dm-name').textContent = name;
-      loadDM();
+      syncDM();
     }
 
     function closeDM() {
@@ -368,20 +364,10 @@
       document.getElementById('dm-list').style.display = 'flex';
     }
 
-    async function loadDM() {
-      const { data, error } = await sb.from('private_messages').select('*')
-        .or(`and(sender_id.eq.${me.id},receiver_id.eq.${dmUser.id}),and(sender_id.eq.${dmUser.id},receiver_id.eq.${me.id})`)
-        .order('created_at', { ascending: true });
-      if (error) return toast(error.message);
-      const box = document.getElementById('dm-box');
-      box.innerHTML = '';
-      if (data) data.forEach(addDMUI);
-    }
-
     function addDMUI(m) {
-      if (!dmUser) return;
-      if (m.id && shownIds.has('dm_' + m.id)) return;
-      if (m.id) shownIds.add('dm_' + m.id);
+      if (!dmUser || !m) return;
+      if (m.id && shownDm.has(m.id)) return;
+      if (m.id) shownDm.add(m.id);
       if (!((m.sender_id === me.id && m.receiver_id === dmUser.id) || (m.sender_id === dmUser.id && m.receiver_id === me.id))) return;
       const box = document.getElementById('dm-box');
       const d = document.createElement('div');
@@ -389,6 +375,23 @@
       d.innerHTML = `${m.content}<div class="msg-time">${new Date(m.created_at || Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
       box.appendChild(d);
       box.scrollTop = box.scrollHeight;
+    }
+
+    async function syncDM() {
+      if (!me) return;
+      if (dmUser) {
+        const { data } = await sb.from('private_messages').select('*')
+          .or(`and(sender_id.eq.${me.id},receiver_id.eq.${dmUser.id}),and(sender_id.eq.${dmUser.id},receiver_id.eq.${me.id})`)
+          .order('created_at', { ascending: true });
+        if (data) data.forEach(addDMUI);
+      } else {
+        const { count } = await sb.from('private_messages').select('*', { count: 'exact', head: true }).eq('receiver_id', me.id);
+        if (lastDmCount !== -1 && count > lastDmCount) {
+          document.getElementById('dm-badge').style.display = 'block';
+          toast("Naya Private Message aaya hai!", true);
+        }
+        if (count !== null) lastDmCount = count;
+      }
     }
 
     async function sendDM() {
@@ -405,26 +408,13 @@
       if (data) addDMUI(data);
     }
 
-    function listenLive() {
-      sb.channel('live')
+    function startAutoSync() {
+      if (syncTimer) clearInterval(syncTimer);
+      syncTimer = setInterval(() => {
+        syncGlobal();
+        syncDM();
+      }, 2500);
+
+      sb.channel('live-sync')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => addGlobalUI(p.new))
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'private_messages' }, p => addDMUI(p.new))
-        .subscribe();
-    }
-
-    function goPage(p, btn) {
-      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-      document.getElementById('p-' + p).classList.add('active');
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-    }
-
-    async function doLogout() {
-      await sb.auth.signOut();
-      me = null;
-      document.getElementById('app-screen').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-      toast("Logged out!", true);
-    }
-        </script>
-      
+    
