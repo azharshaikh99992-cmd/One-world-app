@@ -46,5 +46,369 @@
     }
     .tabs { display: flex; background: #0b141a; border-radius: 10px; padding: 4px; margin: 14px 0; }
     .tab-btn { flex: 1; padding: 9px; border: none; background: transparent; color: #8696a0; font-weight: 600; border-radius: 8px; }
-    .tab-btn.active { background: #2
-                     
+    .tab-btn.active { background: #2563eb; color: #fff; }
+    .inp-grp { margin-bottom: 12px; }
+    .inp-grp label { display: block; font-size: 12px; color: #8696a0; margin-bottom: 4px; }
+    .inp-grp input, .inp-grp textarea {
+      width: 100%; padding: 11px; border-radius: 10px; border: 1px solid #2a3942;
+      background: #0b141a; color: #fff; font-size: 14px; outline: none;
+    }
+    .btn-main {
+      width: 100%; padding: 12px; border: none; border-radius: 10px; background: #2563eb;
+      color: #fff; font-weight: 600; font-size: 15px; margin-top: 6px; cursor: pointer;
+    }
+
+    /* MAIN APP */
+    #app-screen { display: none; flex-direction: column; height: 100dvh; background: #0b141a; }
+    header {
+      height: 56px; background: #1f2c34; padding: 0 16px; display: flex;
+      align-items: center; justify-content: space-between; border-bottom: 1px solid #222d34;
+    }
+    .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    .page { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
+    .page.active { display: flex; }
+    .pad { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: #182229; padding: 13px 14px; border-radius: 14px; display: flex;
+      justify-content: space-between; align-items: center; border: 1px solid #222d34;
+    }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #38bdf8);
+      display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 16px;
+    }
+    .chat-box { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 80%; padding: 10px 14px; border-radius: 16px; font-size: 14px; word-wrap: break-word; position: relative; }
+    .msg.me { align-self: flex-end; background: #1d4ed8; color: #fff; border-bottom-right-radius: 4px; }
+    .msg.other { align-self: flex-start; background: #202c33; color: #e9edef; border-bottom-left-radius: 4px; }
+    .msg-name { font-size: 11px; color: #38bdf8; font-weight: 700; margin-bottom: 3px; }
+    .msg-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+    .msg-time { font-size: 10px; opacity: 0.7; }
+    .unsend-btn {
+      font-size: 10px; color: #fca5a5; background: rgba(0,0,0,0.25); border: none;
+      padding: 2px 6px; border-radius: 6px; cursor: pointer;
+    }
+    .bar { padding: 10px; background: #1f2c34; display: flex; gap: 8px; border-top: 1px solid #222d34; }
+    .bar input { flex: 1; padding: 11px 15px; border-radius: 22px; border: none; background: #2a3942; color: #fff; outline: none; font-size: 14px; }
+    .bar button { background: #2563eb; color: #fff; border: none; padding: 0 18px; border-radius: 22px; font-weight: 600; cursor: pointer; }
+    nav { height: 58px; background: #1f2c34; display: flex; border-top: 1px solid #222d34; }
+    .nav-btn { position: relative; flex: 1; background: transparent; border: none; color: #8696a0; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; }
+    .nav-btn.active { color: #3b82f6; font-weight: 700; }
+    .badge { position: absolute; top: 6px; right: 28%; width: 9px; height: 9px; background: #ef4444; border-radius: 50%; display: none; }
+  </style>
+</head>
+<body>
+
+  <div id="toast"></div>
+
+  <!-- 3D ROTATING GLOBE SPLASH -->
+  <div id="splash-screen">
+    <canvas id="globeCanvas" width="240" height="240"></canvas>
+    <div class="splash-title">ONE WORLD</div>
+    <div class="splash-sub">CONNECTING HUMANITY</div>
+    <button class="btn-enter" onclick="enterApp()">Enter App →</button>
+  </div>
+
+  <!-- AUTH WITH MINI 3D GLOBE -->
+  <div id="auth-screen">
+    <canvas id="miniGlobe" width="110" height="110" style="margin-bottom:8px;"></canvas>
+    <div class="auth-box">
+      <h2 style="text-align:center; letter-spacing:1px;">ONE WORLD</h2>
+      <div class="tabs">
+        <button class="tab-btn active" id="t-login" onclick="setMode('login')">Login</button>
+        <button class="tab-btn" id="t-signup" onclick="setMode('signup')">Sign Up</button>
+      </div>
+      <div class="inp-grp" id="u-grp" style="display:none;">
+        <label>Your Name</label>
+        <input type="text" id="a-user" placeholder="Apna naam likhein" />
+      </div>
+      <div class="inp-grp">
+        <label>Email</label>
+        <input type="email" id="a-email" placeholder="email@example.com" />
+      </div>
+      <div class="inp-grp">
+        <label>Password</label>
+        <input type="password" id="a-pass" placeholder="Min 6 characters" />
+      </div>
+      <button class="btn-main" id="a-btn" onclick="doAuth()">Login</button>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app-screen">
+    <header>
+      <strong><span class="live-dot"></span>ONE WORLD</strong>
+      <button onclick="doLogout()" style="background:#334155; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; cursor:pointer;">Logout</button>
+    </header>
+
+    <!-- HOME / MEMBERS -->
+    <div id="p-home" class="page active">
+      <div class="pad">
+        <div style="background:linear-gradient(135deg,#1e3a8a,#172554); padding:16px; border-radius:16px; display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <h3 id="welcome-txt">Welcome!</h3>
+            <p style="font-size:12px; color:#bfdbfe; margin-top:4px;">Back karte hi purani chat auto-clear ho jati hai.</p>
+          </div>
+          <span style="font-size:28px;">🌍</span>
+        </div>
+        <div style="font-size:12px; color:#8696a0; font-weight:700; letter-spacing:1px;">PRIVATE CHAT MEMBERS</div>
+        <div id="home-users">Loading members...</div>
+      </div>
+    </div>
+
+    <!-- GLOBAL CHAT -->
+    <div id="p-chat" class="page">
+      <div class="chat-box" id="g-box"></div>
+      <div class="bar">
+        <input type="text" id="g-inp" placeholder="Global message likhein..." onkeypress="if(event.key==='Enter') sendGlobal()" />
+        <button onclick="sendGlobal()">Send</button>
+      </div>
+    </div>
+
+    <!-- PRIVATE INBOX -->
+    <div id="p-inbox" class="page">
+      <div id="dm-list" class="pad">
+        <div style="font-size:12px; color:#8696a0; font-weight:700; letter-spacing:1px;">PRIVATE MESSAGES</div>
+        <div id="inbox-users"></div>
+      </div>
+      <div id="dm-view" style="display:none; flex-direction:column; flex:1; height:100%;">
+        <div style="background:#1f2c34; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222d34;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button onclick="closeDM()" style="background:#2a3942; color:#fff; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;">← Back</button>
+            <strong id="dm-name" style="font-size:15px;">User</strong>
+          </div>
+          <span style="font-size:11px; color:#10b981;">● Live</span>
+        </div>
+        <div class="chat-box" id="dm-box"></div>
+        <div class="bar">
+          <input type="text" id="dm-inp" placeholder="Message likhein..." onkeypress="if(event.key==='Enter') sendDM()" />
+          <button onclick="sendDM()">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="p-profile" class="page">
+      <div class="pad">
+        <div class="inp-grp"><label>Your Display Name</label><input type="text" id="pr-user" /></div>
+        <div class="inp-grp"><label>Country</label><input type="text" id="pr-country" placeholder="India" /></div>
+        <div class="inp-grp"><label>Bio</label><textarea id="pr-bio" rows="3"></textarea></div>
+        <button class="btn-main" onclick="saveProfile()">Save Name & Profile</button>
+        <button class="btn-main" style="background:#dc2626;" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+
+    <nav>
+      <button class="nav-btn active" onclick="goPage('home', this)"><span>🏠</span>Home</button>
+      <button class="nav-btn" onclick="goPage('chat', this)"><span>🌍</span>Global</button>
+      <button class="nav-btn" onclick="goPage('inbox', this)"><span class="badge" id="dm-badge"></span><span>💬</span>Private</button>
+      <button class="nav-btn" onclick="goPage('profile', this)"><span>👤</span>Profile</button>
+    </nav>
+  </div>
+
+  <script>
+    // 3D ROTATING GLOBE RENDERER
+    const dots = [];
+    for (let lat = -80; lat <= 80; lat += 14) {
+      const rLat = lat * Math.PI / 180;
+      const step = Math.max(14, Math.round(14 / Math.cos(rLat)));
+      for (let lon = 0; lon < 360; lon += step) dots.push({ lat: rLat, lon: lon * Math.PI / 180 });
+    }
+    let rot = 0;
+    function renderGlobeOn(canvasId, size) {
+      const cv = document.getElementById(canvasId);
+      if (!cv) return;
+      const cx2 = cv.getContext('2d');
+      cx2.clearRect(0, 0, size, size);
+      const c = size / 2, R = size * 0.4;
+      const grad = cx2.createRadialGradient(c - R * 0.25, c - R * 0.25, 4, c, c, R);
+      grad.addColorStop(0, '#1e3a8a'); grad.addColorStop(1, '#070e1a');
+      cx2.beginPath(); cx2.arc(c, c, R, 0, Math.PI * 2); cx2.fillStyle = grad; cx2.fill();
+      cx2.strokeStyle = 'rgba(56,189,248,0.45)'; cx2.lineWidth = 1.5; cx2.stroke();
+      dots.forEach(d => {
+        const lon = d.lon + rot;
+        const x = R * Math.cos(d.lat) * Math.sin(lon);
+        const y = R * Math.sin(d.lat);
+        const z = R * Math.cos(d.lat) * Math.cos(lon);
+        if (z > -R * 0.1) {
+          const alpha = (z + R) / (2 * R);
+          cx2.beginPath(); cx2.arc(c + x, c - y, z > 0 ? (size > 150 ? 2.2 : 1.4) : 1, 0, Math.PI * 2);
+          cx2.fillStyle = `rgba(56, 189, 248, ${alpha})`; cx2.fill();
+        }
+      });
+    }
+    function animateGlobes() {
+      renderGlobeOn('globeCanvas', 240);
+      renderGlobeOn('miniGlobe', 110);
+      rot += 0.025;
+      requestAnimationFrame(animateGlobes);
+    }
+    animateGlobes();
+
+    function enterApp() {
+      document.getElementById('splash-screen').style.display = 'none';
+      checkUser();
+    }
+    setTimeout(enterApp, 2400);
+
+    // SUPABASE SETUP
+    const sb = window.supabase.createClient("https://hqxzfccywgdiimjvgrmt.supabase.co", "sb_publishable_4tGIrCOEl8v2FXm3GCjGeQ_m1MQn1r4");
+    let me = null, myProf = null, mode = 'login', dmUser = null, syncTimer = null;
+    let sessionStart = new Date().toISOString();
+    let dmOpenTime = new Date().toISOString();
+    const userNames = {};
+    const shownGlobal = new Set();
+    const shownDm = new Set();
+
+    function toast(msg, ok = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.style.background = ok ? '#10b981' : '#ef4444';
+      t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3500);
+    }
+
+    function setMode(m) {
+      mode = m;
+      document.getElementById('t-login').classList.toggle('active', m === 'login');
+      document.getElementById('t-signup').classList.toggle('active', m === 'signup');
+      document.getElementById('u-grp').style.display = m === 'signup' ? 'block' : 'none';
+      document.getElementById('a-btn').textContent = m === 'login' ? 'Login' : 'Create Account';
+    }
+
+    async function doAuth() {
+      const email = document.getElementById('a-email').value.trim();
+      const password = document.getElementById('a-pass').value.trim();
+      const username = document.getElementById('a-user').value.trim();
+      if (!email || !password) return toast("Email aur Password bharein");
+
+      const btn = document.getElementById('a-btn');
+      btn.textContent = "Wait...";
+      if (mode === 'signup') {
+        if (!username) { btn.textContent = "Create Account"; return toast("Apna naam likhein"); }
+        const { data, error } = await sb.auth.signUp({ email, password });
+        if (error) { btn.textContent = "Create Account"; return toast(error.message); }
+        if (data.user) {
+          await sb.from('profiles').upsert({ id: data.user.id, username });
+          toast("Account ban gaya!", true);
+          checkUser();
+        }
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) { btn.textContent = "Login"; return toast(error.message); }
+        checkUser();
+      }
+      btn.textContent = mode === 'login' ? 'Login' : 'Create Account';
+    }
+
+    async function checkUser() {
+      const { data: { user }, error } = await sb.auth.getUser();
+      if (user && !error) {
+        me = user;
+        sessionStart = new Date().toISOString();
+        shownGlobal.clear();
+        document.getElementById('g-box').innerHTML = '';
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app-screen').style.display = 'flex';
+        await loadProfile();
+        await loadUsers();
+        startAutoSync();
+      } else {
+        await sb.auth.signOut();
+        me = null;
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('app-screen').style.display = 'none';
+      }
+    }
+
+    async function loadProfile() {
+      let { data } = await sb.from('profiles').select('*').eq('id', me.id).single();
+      const fallbackName = me.email.split('@')[0];
+      if (!data || !data.username) {
+        const res = await sb.from('profiles').upsert({ id: me.id, username: fallbackName }).select().single();
+        data = res.data;
+      }
+      myProf = data || { username: fallbackName };
+      userNames[me.id] = myProf.username;
+      document.getElementById('welcome-txt').textContent = "Hi, " + myProf.username;
+      document.getElementById('pr-user').value = myProf.username || '';
+      document.getElementById('pr-country').value = myProf.country || '';
+      document.getElementById('pr-bio').value = myProf.bio || '';
+    }
+
+    async function saveProfile() {
+      const username = document.getElementById('pr-user').value.trim();
+      if (!username) return toast("Naam khali nahi chhod sakte");
+      const country = document.getElementById('pr-country').value.trim();
+      const bio = document.getElementById('pr-bio').value.trim();
+      const { error } = await sb.from('profiles').upsert({ id: me.id, username, country, bio });
+      if (error) return toast(error.message);
+      toast("Naam & Profile Save ho gaya!", true);
+      await loadProfile();
+      await loadUsers();
+    }
+
+    async function loadUsers() {
+      const { data } = await sb.from('profiles').select('*');
+      if (!data) return;
+      data.forEach(u => {
+        userNames[u.id] = u.username && u.username.trim() ? u.username.trim() : "Member";
+      });
+      const list = data.filter(u => u.id !== me.id).map(u => {
+        const cleanName = userNames[u.id];
+        return `
+          <div class="card" style="margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div class="avatar">${cleanName[0].toUpperCase()}</div>
+              <div>
+                <strong>${cleanName}</strong> <span style="font-size:11px;color:#60a5fa;">(${u.country || 'Global'})</span>
+                <div style="font-size:12px;color:#8696a0;">${u.bio || 'Tap Chat for private message'}</div>
+              </div>
+            </div>
+            <button onclick="openDM('${u.id}','${cleanName.replace(/'/g, "")}')" style="background:#2563eb;color:#fff;border:none;padding:8px 14px;border-radius:10px;font-weight:600;cursor:pointer;">Chat</button>
+          </div>
+        `;
+      }).join('') || '<p style="font-size:13px;color:#8696a0;">Abhi koi aur member online nahi hai.</p>';
+      document.getElementById('home-users').innerHTML = list;
+      document.getElementById('inbox-users').innerHTML = list;
+    }
+
+    // GLOBAL CHAT (ONLY NEW MESSAGES SINCE LOGIN + UNSEND)
+    function addGlobalUI(m) {
+      if (!m || !m.id || shownGlobal.has(m.id)) return;
+      shownGlobal.add(m.id);
+      const box = document.getElementById('g-box');
+      const isMe = m.user_id === me.id;
+      const senderName = userNames[m.user_id] || m.username || 'Member';
+      const d = document.createElement('div');
+      d.className = 'msg ' + (isMe ? 'me' : 'other');
+      d.id = 'gmsg-' + m.id;
+      d.innerHTML = `
+        ${!isMe ? `<div class="msg-name">${senderName}</div>` : ''}
+        <div>${m.content}</div>
+        <div class="msg-footer">
+          ${isMe ? `<button class="unsend-btn" onclick="unsendGlobal('${m.id}')">Unsend</button>` : ''}
+          <span class="msg-time">${new Date(m.created_at || Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+        </div>
+      `;
+      box.appendChild(d);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function syncGlobal() {
+      if (!me) return;
+      const { data } = await sb.from('messages').select('*')
+        .gte('created_at', sessionStart)
+        .order('created_at', { ascending: true });
+      if (data) {
+        const activeIds = new Set(data.map(x => x.id));
+        document.querySelectorAll('#g-box .msg').forEach(el => {
+          const id = el.id.replace('gmsg-', '');
+          if (!activeIds.has(id)) el.remove();
+        });
+        data.forEach(addGlobalUI);
+      }
+    }
+
+    async function sendGlobal() {
+      const inp = document.getElementById('g-inp');
+      const content = inp.value.trim();
+      if (!content) return;
+    
