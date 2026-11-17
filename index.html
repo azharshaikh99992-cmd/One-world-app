@@ -4,452 +4,405 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#050b14" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>ONE WORLD</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    :root {
-      --bg-main: #0b141a;
-      --bg-header: #1f2c34;
-      --bg-card: #182229;
-      --bg-input: #2a3942;
-      --msg-me: #1d4ed8;
-      --msg-other: #202c33;
-      --text-main: #e9edef;
-      --text-muted: #8696a0;
-      --border: #222d34;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #050b14; color: #e9edef; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+    a[href*="netlify.com"], div[class*="netlify"], iframe[src*="netlify"] { display: none !important; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #050b14; color: var(--text-main); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
-
-    /* Hide Netlify Badge */
-    a[href*="netlify.com"], div[class*="netlify"], iframe[src*="netlify"] {
-      display: none !important; opacity: 0 !important; pointer-events: none !important;
-    }
-
-    /* Toast Notification */
     #toast {
-      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      background: #ef4444; color: white; padding: 11px 20px; border-radius: 22px;
-      font-size: 13px; font-weight: 500; z-index: 99999; display: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6); max-width: 90%; text-align: center;
+      position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+      background: #ef4444; color: #fff; padding: 10px 18px; border-radius: 20px;
+      font-size: 13px; z-index: 99999; display: none; max-width: 90%; text-align: center;
     }
 
-    /* 3D GLOBE INTRO SPLASH SCREEN */
+    /* 3D GLOBE SPLASH */
     #splash-screen {
       position: fixed; inset: 0; background: radial-gradient(circle at center, #0d1f3c 0%, #030712 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 5000; transition: opacity 0.6s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5000;
     }
-    #globe-container { width: 260px; height: 260px; display: flex; align-items: center; justify-content: center; }
     .splash-title {
-      font-size: 28px; font-weight: 800; letter-spacing: 4px; margin-top: 10px;
+      font-size: 28px; font-weight: 800; letter-spacing: 4px; margin-top: 12px;
       background: linear-gradient(90deg, #60a5fa, #38bdf8, #818cf8);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .splash-sub { color: #94a3b8; font-size: 13px; margin-top: 6px; letter-spacing: 1px; }
+    .splash-sub { color: #94a3b8; font-size: 12px; margin-top: 6px; letter-spacing: 2px; }
     .btn-enter {
-      margin-top: 26px; padding: 12px 28px; border-radius: 25px; border: 1px solid #3b82f6;
-      background: rgba(37, 99, 235, 0.25); color: #fff; font-weight: 600; font-size: 14px;
-      cursor: pointer; backdrop-filter: blur(6px);
+      margin-top: 26px; padding: 12px 30px; border-radius: 25px; border: 1px solid #3b82f6;
+      background: #2563eb; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer;
     }
 
-    /* Auth Screen */
+    /* AUTH SCREEN */
     #auth-screen {
       display: none; flex-direction: column; justify-content: center; align-items: center;
-      height: 100dvh; padding: 24px; background: radial-gradient(circle at top, #162836, #0b141a);
+      height: 100dvh; padding: 20px; background: #0b141a;
     }
     .auth-box {
-      width: 100%; max-width: 380px; background: var(--bg-header); padding: 28px 22px;
-      border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      width: 100%; max-width: 370px; background: #1f2c34; padding: 24px 20px;
+      border-radius: 16px; border: 1px solid #2a3942;
     }
-    .logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 6px; }
-    .auth-sub { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
-    .tabs { display: flex; background: var(--bg-main); border-radius: 10px; padding: 4px; margin-bottom: 18px; }
-    .tab-btn {
-      flex: 1; padding: 9px; border: none; background: transparent; color: var(--text-muted);
-      font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 14px;
+    .tabs { display: flex; background: #0b141a; border-radius: 10px; padding: 4px; margin: 16px 0; }
+    .tab-btn { flex: 1; padding: 9px; border: none; background: transparent; color: #8696a0; font-weight: 600; border-radius: 8px; }
+    .tab-btn.active { background: #2a3942; color: #fff; }
+    .inp-grp { margin-bottom: 12px; }
+    .inp-grp label { display: block; font-size: 12px; color: #8696a0; margin-bottom: 4px; }
+    .inp-grp input, .inp-grp textarea {
+      width: 100%; padding: 11px; border-radius: 10px; border: 1px solid #2a3942;
+      background: #0b141a; color: #fff; font-size: 14px; outline: none;
     }
-    .tab-btn.active { background: var(--bg-input); color: var(--text-main); }
-    .input-group { margin-bottom: 14px; }
-    .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
-    .input-group input, .input-group textarea {
-      width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border);
-      background: var(--bg-main); color: var(--text-main); font-size: 14px; outline: none;
+    .btn-main {
+      width: 100%; padding: 12px; border: none; border-radius: 10px; background: #2563eb;
+      color: #fff; font-weight: 600; font-size: 15px; margin-top: 6px;
     }
-    .input-group input:focus { border-color: #3b82f6; }
-    .btn-primary {
-      width: 100%; padding: 13px; border: none; border-radius: 10px; background: #2563eb;
-      color: white; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 6px;
-    }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Main App Layout */
-    #app-screen { display: none; flex-direction: column; height: 100dvh; background: var(--bg-main); }
+    /* APP SCREEN */
+    #app-screen { display: none; flex-direction: column; height: 100dvh; background: #0b141a; }
     header {
-      height: 58px; background: var(--bg-header); padding: 0 16px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--border); flex-shrink: 0;
+      height: 56px; background: #1f2c34; padding: 0 16px; display: flex;
+      align-items: center; justify-content: space-between; border-bottom: 1px solid #222d34;
     }
-    .header-left { display: flex; align-items: center; gap: 10px; }
-    .header-title { font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
-    .badge-online { font-size: 11px; background: rgba(0, 168, 132, 0.15); color: #00a884; padding: 3px 8px; border-radius: 12px; }
-
-    /* Pages */
     .page { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
     .page.active { display: flex; }
-
-    /* Home Page */
-    .home-pad { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-    .welcome-card {
-      background: linear-gradient(135deg, #1e3a8a, #172554); padding: 18px; border-radius: 16px;
-    }
-    .welcome-card h2 { font-size: 18px; margin-bottom: 4px; }
-    .welcome-card p { font-size: 13px; color: #bfdbfe; }
-    .section-title { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
-    .user-card {
-      background: var(--bg-card); padding: 12px 14px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);
-    }
-    .user-info h4 { font-size: 15px; margin-bottom: 2px; }
-    .user-info p { font-size: 12px; color: var(--text-muted); }
-    .btn-dm {
-      background: #2563eb; color: white; border: none; padding: 7px 14px;
-      border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
-    }
-
-    /* Chat Area */
-    .chat-messages {
-      flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
-      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 0);
-      background-size: 20px 20px;
-    }
-    .msg-row { display: flex; flex-direction: column; max-width: 78%; }
-    .msg-row.me { align-self: flex-end; align-items: flex-end; }
-    .msg-row.other { align-self: flex-start; align-items: flex-start; }
-    .msg-sender { font-size: 11px; color: #60a5fa; margin-bottom: 3px; padding: 0 4px; font-weight: 600; }
-    .msg-bubble {
-      padding: 9px 13px; border-radius: 14px; font-size: 14px; line-height: 1.4;
-      word-wrap: break-word; position: relative;
-    }
-    .msg-row.me .msg-bubble { background: var(--msg-me); color: #fff; border-bottom-right-radius: 3px; }
-    .msg-row.other .msg-bubble { background: var(--msg-other); color: var(--text-main); border-bottom-left-radius: 3px; }
-    .msg-time { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; text-align: right; }
-
-    .chat-input-bar {
-      padding: 10px 12px; background: var(--bg-header); display: flex; gap: 8px;
-      border-top: 1px solid var(--border); flex-shrink: 0;
-    }
-    .chat-input-bar input {
-      flex: 1; padding: 11px 15px; border-radius: 22px; border: none;
-      background: var(--bg-input); color: var(--text-main); font-size: 14px; outline: none;
-    }
-    .btn-send {
-      background: #2563eb; color: white; border: none; padding: 0 18px;
-      border-radius: 22px; font-weight: 600; font-size: 14px; cursor: pointer;
-    }
-
-    .dm-subbar {
-      background: #131c22; padding: 10px 14px; display: flex; align-items: center; gap: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .btn-back { background: var(--bg-input); color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
-
-    /* Bottom Navigation */
-    nav {
-      height: 60px; background: var(--bg-header); display: flex;
-      border-top: 1px solid var(--border); flex-shrink: 0;
-    }
-    .nav-item {
-      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: var(--text-muted); font-size: 11px; gap: 4px; cursor: pointer; border: none; background: transparent;
-    }
-    .nav-item.active { color: #3b82f6; font-weight: 600; }
-    .nav-icon { font-size: 18px; }
+    .pad { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .card { background: #182229; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222d34; }
+    .chat-box { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .msg { max-width: 78%; padding: 9px 13px; border-radius: 14px; font-size: 14px; word-wrap: break-word; }
+    .msg.me { align-self: flex-end; background: #1d4ed8; color: #fff; border-bottom-right-radius: 3px; }
+    .msg.other { align-self: flex-start; background: #202c33; color: #e9edef; border-bottom-left-radius: 3px; }
+    .msg-name { font-size: 11px; color: #60a5fa; font-weight: 600; margin-bottom: 2px; }
+    .msg-time { font-size: 10px; opacity: 0.65; text-align: right; margin-top: 3px; }
+    .bar { padding: 10px; background: #1f2c34; display: flex; gap: 8px; border-top: 1px solid #222d34; }
+    .bar input { flex: 1; padding: 10px 14px; border-radius: 20px; border: none; background: #2a3942; color: #fff; outline: none; }
+    .bar button { background: #2563eb; color: #fff; border: none; padding: 0 16px; border-radius: 20px; font-weight: 600; }
+    nav { height: 58px; background: #1f2c34; display: flex; border-top: 1px solid #222d34; }
+    .nav-btn { flex: 1; background: transparent; border: none; color: #8696a0; font-size: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+    .nav-btn.active { color: #3b82f6; font-weight: 700; }
   </style>
 </head>
 <body>
 
   <div id="toast"></div>
 
-  <!-- 1. 3D ROTATING GLOBE INTRO SCREEN -->
+  <!-- 1. 3D ROTATING GLOBE INTRO -->
   <div id="splash-screen">
-    <div id="globe-container"></div>
+    <canvas id="globeCanvas" width="240" height="240"></canvas>
     <div class="splash-title">ONE WORLD</div>
     <div class="splash-sub">CONNECTING HUMANITY</div>
-    <button class="btn-enter" onclick="finishSplash()">Enter App →</button>
+    <button class="btn-enter" onclick="enterApp()">Enter App →</button>
   </div>
 
-  <!-- 2. LOGIN / SIGNUP SCREEN -->
+  <!-- 2. LOGIN / SIGNUP -->
   <div id="auth-screen">
     <div class="auth-box">
-      <div class="logo-wrap">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <h2>ONE WORLD</h2>
-      </div>
-      <p class="auth-sub">Login ya naya account banayein</p>
-
+      <h2 style="text-align:center;">🌍 ONE WORLD</h2>
       <div class="tabs">
-        <button class="tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
-        <button class="tab-btn" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+        <button class="tab-btn active" id="t-login" onclick="setMode('login')">Login</button>
+        <button class="tab-btn" id="t-signup" onclick="setMode('signup')">Sign Up</button>
       </div>
-
-      <div class="input-group" id="username-group" style="display:none;">
+      <div class="inp-grp" id="u-grp" style="display:none;">
         <label>Username</label>
-        <input type="text" id="auth-username" placeholder="Apna naam likhein" />
+        <input type="text" id="a-user" placeholder="Apna naam likhein" />
       </div>
-      <div class="input-group">
+      <div class="inp-grp">
         <label>Email</label>
-        <input type="email" id="auth-email" placeholder="name@example.com" />
+        <input type="email" id="a-email" placeholder="email@example.com" />
       </div>
-      <div class="input-group">
+      <div class="inp-grp">
         <label>Password</label>
-        <input type="password" id="auth-password" placeholder="Min 6 characters" />
+        <input type="password" id="a-pass" placeholder="Min 6 characters" />
       </div>
-
-      <button class="btn-primary" id="auth-submit-btn" onclick="handleAuth()">Login</button>
+      <button class="btn-main" id="a-btn" onclick="doAuth()">Login</button>
     </div>
   </div>
 
-  <!-- 3. MAIN APP SCREEN -->
+  <!-- 3. MAIN APP -->
   <div id="app-screen">
     <header>
-      <div class="header-left">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2">
-          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <span class="header-title">ONE WORLD</span>
-      </div>
-      <span class="badge-online">● Live</span>
+      <strong>🌍 ONE WORLD</strong>
+      <span style="font-size:12px; color:#10b981;">● Live</span>
     </header>
 
-    <!-- PAGE 1: HOME -->
-    <div id="page-home" class="page active">
-      <div class="home-pad">
-        <div class="welcome-card">
-          <h2 id="welcome-user">Welcome!</h2>
-          <p>Duniya bhar ke logon se Global Chat ya Private DM mein baat karein.</p>
+    <div id="p-home" class="page active">
+      <div class="pad">
+        <div style="background:linear-gradient(135deg,#1e3a8a,#172554); padding:16px; border-radius:14px;">
+          <h3 id="welcome-txt">Welcome!</h3>
+          <p style="font-size:12px; color:#bfdbfe; margin-top:4px;">Global Chat aur Private DM mein sabse judein.</p>
         </div>
-        <div class="section-title">Community Members</div>
-        <div id="users-list">Loading members...</div>
+        <div style="font-size:12px; color:#8696a0; font-weight:700;">MEMBERS</div>
+        <div id="home-users">Loading...</div>
       </div>
     </div>
 
-    <!-- PAGE 2: GLOBAL CHAT -->
-    <div id="page-chat" class="page">
-      <div class="chat-messages" id="global-chat-box"></div>
-      <div class="chat-input-bar">
-        <input type="text" id="global-msg-input" placeholder="Global message likhein..." onkeypress="if(event.key==='Enter') sendGlobalMessage()" />
-        <button class="btn-send" onclick="sendGlobalMessage()">Send</button>
+    <div id="p-chat" class="page">
+      <div class="chat-box" id="g-box"></div>
+      <div class="bar">
+        <input type="text" id="g-inp" placeholder="Global message..." />
+        <button onclick="sendGlobal()">Send</button>
       </div>
     </div>
 
-    <!-- PAGE 3: PRIVATE INBOX (DM) -->
-    <div id="page-inbox" class="page">
-      <div id="inbox-list-view" class="home-pad">
-        <div class="section-title">Select User for Private Chat</div>
-        <div id="inbox-users-list"></div>
+    <div id="p-inbox" class="page">
+      <div id="dm-list" class="pad">
+        <div style="font-size:12px; color:#8696a0; font-weight:700;">PRIVATE MESSAGES (DM)</div>
+        <div id="inbox-users"></div>
       </div>
-      <div id="dm-chat-view" style="display:none; flex-direction:column; flex:1; height:100%;">
-        <div class="dm-subbar">
-          <button class="btn-back" onclick="closeDM()">← Back</button>
-          <strong id="dm-partner-name">User</strong>
+      <div id="dm-view" style="display:none; flex-direction:column; flex:1; height:100%;">
+        <div style="background:#131c22; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+          <button onclick="closeDM()" style="background:#2a3942; color:#fff; border:none; padding:5px 10px; border-radius:6px;">← Back</button>
+          <strong id="dm-name">User</strong>
         </div>
-        <div class="chat-messages" id="dm-chat-box"></div>
-        <div class="chat-input-bar">
-          <input type="text" id="dm-msg-input" placeholder="Private message likhein..." onkeypress="if(event.key==='Enter') sendDM()" />
-          <button class="btn-send" onclick="sendDM()">Send</button>
+        <div class="chat-box" id="dm-box"></div>
+        <div class="bar">
+          <input type="text" id="dm-inp" placeholder="Private message..." />
+          <button onclick="sendDM()">Send</button>
         </div>
       </div>
     </div>
 
-    <!-- PAGE 4: PROFILE -->
-    <div id="page-profile" class="page">
-      <div class="home-pad">
-        <div class="section-title">My Profile Settings</div>
-        <div class="input-group">
-          <label>Username</label>
-          <input type="text" id="prof-username" />
-        </div>
-        <div class="input-group">
-          <label>Country</label>
-          <input type="text" id="prof-country" placeholder="e.g. India" />
-        </div>
-        <div class="input-group">
-          <label>Bio</label>
-          <textarea id="prof-bio" rows="3" placeholder="Apne baare mein kuch likhein..."></textarea>
-        </div>
-        <button class="btn-primary" onclick="updateProfile()">Save Profile</button>
-        <button class="btn-primary" style="background:#dc2626; margin-top:12px;" onclick="logout()">Logout</button>
+    <div id="p-profile" class="page">
+      <div class="pad">
+        <div class="inp-grp"><label>Username</label><input type="text" id="pr-user" /></div>
+        <div class="inp-grp"><label>Country</label><input type="text" id="pr-country" placeholder="India" /></div>
+        <div class="inp-grp"><label>Bio</label><textarea id="pr-bio" rows="3"></textarea></div>
+        <button class="btn-main" onclick="saveProfile()">Save Profile</button>
+        <button class="btn-main" style="background:#dc2626;" onclick="doLogout()">Logout</button>
       </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
     <nav>
-      <button class="nav-item active" onclick="switchPage('home', this)">
-        <span class="nav-icon">🏠</span><span>Home</span>
-      </button>
-      <button class="nav-item" onclick="switchPage('chat', this)">
-        <span class="nav-icon">🌍</span><span>Chat</span>
-      </button>
-      <button class="nav-item" onclick="switchPage('inbox', this)">
-        <span class="nav-icon">💬</span><span>Inbox</span>
-      </button>
-      <button class="nav-item" onclick="switchPage('profile', this)">
-        <span class="nav-icon">👤</span><span>Profile</span>
-      </button>
+      <button class="nav-btn active" onclick="goPage('home', this)"><span>🏠</span>Home</button>
+      <button class="nav-btn" onclick="goPage('chat', this)"><span>🌍</span>Chat</button>
+      <button class="nav-btn" onclick="goPage('inbox', this)"><span>💬</span>Inbox</button>
+      <button class="nav-btn" onclick="goPage('profile', this)"><span>👤</span>Profile</button>
     </nav>
   </div>
 
   <script>
-    // 1. 3D Rotating Globe Animation
-    function init3DGlobe() {
-      try {
-        const container = document.getElementById('globe-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-        camera.position.z = 3.2;
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(250, 250);
-        container.appendChild(renderer.domElement);
-
-        // Glowing Wireframe + Dotted Sphere
-        const geo = new THREE.SphereGeometry(1.15, 28, 28);
-        const wireMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.45 });
-        const globe = new THREE.Mesh(geo, wireMat);
-        scene.add(globe);
-
-        const coreGeo = new THREE.SphereGeometry(1.08, 24, 24);
-        const coreMat = new THREE.MeshBasicMaterial({ color: 0x0f172a });
-        scene.add(new THREE.Mesh(coreGeo, coreMat));
-
-        const ptsMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.045 });
-        const pts = new THREE.Points(geo, ptsMat);
-        scene.add(pts);
-
-        function animate() {
-          if (document.getElementById('splash-screen').style.display === 'none') return;
-          requestAnimationFrame(animate);
-          globe.rotation.y += 0.012;
-          globe.rotation.x = 0.25;
-          pts.rotation.y += 0.012;
-          pts.rotation.x = 0.25;
-          renderer.render(scene, camera);
-        }
-        animate();
-      } catch (e) {
-        console.log("3D fallback");
+    // 3D Globe Drawing on Canvas
+    const c = document.getElementById('globeCanvas');
+    const ctx = c.getContext('2d');
+    let rot = 0;
+    const dots = [];
+    for (let lat = -80; lat <= 80; lat += 14) {
+      const rLat = lat * Math.PI / 180;
+      const step = Math.max(14, Math.round(14 / Math.cos(rLat)));
+      for (let lon = 0; lon < 360; lon += step) {
+        dots.push({ lat: rLat, lon: lon * Math.PI / 180 });
       }
     }
-    init3DGlobe();
+    function drawGlobe() {
+      if (document.getElementById('splash-screen').style.display === 'none') return;
+      ctx.clearRect(0, 0, 240, 240);
+      const cx = 120, cy = 120, R = 95;
+      const grad = ctx.createRadialGradient(cx - 25, cy - 25, 10, cx, cy, R);
+      grad.addColorStop(0, '#1e3a8a'); grad.addColorStop(1, '#09111e');
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = 'rgba(59,130,246,0.4)'; ctx.lineWidth = 1.5; ctx.stroke();
 
-    let splashDone = false;
-    function finishSplash() {
-      if (splashDone) return;
-      splashDone = true;
-      const s = document.getElementById('splash-screen');
-      s.style.opacity = '0';
-      setTimeout(() => {
-        s.style.display = 'none';
-        checkSession();
-      }, 500);
+      dots.forEach(d => {
+        const lon = d.lon + rot;
+        const x = R * Math.cos(d.lat) * Math.sin(lon);
+        const y = R * Math.sin(d.lat);
+        const z = R * Math.cos(d.lat) * Math.cos(lon);
+        if (z > -10) {
+          const alpha = (z + R) / (2 * R);
+          ctx.beginPath();
+          ctx.arc(cx + x, cy - y, z > 0 ? 2.2 : 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(56, 189, 248, ${alpha})`;
+          ctx.fill();
+        }
+      });
+      rot += 0.025;
+      requestAnimationFrame(drawGlobe);
     }
-    setTimeout(finishSplash, 2800);
+    drawGlobe();
 
-    // 2. Inline PWA Manifest
-    const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#0b141a"/><circle cx="256" cy="256" r="160" fill="none" stroke="#3b82f6" stroke-width="28"/><path d="M96 256h320M256 96a245 245 0 0 1 64 160 245 245 0 0 1-64 160 245 245 0 0 1-64-160 245 245 0 0 1 64-160z" fill="none" stroke="#3b82f6" stroke-width="24"/></svg>`;
-    const manifest = {
-      name: "ONE WORLD Chat",
-      short_name: "ONE WORLD",
-      start_url: "/",
-      display: "standalone",
-      background_color: "#0b141a",
-      theme_color: "#0b141a",
-      icons: [{ src: "data:image/svg+xml;base64," + btoa(iconSvg), sizes: "512x512", type: "image/svg+xml" }]
-    };
-    const mLink = document.createElement("link");
-    mLink.rel = "manifest";
-    mLink.href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
-    document.head.appendChild(mLink);
+    function enterApp() {
+      document.getElementById('splash-screen').style.display = 'none';
+      checkUser();
+    }
+    setTimeout(enterApp, 3000);
 
-    // 3. Supabase Client
-    const SUPABASE_URL = "https://hqxzfccywgdiimjvgrmt.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_4tGIrCOEl8v2FXm3GCjGeQ_m1MQn1r4";
-    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Supabase Setup
+    const sb = window.supabase.createClient("https://hqxzfccywgdiimjvgrmt.supabase.co", "sb_publishable_4tGIrCOEl8v2FXm3GCjGeQ_m1MQn1r4");
+    let me = null, myProf = null, mode = 'login', dmUser = null;
 
-    let currentUser = null;
-    let currentProfile = null;
-    let authMode = 'login';
-    let activeDMUser = null;
-
-    function showToast(msg, isSuccess = false) {
+    function toast(msg, ok = false) {
       const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.style.background = isSuccess ? '#10b981' : '#ef4444';
-      t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 4000);
+      t.textContent = msg; t.style.background = ok ? '#10b981' : '#ef4444';
+      t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 4000);
     }
 
-    function switchAuthTab(mode) {
-      authMode = mode;
-      document.getElementById('tab-login').classList.toggle('active', mode === 'login');
-      document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
-      document.getElementById('username-group').style.display = mode === 'signup' ? 'block' : 'none';
-      document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'Login' : 'Create Account';
+    function setMode(m) {
+      mode = m;
+      document.getElementById('t-login').classList.toggle('active', m === 'login');
+      document.getElementById('t-signup').classList.toggle('active', m === 'signup');
+      document.getElementById('u-grp').style.display = m === 'signup' ? 'block' : 'none';
+      document.getElementById('a-btn').textContent = m === 'login' ? 'Login' : 'Create Account';
     }
 
-    async function handleAuth() {
-      const btn = document.getElementById('auth-submit-btn');
-      const email = document.getElementById('auth-email').value.trim();
-      const password = document.getElementById('auth-password').value.trim();
-      const username = document.getElementById('auth-username').value.trim();
+    async function doAuth() {
+      const email = document.getElementById('a-email').value.trim();
+      const password = document.getElementById('a-pass').value.trim();
+      const username = document.getElementById('a-user').value.trim();
+      if (!email || !password) return toast("Email aur Password bharein");
 
-      if (!email || !password) return showToast("Email aur Password dono bharein!");
-      if (password.length < 6) return showToast("Password kam se kam 6 characters ka rakhein!");
-
-      btn.disabled = true;
-      btn.textContent = "Please wait...";
-
-      try {
-        if (authMode === 'signup') {
-          if (!username) {
-            btn.disabled = false; btn.textContent = "Create Account";
-            return showToast("Apna Username likhein!");
-          }
-          const { data, error } = await sb.auth.signUp({ email, password });
-          if (error) {
-            btn.disabled = false; btn.textContent = "Create Account";
-            return showToast(error.message);
-          }
-          if (data.user) {
-            await sb.from('profiles').upsert({ id: data.user.id, username: username });
-            if (data.session) {
-              showToast("Account ban gaya!", true);
-              checkSession();
-            } else {
-              showToast("Account ban gaya! Agar login na ho toh Supabase mein Confirm Email OFF karein.", true);
-              switchAuthTab('login');
-            }
-          }
-        } else {
-          const { error } = await sb.auth.signInWithPassword({ email, password });
-          if (error) {
-            btn.disabled = false; btn.textContent = "Login";
-            return showToast("Login Error: " + error.message);
-          }
-          checkSession();
+      const btn = document.getElementById('a-btn');
+      btn.textContent = "Wait...";
+      if (mode === 'signup') {
+        if (!username) { btn.textContent = "Create Account"; return toast("Username likhein"); }
+        const { data, error } = await sb.auth.signUp({ email, password });
+        if (error) { btn.textContent = "Create Account"; return toast(error.message); }
+        if (data.user) {
+          await sb.from('profiles').upsert({ id: data.user.id, username });
+          toast("Account ban gaya!", true);
+          checkUser();
         }
-      } catch (err) {
-        showToast("Network error: " + err.message);
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) { btn.textContent = "Login"; return toast(error.message); }
+        checkUser();
       }
-      btn.disabled = false;
-      btn.textContent = authMode === 'login' ? 'Login' : 'Create Account';
+      btn.textContent = mode === 'login' ? 'Login' : 'Create Account';
     }
 
-    async function ch
+    async function checkUser() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        me = session.user;
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app-screen').style.display = 'flex';
+        await loadProfile();
+        loadUsers();
+        loadGlobal();
+        listenLive();
+      } else {
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('app-screen').style.display = 'none';
+      }
+    }
+
+    async function loadProfile() {
+      let { data } = await sb.from('profiles').select('*').eq('id', me.id).single();
+      if (!data) {
+        const res = await sb.from('profiles').upsert({ id: me.id, username: me.email.split('@')[0] }).select().single();
+        data = res.data;
+      }
+      myProf = data;
+      document.getElementById('welcome-txt').textContent = "Welcome, " + data.username;
+      document.getElementById('pr-user').value = data.username || '';
+      document.getElementById('pr-country').value = data.country || '';
+      document.getElementById('pr-bio').value = data.bio || '';
+    }
+
+    async function saveProfile() {
+      const username = document.getElementById('pr-user').value.trim();
+      const country = document.getElementById('pr-country').value.trim();
+      const bio = document.getElementById('pr-bio').value.trim();
+      const { error } = await sb.from('profiles').upsert({ id: me.id, username, country, bio });
+      if (error) return toast(error.message);
+      toast("Profile Saved!", true);
+      loadProfile(); loadUsers();
+    }
+
+    async function loadUsers() {
+      const { data } = await sb.from('profiles').select('*');
+      if (!data) return;
+      const list = data.filter(u => u.id !== me.id).map(u => `
+        <div class="card" style="margin-bottom:8px;">
+          <div><strong>${u.username}</strong> <span style="font-size:11px;color:#60a5fa;">(${u.country || 'Global'})</span><div style="font-size:12px;color:#8696a0;">${u.bio || ''}</div></div>
+          <button onclick="openDM('${u.id}','${u.username}')" style="background:#2563eb;color:#fff;border:none;padding:6px 12px;border-radius:8px;">Chat</button>
+        </div>
+      `).join('') || '<p style="font-size:13px;color:#8696a0;">Koi aur member nahi hai.</p>';
+      document.getElementById('home-users').innerHTML = list;
+      document.getElementById('inbox-users').innerHTML = list;
+    }
+
+    async function loadGlobal() {
+      const { data } = await sb.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
+      const box = document.getElementById('g-box');
+      box.innerHTML = '';
+      if (data) data.forEach(addGlobalUI);
+    }
+
+    function addGlobalUI(m) {
+      const box = document.getElementById('g-box');
+      const isMe = m.user_id === me.id;
+      const d = document.createElement('div');
+      d.className = 'msg ' + (isMe ? 'me' : 'other');
+      d.innerHTML = `${!isMe ? `<div class="msg-name">${m.username || 'User'}</div>` : ''}${m.content}<div class="msg-time">${new Date(m.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+      box.appendChild(d);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendGlobal() {
+      const inp = document.getElementById('g-inp');
+      const content = inp.value.trim();
+      if (!content) return;
+      inp.value = '';
+      const { error } = await sb.from('messages').insert({ user_id: me.id, username: myProf?.username || 'User', content });
+      if (error) toast(error.message);
+    }
+
+    function openDM(id, name) {
+      dmUser = { id, name };
+      goPage('inbox', document.querySelectorAll('.nav-btn')[2]);
+      document.getElementById('dm-list').style.display = 'none';
+      document.getElementById('dm-view').style.display = 'flex';
+      document.getElementById('dm-name').textContent = name;
+      loadDM();
+    }
+
+    function closeDM() {
+      dmUser = null;
+      document.getElementById('dm-view').style.display = 'none';
+      document.getElementById('dm-list').style.display = 'flex';
+    }
+
+    async function loadDM() {
+      const { data } = await sb.from('private_messages').select('*')
+        .or(`and(sender_id.eq.${me.id},receiver_id.eq.${dmUser.id}),and(sender_id.eq.${dmUser.id},receiver_id.eq.${me.id})`)
+        .order('created_at', { ascending: true });
+      const box = document.getElementById('dm-box');
+      box.innerHTML = '';
+      if (data) data.forEach(addDMUI);
+    }
+
+    function addDMUI(m) {
+      if (!dmUser) return;
+      if (!((m.sender_id === me.id && m.receiver_id === dmUser.id) || (m.sender_id === dmUser.id && m.receiver_id === me.id))) return;
+      const box = document.getElementById('dm-box');
+      const d = document.createElement('div');
+      d.className = 'msg ' + (m.sender_id === me.id ? 'me' : 'other');
+      d.innerHTML = `${m.content}<div class="msg-time">${new Date(m.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+      box.appendChild(d);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendDM() {
+      const inp = document.getElementById('dm-inp');
+      const content = inp.value.trim();
+      if (!content) return;
+      inp.value = '';
+      const { error } = await sb.from('private_messages').insert({ sender_id: me.id, receiver_id: dmUser.id, content });
+      if (error) toast(error.message);
+    }
+
+    function listenLive() {
+      sb.channel('live').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, p => addGlobalUI(p.new))
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'private_messages' }, p => addDMUI(p.new)).subscribe();
+    }
+
+    function goPage(p, btn) {
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      document.getElementById('p-' + p).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    async function doLogout() { await sb.auth.signOut(); checkUser(); }
+  </script>
+</body>
+</html>
+
