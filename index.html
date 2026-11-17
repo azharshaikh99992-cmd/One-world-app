@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0b141a" />
+  <meta name="theme-color" content="#050b14" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>ONE WORLD</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
       --bg-main: #0b141a;
       --bg-header: #1f2c34;
       --bg-card: #182229;
       --bg-input: #2a3942;
-      --accent: #00a884;
-      --accent-blue: #005c4b;
       --msg-me: #1d4ed8;
       --msg-other: #202c33;
       --text-main: #e9edef;
@@ -24,32 +23,51 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--bg-main); color: var(--text-main); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+    body { background-color: #050b14; color: var(--text-main); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
 
-    /* Hide Netlify Badge if injected */
+    /* Hide Netlify Badge */
     a[href*="netlify.com"], div[class*="netlify"], iframe[src*="netlify"] {
       display: none !important; opacity: 0 !important; pointer-events: none !important;
     }
 
     /* Toast Notification */
     #toast {
-      position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
-      background: #ef4444; color: white; padding: 10px 18px; border-radius: 20px;
-      font-size: 13px; z-index: 9999; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      max-width: 90%; text-align: center;
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: #ef4444; color: white; padding: 11px 20px; border-radius: 22px;
+      font-size: 13px; font-weight: 500; z-index: 99999; display: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6); max-width: 90%; text-align: center;
+    }
+
+    /* 3D GLOBE INTRO SPLASH SCREEN */
+    #splash-screen {
+      position: fixed; inset: 0; background: radial-gradient(circle at center, #0d1f3c 0%, #030712 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 5000; transition: opacity 0.6s ease;
+    }
+    #globe-container { width: 260px; height: 260px; display: flex; align-items: center; justify-content: center; }
+    .splash-title {
+      font-size: 28px; font-weight: 800; letter-spacing: 4px; margin-top: 10px;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8, #818cf8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .splash-sub { color: #94a3b8; font-size: 13px; margin-top: 6px; letter-spacing: 1px; }
+    .btn-enter {
+      margin-top: 26px; padding: 12px 28px; border-radius: 25px; border: 1px solid #3b82f6;
+      background: rgba(37, 99, 235, 0.25); color: #fff; font-weight: 600; font-size: 14px;
+      cursor: pointer; backdrop-filter: blur(6px);
     }
 
     /* Auth Screen */
     #auth-screen {
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      display: none; flex-direction: column; justify-content: center; align-items: center;
       height: 100dvh; padding: 24px; background: radial-gradient(circle at top, #162836, #0b141a);
     }
     .auth-box {
       width: 100%; max-width: 380px; background: var(--bg-header); padding: 28px 22px;
-      border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    .logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
-    .auth-sub { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 22px; }
+    .logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 6px; }
+    .auth-sub { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
     .tabs { display: flex; background: var(--bg-main); border-radius: 10px; padding: 4px; margin-bottom: 18px; }
     .tab-btn {
       flex: 1; padding: 9px; border: none; background: transparent; color: var(--text-muted);
@@ -67,10 +85,10 @@
       width: 100%; padding: 13px; border: none; border-radius: 10px; background: #2563eb;
       color: white; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 6px;
     }
-    .btn-primary:active { opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Main App Layout */
-    #app-screen { display: none; flex-direction: column; height: 100dvh; }
+    #app-screen { display: none; flex-direction: column; height: 100dvh; background: var(--bg-main); }
     header {
       height: 58px; background: var(--bg-header); padding: 0 16px;
       display: flex; align-items: center; justify-content: space-between;
@@ -103,7 +121,7 @@
       border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
     }
 
-    /* Chat Area (Global & Private) */
+    /* Chat Area */
     .chat-messages {
       flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
       background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 0);
@@ -134,7 +152,6 @@
       border-radius: 22px; font-weight: 600; font-size: 14px; cursor: pointer;
     }
 
-    /* Private Chat Header Bar */
     .dm-subbar {
       background: #131c22; padding: 10px 14px; display: flex; align-items: center; gap: 10px;
       border-bottom: 1px solid var(--border);
@@ -158,16 +175,24 @@
 
   <div id="toast"></div>
 
-  <!-- LOGIN / SIGNUP SCREEN -->
+  <!-- 1. 3D ROTATING GLOBE INTRO SCREEN -->
+  <div id="splash-screen">
+    <div id="globe-container"></div>
+    <div class="splash-title">ONE WORLD</div>
+    <div class="splash-sub">CONNECTING HUMANITY</div>
+    <button class="btn-enter" onclick="finishSplash()">Enter App →</button>
+  </div>
+
+  <!-- 2. LOGIN / SIGNUP SCREEN -->
   <div id="auth-screen">
     <div class="auth-box">
       <div class="logo-wrap">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
           <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
         </svg>
         <h2>ONE WORLD</h2>
       </div>
-      <p class="auth-sub">Connect globally in real-time</p>
+      <p class="auth-sub">Login ya naya account banayein</p>
 
       <div class="tabs">
         <button class="tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
@@ -191,7 +216,7 @@
     </div>
   </div>
 
-  <!-- MAIN APP SCREEN -->
+  <!-- 3. MAIN APP SCREEN -->
   <div id="app-screen">
     <header>
       <div class="header-left">
@@ -282,9 +307,63 @@
   </div>
 
   <script>
-    // 1. Inline PWA Manifest Setup (No separate file needed)
+    // 1. 3D Rotating Globe Animation
+    function init3DGlobe() {
+      try {
+        const container = document.getElementById('globe-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+        camera.position.z = 3.2;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(250, 250);
+        container.appendChild(renderer.domElement);
+
+        // Glowing Wireframe + Dotted Sphere
+        const geo = new THREE.SphereGeometry(1.15, 28, 28);
+        const wireMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.45 });
+        const globe = new THREE.Mesh(geo, wireMat);
+        scene.add(globe);
+
+        const coreGeo = new THREE.SphereGeometry(1.08, 24, 24);
+        const coreMat = new THREE.MeshBasicMaterial({ color: 0x0f172a });
+        scene.add(new THREE.Mesh(coreGeo, coreMat));
+
+        const ptsMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.045 });
+        const pts = new THREE.Points(geo, ptsMat);
+        scene.add(pts);
+
+        function animate() {
+          if (document.getElementById('splash-screen').style.display === 'none') return;
+          requestAnimationFrame(animate);
+          globe.rotation.y += 0.012;
+          globe.rotation.x = 0.25;
+          pts.rotation.y += 0.012;
+          pts.rotation.x = 0.25;
+          renderer.render(scene, camera);
+        }
+        animate();
+      } catch (e) {
+        console.log("3D fallback");
+      }
+    }
+    init3DGlobe();
+
+    let splashDone = false;
+    function finishSplash() {
+      if (splashDone) return;
+      splashDone = true;
+      const s = document.getElementById('splash-screen');
+      s.style.opacity = '0';
+      setTimeout(() => {
+        s.style.display = 'none';
+        checkSession();
+      }, 500);
+    }
+    setTimeout(finishSplash, 2800);
+
+    // 2. Inline PWA Manifest
     const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#0b141a"/><circle cx="256" cy="256" r="160" fill="none" stroke="#3b82f6" stroke-width="28"/><path d="M96 256h320M256 96a245 245 0 0 1 64 160 245 245 0 0 1-64 160 245 245 0 0 1-64-160 245 245 0 0 1 64-160z" fill="none" stroke="#3b82f6" stroke-width="24"/></svg>`;
-    const iconUrl = "data:image/svg+xml;base64," + btoa(iconSvg);
     const manifest = {
       name: "ONE WORLD Chat",
       short_name: "ONE WORLD",
@@ -292,14 +371,14 @@
       display: "standalone",
       background_color: "#0b141a",
       theme_color: "#0b141a",
-      icons: [{ src: iconUrl, sizes: "512x512", type: "image/svg+xml" }]
+      icons: [{ src: "data:image/svg+xml;base64," + btoa(iconSvg), sizes: "512x512", type: "image/svg+xml" }]
     };
-    const manifestLink = document.createElement("link");
-    manifestLink.rel = "manifest";
-    manifestLink.href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
-    document.head.appendChild(manifestLink);
+    const mLink = document.createElement("link");
+    mLink.rel = "manifest";
+    mLink.href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(mLink);
 
-    // 2. Supabase Initialization
+    // 3. Supabase Client
     const SUPABASE_URL = "https://hqxzfccywgdiimjvgrmt.supabase.co";
     const SUPABASE_KEY = "sb_publishable_4tGIrCOEl8v2FXm3GCjGeQ_m1MQn1r4";
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -314,7 +393,7 @@
       t.textContent = msg;
       t.style.background = isSuccess ? '#10b981' : '#ef4444';
       t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3500);
+      setTimeout(() => { t.style.display = 'none'; }, 4000);
     }
 
     function switchAuthTab(mode) {
@@ -326,120 +405,51 @@
     }
 
     async function handleAuth() {
+      const btn = document.getElementById('auth-submit-btn');
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value.trim();
       const username = document.getElementById('auth-username').value.trim();
 
-      if (!email || !password) return showToast("Email aur Password dono bharein");
+      if (!email || !password) return showToast("Email aur Password dono bharein!");
+      if (password.length < 6) return showToast("Password kam se kam 6 characters ka rakhein!");
 
-      if (authMode === 'signup') {
-        if (!username) return showToast("Apna Username likhein");
-        const { data, error } = await sb.auth.signUp({ email, password });
-        if (error) return showToast(error.message);
-        if (data.user) {
-          await sb.from('profiles').upsert({ id: data.user.id, username: username });
-          showToast("Account ban gaya! Ab login ho raha hai...", true);
+      btn.disabled = true;
+      btn.textContent = "Please wait...";
+
+      try {
+        if (authMode === 'signup') {
+          if (!username) {
+            btn.disabled = false; btn.textContent = "Create Account";
+            return showToast("Apna Username likhein!");
+          }
+          const { data, error } = await sb.auth.signUp({ email, password });
+          if (error) {
+            btn.disabled = false; btn.textContent = "Create Account";
+            return showToast(error.message);
+          }
+          if (data.user) {
+            await sb.from('profiles').upsert({ id: data.user.id, username: username });
+            if (data.session) {
+              showToast("Account ban gaya!", true);
+              checkSession();
+            } else {
+              showToast("Account ban gaya! Agar login na ho toh Supabase mein Confirm Email OFF karein.", true);
+              switchAuthTab('login');
+            }
+          }
+        } else {
+          const { error } = await sb.auth.signInWithPassword({ email, password });
+          if (error) {
+            btn.disabled = false; btn.textContent = "Login";
+            return showToast("Login Error: " + error.message);
+          }
           checkSession();
         }
-      } else {
-        const { error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) return showToast(error.message);
-        checkSession();
+      } catch (err) {
+        showToast("Network error: " + err.message);
       }
+      btn.disabled = false;
+      btn.textContent = authMode === 'login' ? 'Login' : 'Create Account';
     }
 
-    async function checkSession() {
-      const { data: { session } } = await sb.auth.getSession();
-      if (session) {
-        currentUser = session.user;
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('app-screen').style.display = 'flex';
-        await loadMyProfile();
-        loadAllUsers();
-        loadGlobalMessages();
-        subscribeRealtime();
-      } else {
-        document.getElementById('auth-screen').style.display = 'flex';
-        document.getElementById('app-screen').style.display = 'none';
-      }
-    }
-
-    async function loadMyProfile() {
-      let { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-      if (!data) {
-        const defaultName = currentUser.email.split('@')[0];
-        const res = await sb.from('profiles').upsert({ id: currentUser.id, username: defaultName }).select().single();
-        data = res.data;
-      }
-      currentProfile = data;
-      document.getElementById('welcome-user').textContent = `Welcome, ${data.username}!`;
-      document.getElementById('prof-username').value = data.username || '';
-      document.getElementById('prof-country').value = data.country || '';
-      document.getElementById('prof-bio').value = data.bio || '';
-    }
-
-    async function updateProfile() {
-      const username = document.getElementById('prof-username').value.trim();
-      const country = document.getElementById('prof-country').value.trim();
-      const bio = document.getElementById('prof-bio').value.trim();
-      const { error } = await sb.from('profiles').upsert({
-        id: currentUser.id, username, country, bio, updated_at: new Date()
-      });
-      if (error) return showToast(error.message);
-      showToast("Profile updated successfully!", true);
-      loadMyProfile();
-      loadAllUsers();
-    }
-
-    async function loadAllUsers() {
-      const { data } = await sb.from('profiles').select('*');
-      if (!data) return;
-      const others = data.filter(u => u.id !== currentUser.id);
-      const html = others.length ? others.map(u => `
-        <div class="user-card" style="margin-bottom:10px;">
-          <div class="user-info">
-            <h4>${escapeHtml(u.username || 'User')} <span style="font-size:11px; color:#60a5fa;">(${escapeHtml(u.country || 'Global')})</span></h4>
-            <p>${escapeHtml(u.bio || 'Hey there!')}</p>
-          </div>
-          <button class="btn-dm" onclick="openDM('${u.id}', '${escapeHtml(u.username || 'User')}')">Message</button>
-        </div>
-      `).join('') : '<p style="color:#8696a0; font-size:13px;">Abhi koi aur member nahi hai. Doosre account se signup karein!</p>';
-
-      document.getElementById('users-list').innerHTML = html;
-      document.getElementById('inbox-users-list').innerHTML = html;
-    }
-
-    // GLOBAL CHAT
-    async function loadGlobalMessages() {
-      const { data, error } = await sb.from('messages').select('*').order('created_at', { ascending: true }).limit(100);
-      if (error) return showToast(error.message);
-      const box = document.getElementById('global-chat-box');
-      box.innerHTML = '';
-      data.forEach(renderGlobalMsg);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function renderGlobalMsg(msg) {
-      const box = document.getElementById('global-chat-box');
-      const isMe = msg.user_id === currentUser.id;
-      const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const row = document.createElement('div');
-      row.className = `msg-row ${isMe ? 'me' : 'other'}`;
-      row.innerHTML = `
-        ${!isMe ? `<div class="msg-sender">${escapeHtml(msg.username || 'Member')}</div>` : ''}
-        <div class="msg-bubble">
-          ${escapeHtml(msg.content)}
-          <div class="msg-time">${time}</div>
-        </div>
-      `;
-      box.appendChild(row);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    async function sendGlobalMessage() {
-      const input = document.getElementById('global-msg-input');
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      const { error } = await sb.from('messages').insert({
-       
+    async function ch
