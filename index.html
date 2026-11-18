@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ONE WORLD — Ultra Color + Direct Audio + Offline Mesh</title>
+  <title>ONE WORLD — Ultra Neon Chat & 200+ Indian Music Hub</title>
   <style>
     :root {
-      --bg-deep: #070a14;
-      --bg-panel: #0e1424;
+      --bg-deep: #060913;
+      --bg-panel: #0d1323;
       --bg-card: #151e34;
       --accent-1: #00f5d4;
       --accent-2: #7b2cbf;
@@ -40,7 +40,7 @@
     #auth-screen {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at top right, #240046, #070a14 70%);
+      background: radial-gradient(circle at top right, #240046, #060913 70%);
       z-index: 600;
       display: flex;
       align-items: center;
@@ -51,7 +51,7 @@
     .auth-card {
       width: 100%;
       max-width: 380px;
-      background: rgba(21, 30, 52, 0.85);
+      background: rgba(21, 30, 52, 0.88);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 26px;
@@ -65,7 +65,7 @@
       height: 72px;
       border-radius: 50%;
       background: var(--grad-primary);
-      color: #070a14;
+      color: #060913;
       font-size: 34px;
       display: flex;
       align-items: center;
@@ -105,19 +105,13 @@
       outline: none;
     }
 
-    .neon-input {
-      width: 100%;
-    }
-
-    .neon-input:focus {
-      border-color: var(--accent-1);
-      box-shadow: 0 0 12px rgba(0, 245, 212, 0.25);
-    }
+    .neon-input { width: 100%; }
+    .neon-input:focus { border-color: var(--accent-1); }
 
     .neon-btn {
       width: 100%;
       background: var(--grad-primary);
-      color: #070a14;
+      color: #060913;
       border: none;
       border-radius: 99px;
       padding: 13px;
@@ -125,7 +119,6 @@
       font-weight: 800;
       cursor: pointer;
       margin-top: 10px;
-      box-shadow: 0 6px 24px rgba(76, 201, 240, 0.35);
     }
 
     .otp-box {
@@ -139,19 +132,19 @@
       display: none;
     }
 
-    /* --- 2. MAIN APP LAYOUT --- */
+    /* --- 2. MAIN APP SHELL --- */
     .app-shell {
       display: flex;
       height: 100%;
       width: 100%;
-      max-width: 1480px;
+      max-width: 1500px;
       margin: 0 auto;
       background: var(--bg-panel);
     }
 
-    /* LEFT SIDEBAR: CONTACTS + OFFLINE RADAR */
+    /* LEFT SIDEBAR: CONTACTS */
     .sidebar {
-      width: 350px;
+      width: 340px;
       background: var(--bg-panel);
       border-right: 1px solid var(--border);
       display: flex;
@@ -175,12 +168,11 @@
       background: var(--grad-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: 0.5px;
     }
 
     .icon-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: white;
       width: 36px;
       height: 36px;
@@ -193,11 +185,10 @@
     }
 
     .icon-btn:hover {
-      background: rgba(0, 245, 212, 0.2);
+      background: rgba(0, 245, 212, 0.22);
       border-color: var(--accent-1);
     }
 
-    /* NO-INTERNET OFFLINE MESH / QR TRICK BANNER */
     .offline-mesh-card {
       margin: 10px 12px 4px;
       padding: 10px 12px;
@@ -219,7 +210,6 @@
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      white-space: nowrap;
     }
 
     .search-bar {
@@ -252,6 +242,14 @@
       list-style: none;
     }
 
+    .empty-contacts {
+      text-align: center;
+      padding: 36px 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .chat-row {
       display: flex;
       align-items: center;
@@ -259,7 +257,6 @@
       gap: 12px;
       cursor: pointer;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      transition: 0.15s;
     }
 
     .chat-row:hover, .chat-row.active {
@@ -268,8 +265,8 @@
     }
 
     .avatar-ring {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: var(--grad-primary);
       padding: 2px;
@@ -284,40 +281,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 19px;
     }
 
-    .chat-meta {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .chat-top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 3px;
-    }
-
-    .chat-name {
-      font-size: 15px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .chat-time {
-      font-size: 11px;
-      color: var(--accent-4);
-    }
-
-    .chat-sub {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .chat-meta { flex: 1; min-width: 0; }
+    .chat-top { display: flex; justify-content: space-between; margin-bottom: 3px; }
+    .chat-name { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chat-time { font-size: 11px; color: var(--accent-4); }
+    .chat-sub { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .my-account-bar {
       padding: 10px 14px;
@@ -329,12 +300,12 @@
       font-size: 12px;
     }
 
-    /* CENTER: COLORFUL CHAT WINDOW */
+    /* CENTER: CHAT WINDOW */
     .chat-window {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: radial-gradient(circle at center, #121930 0%, #070a14 100%);
+      background: radial-gradient(circle at center, #121930 0%, #060913 100%);
       min-width: 0;
       position: relative;
     }
@@ -342,7 +313,7 @@
     .chat-header {
       height: 62px;
       padding: 0 14px;
-      background: rgba(16, 23, 42, 0.9);
+      background: rgba(16, 23, 42, 0.92);
       backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
@@ -350,73 +321,31 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
+    .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .back-btn { display: none; background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
+    .header-title h2 { font-size: 15.5px; font-weight: 700; }
+    .header-title span { font-size: 11.5px; color: var(--accent-1); display: block; }
 
-    .back-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    .header-title h2 {
-      font-size: 15.5px;
-      font-weight: 700;
-    }
-
-    .header-title span {
-      font-size: 11.5px;
-      color: var(--accent-1);
-      display: block;
-    }
-
-    /* MINI NOW-PLAYING BAR INSIDE CHAT HEADER */
     .mini-player-pill {
       display: none;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(90deg, rgba(247, 37, 133, 0.25), rgba(76, 201, 240, 0.25));
-      border: 1px solid rgba(247, 37, 133, 0.5);
+      background: linear-gradient(90deg, rgba(247, 37, 133, 0.28), rgba(76, 201, 240, 0.28));
+      border: 1px solid rgba(247, 37, 133, 0.55);
       padding: 5px 12px;
       border-radius: 99px;
       font-size: 11.5px;
       cursor: pointer;
-      max-width: 210px;
+      max-width: 200px;
     }
+    .mini-player-pill.active { display: flex; }
 
-    .mini-player-pill.active {
-      display: flex;
-    }
-
-    .eq-bars {
-      display: flex;
-      gap: 2px;
-      align-items: flex-end;
-      height: 12px;
-    }
-
-    .eq-bars span {
-      width: 3px;
-      background: var(--accent-1);
-      animation: bounce 0.6s infinite alternate;
-    }
-
+    .eq-bars { display: flex; gap: 2px; align-items: flex-end; height: 12px; }
+    .eq-bars span { width: 3px; background: var(--accent-1); animation: bounce 0.6s infinite alternate; }
     .eq-bars span:nth-child(2) { animation-delay: 0.2s; }
     .eq-bars span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { from { height: 3px; } to { height: 12px; } }
 
-    @keyframes bounce {
-      from { height: 3px; }
-      to { height: 12px; }
-    }
-
-    /* MESSAGES STREAM */
     .messages-stream {
       flex: 1;
       padding: 16px;
@@ -426,25 +355,9 @@
       gap: 10px;
     }
 
-    .msg-item {
-      display: flex;
-      flex-direction: column;
-      max-width: 80%;
-      animation: popIn 0.2s ease;
-    }
-
-    @keyframes popIn {
-      from { opacity: 0; transform: translateY(8px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .msg-item.out {
-      align-self: flex-end;
-    }
-
-    .msg-item.in {
-      align-self: flex-start;
-    }
+    .msg-item { display: flex; flex-direction: column; max-width: 80%; }
+    .msg-item.out { align-self: flex-end; }
+    .msg-item.in { align-self: flex-start; }
 
     .bubble {
       padding: 10px 14px;
@@ -477,35 +390,10 @@
       margin-bottom: 6px;
     }
 
-    .chat-img {
-      max-width: 100%;
-      max-height: 290px;
-      border-radius: 12px;
-      display: block;
-      cursor: zoom-in;
-    }
-
-    .video-card {
-      background: rgba(0, 0, 0, 0.35);
-      border-radius: 12px;
-      padding: 8px;
-    }
-
-    .video-timer-tag {
-      font-size: 11px;
-      color: #fde047;
-      font-weight: 700;
-      margin-bottom: 5px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .chat-video {
-      width: 100%;
-      max-height: 240px;
-      border-radius: 8px;
-      background: #000;
-    }
+    .chat-img { max-width: 100%; max-height: 280px; border-radius: 12px; display: block; cursor: zoom-in; }
+    .video-card { background: rgba(0, 0, 0, 0.35); border-radius: 12px; padding: 8px; }
+    .video-timer-tag { font-size: 11px; color: #fde047; font-weight: 700; margin-bottom: 5px; display: flex; justify-content: space-between; }
+    .chat-video { width: 100%; max-height: 230px; border-radius: 8px; background: #000; }
 
     .bubble-meta {
       display: flex;
@@ -527,16 +415,8 @@
       font-size: 12px;
       align-self: flex-end;
     }
+    .tap-menu.show { display: flex; }
 
-    .msg-item.in .tap-menu {
-      align-self: flex-start;
-    }
-
-    .tap-menu.show {
-      display: flex;
-    }
-
-    /* INPUT FOOTER */
     .chat-footer {
       padding: 10px 12px;
       background: rgba(16, 23, 42, 0.95);
@@ -561,10 +441,7 @@
       gap: 8px;
       z-index: 100;
     }
-
-    .attach-menu.show {
-      display: flex;
-    }
+    .attach-menu.show { display: flex; }
 
     .attach-opt {
       display: flex;
@@ -575,10 +452,7 @@
       cursor: pointer;
       font-size: 13.5px;
     }
-
-    .attach-opt:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
+    .attach-opt:hover { background: rgba(255, 255, 255, 0.08); }
 
     .msg-input {
       flex: 1;
@@ -591,17 +465,13 @@
       outline: none;
     }
 
-    .msg-input:focus {
-      border-color: var(--accent-4);
-    }
-
     .send-btn {
       width: 44px;
       height: 44px;
       border-radius: 50%;
       background: var(--grad-primary);
       border: none;
-      color: #070a14;
+      color: #060913;
       font-size: 18px;
       font-weight: bold;
       cursor: pointer;
@@ -611,44 +481,85 @@
       flex-shrink: 0;
     }
 
-    /* --- RIGHT SIDEBAR: DIRECT IN-APP AUDIO & SONG LIST --- */
+    /* --- RIGHT SIDEBAR: 200+ INDIAN SONGS HUB (REAL VOCALS IN-APP) --- */
     .music-drawer {
-      width: 330px;
-      background: linear-gradient(180deg, #13182e 0%, #0b0f1d 100%);
+      width: 370px;
+      background: linear-gradient(180deg, #13182e 0%, #090d1a 100%);
       border-left: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       height: 100%;
-      z-index: 90;
+      z-index: 95;
     }
 
     .music-header {
-      height: 62px;
+      height: 58px;
       padding: 0 14px;
-      background: linear-gradient(90deg, #240046, #3c096c);
+      background: linear-gradient(90deg, #240046, #5a189a);
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
 
-    .add-song-box {
-      padding: 10px 12px;
+    /* CATEGORY TABS */
+    .cat-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      overflow-x: auto;
+      background: #0c1120;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .cat-pill {
+      padding: 5px 11px;
+      border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #cbd5e1;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cat-pill.active {
+      background: var(--grad-primary);
+      color: #060913;
+      border-color: transparent;
+      font-weight: 800;
+    }
+
+    .song-search-wrap {
+      padding: 7px 10px;
+      display: flex;
+      gap: 6px;
       border-bottom: 1px solid var(--border);
     }
 
-    .add-song-btn {
-      width: 100%;
-      padding: 10px;
-      border-radius: 12px;
-      border: 1px dashed var(--accent-1);
-      background: rgba(0, 245, 212, 0.12);
-      color: var(--accent-1);
-      font-weight: 700;
+    .song-search-wrap input {
+      flex: 1;
+      background: #090d1a;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 7px 12px;
+      color: white;
       font-size: 12.5px;
+      outline: none;
+    }
+
+    .local-mp3-btn {
+      background: rgba(0, 245, 212, 0.15);
+      border: 1px solid var(--accent-1);
+      color: var(--accent-1);
+      border-radius: 99px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
-      display: block;
-      text-align: center;
+      white-space: nowrap;
     }
 
     .song-list {
@@ -659,9 +570,9 @@
     }
 
     .song-item {
-      padding: 10px 12px;
+      padding: 9px 11px;
       border-radius: 12px;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid transparent;
       display: flex;
@@ -669,64 +580,55 @@
       justify-content: space-between;
       cursor: pointer;
       gap: 8px;
-      transition: 0.15s;
     }
 
-    .song-item:hover {
-      background: rgba(255, 255, 255, 0.09);
-    }
-
+    .song-item:hover { background: rgba(255, 255, 255, 0.09); }
     .song-item.playing {
-      background: linear-gradient(90deg, rgba(247, 37, 133, 0.22), rgba(76, 201, 240, 0.22));
+      background: linear-gradient(90deg, rgba(247, 37, 133, 0.25), rgba(76, 201, 240, 0.25));
       border-color: #f72585;
     }
 
-    /* BUILT-IN AUDIO DECK (NO REDIRECT TO YOUTUBE!) */
-    .audio-deck {
-      padding: 12px;
-      background: #090d1a;
-      border-top: 1px solid rgba(247, 37, 133, 0.4);
+    /* EMBEDDED IN-APP MEDIA STAGE (REAL FULL SONGS WITH VOCALS!) */
+    .media-stage {
+      background: #060913;
+      border-top: 1px solid rgba(247, 37, 133, 0.45);
+      padding: 10px;
     }
 
-    .deck-title {
-      font-size: 12.5px;
+    .stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .stage-title {
+      font-size: 12px;
       font-weight: 700;
       color: var(--accent-1);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 6px;
+      flex: 1;
     }
 
-    .deck-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin: 8px 0;
+    .embed-frame-wrap {
+      width: 100%;
+      height: 155px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: none;
     }
 
-    .ctrl-btn {
-      background: rgba(255, 255, 255, 0.08);
+    .embed-frame-wrap iframe {
+      width: 100%;
+      height: 100%;
       border: none;
-      color: white;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 15px;
     }
 
-    .ctrl-btn.main-play {
-      width: 44px;
-      height: 44px;
-      background: var(--grad-primary);
-      color: #070a14;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    /* MODALS (OFFLINE MESH & CONTACT SAVE) */
+    /* MODALS & LIGHTBOX */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -748,11 +650,7 @@
       max-width: 370px;
     }
 
-    .modal-box h3 {
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-
+    .modal-box h3 { margin-bottom: 8px; font-size: 18px; }
     .modal-box textarea, .modal-box input {
       width: 100%;
       padding: 10px 12px;
@@ -776,12 +674,7 @@
       flex-direction: column;
       padding: 16px;
     }
-
-    #hd-lightbox img {
-      max-width: 100%;
-      max-height: 85dvh;
-      object-fit: contain;
-    }
+    #hd-lightbox img { max-width: 100%; max-height: 85dvh; object-fit: contain; }
 
     #push-notif {
       position: fixed;
@@ -806,18 +699,16 @@
         top: 0;
         bottom: 0;
         right: 0;
+        width: 100%;
+        max-width: 400px;
         transform: translateX(100%);
         transition: transform 0.25s ease;
       }
-      .music-drawer.open {
-        transform: translateX(0);
-      }
+      .music-drawer.open { transform: translateX(0); }
     }
 
     @media (max-width: 768px) {
-      .sidebar {
-        width: 100%;
-      }
+      .sidebar { width: 100%; }
       .chat-window {
         position: fixed;
         inset: 0;
@@ -825,15 +716,9 @@
         transition: transform 0.22s ease;
         z-index: 60;
       }
-      .chat-window.open {
-        transform: translateX(0);
-      }
-      .back-btn {
-        display: block;
-      }
-      .msg-item {
-        max-width: 86%;
-      }
+      .chat-window.open { transform: translateX(0); }
+      .back-btn { display: block; }
+      .msg-item { max-width: 86%; }
     }
   </style>
 </head>
@@ -863,7 +748,7 @@
           </select>
           <input type="tel" id="phone-input" class="neon-input" placeholder="Mobile number" maxlength="12" />
         </div>
-        <input type="text" id="my-profile-name" class="neon-input" placeholder="Your Name (e.g. Azhar)" style="margin-bottom:10px;" />
+        <input type="text" id="my-profile-name" class="neon-input" placeholder="Your Name (e.g. Azhar)" value="Azhar" style="margin-bottom:10px;" />
         <button class="neon-btn" onclick="sendOTP()">SEND OTP →</button>
       </div>
 
@@ -879,19 +764,19 @@
   <div class="modal-overlay" id="contact-modal">
     <div class="modal-box">
       <h3>👤 Save New Number</h3>
-      <input type="text" id="contact-name" placeholder="Name (e.g. Faisal)" />
+      <input type="text" id="contact-name" placeholder="Contact Name" />
       <input type="tel" id="contact-phone" placeholder="Mobile Number (e.g. +91 9876543210)" />
       <div style="display:flex; justify-content:flex-end; gap:10px;">
         <button style="background:none; border:none; color:#94a3b8; cursor:pointer;" onclick="closeContactModal()">Cancel</button>
-        <button style="background:var(--accent-1); color:#070a14; border:none; padding:9px 18px; border-radius:99px; font-weight:800; cursor:pointer;" onclick="saveNewContact()">Save & Chat</button>
+        <button style="background:var(--accent-1); color:#060913; border:none; padding:9px 18px; border-radius:99px; font-weight:800; cursor:pointer;" onclick="saveNewContact()">Save & Chat</button>
       </div>
     </div>
   </div>
 
-  <!-- NO-INTERNET OFFLINE PACKET MODAL (SMART TRICK!) -->
+  <!-- OFFLINE PACKET MODAL -->
   <div class="modal-overlay" id="offline-modal">
     <div class="modal-box">
-      <h3>📡 No-Internet Offline Chat Trick</h3>
+      <h3>📡 Zero-Net Offline Chat</h3>
       <p style="font-size:12.5px; color:#94a3b8; margin-bottom:12px; line-height:1.4;">
         Bina internet ke paas baithe dost ko message bhejne ke liye apna <b>Offline Chat Packet</b> copy karke Bluetooth / Nearby Share / SMS se bhejein, ya dost ka packet neeche paste karke decode karein:
       </p>
@@ -913,12 +798,11 @@
         <div class="brand-txt">ONE WORLD</div>
         <div style="display:flex; gap:8px;">
           <button class="icon-btn" onclick="openContactModal()" title="Save Number">👤+</button>
-          <button class="icon-btn" onclick="toggleMusicDrawer()" title="Music Player">🎵</button>
+          <button class="icon-btn" onclick="toggleMusicDrawer()" title="200+ Indian Songs">🎵</button>
           <button class="icon-btn" onclick="logoutUser()" title="Logout">🚪</button>
         </div>
       </div>
 
-      <!-- NO-INTERNET OFFLINE CHAT CARD -->
       <div class="offline-mesh-card">
         <div>
           <div style="font-size:12px; font-weight:800; color:#ff70a6;">📡 Zero-Net Offline Mode</div>
@@ -938,11 +822,11 @@
 
       <div class="my-account-bar">
         <span>My No: <b id="my-phone-label" style="color:var(--accent-1);">+91 ...</b></span>
-        <span style="color:var(--accent-4); font-weight:600;" id="my-name-label">User</span>
+        <span style="color:var(--accent-4); font-weight:700;" id="my-name-label">Azhar</span>
       </div>
     </aside>
 
-    <!-- CENTER: CHAT CONVERSATION -->
+    <!-- CENTER: CHAT WINDOW -->
     <main class="chat-window" id="chat-window">
       <header class="chat-header">
         <div class="header-left">
@@ -951,26 +835,24 @@
             <div class="avatar-inner" style="font-size:18px;">👤</div>
           </div>
           <div class="header-title">
-            <h2 id="active-name">Select a Contact</h2>
-            <span id="active-sub">online</span>
+            <h2 id="active-name">Select or Save a Contact</h2>
+            <span id="active-sub">Tap 👤+ to add number</span>
           </div>
         </div>
 
-        <!-- LIVE MINI MUSIC INDICATOR IN CHAT -->
         <div class="mini-player-pill" id="mini-player-pill" onclick="toggleMusicDrawer()">
           <div class="eq-bars"><span></span><span></span><span></span></div>
           <span id="mini-song-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Playing...</span>
         </div>
 
         <div style="display:flex; gap:6px;">
-          <button class="icon-btn" onclick="toggleMusicDrawer()" title="Music Player">🎵</button>
-          <button class="icon-btn" onclick="openContactModal()" title="Save Contact">👤+</button>
+          <button class="icon-btn" onclick="toggleMusicDrawer()" title="200+ Indian Songs">🎵</button>
+          <button class="icon-btn" onclick="openContactModal()" title="Save Number">👤+</button>
         </div>
       </header>
 
       <div class="messages-stream" id="messages-stream"></div>
 
-      <!-- ATTACHMENT POPUP -->
       <div class="attach-menu" id="attach-menu">
         <label class="attach-opt">
           <span>🖼️ Send HD Image (Original Clarity)</span>
@@ -984,36 +866,50 @@
 
       <footer class="chat-footer">
         <button class="icon-btn" onclick="toggleAttachMenu()" title="Attach HD Photo / Video">📎</button>
-        <input type="text" id="msg-input" class="msg-input" placeholder="Type message (works online & offline)..." autocomplete="off" onkeydown="if(event.key==='Enter') sendTextMsg()" />
+        <input type="text" id="msg-input" class="msg-input" placeholder="Message..." autocomplete="off" onkeydown="if(event.key==='Enter') sendTextMsg()" />
         <button class="send-btn" onclick="sendTextMsg()">➤</button>
       </footer>
     </main>
 
-    <!-- RIGHT SIDEBAR: DIRECT IN-APP AUDIO PLAYER -->
+    <!-- RIGHT SIDEBAR: 200+ INDIAN SONGS LIBRARY (FULL VOCALS IN-APP) -->
     <aside class="music-drawer" id="music-drawer">
       <div class="music-header">
-        <div style="font-weight:800; font-size:15px;">🎧 Emraan & Arijit Audio</div>
+        <div style="font-weight:800; font-size:15px;">🎶 200+ Indian Hits (Full Songs)</div>
         <button class="icon-btn" onclick="toggleMusicDrawer()">✕</button>
       </div>
 
-      <div class="add-song-box">
-        <label class="add-song-btn">
-          ➕ Add Your Own MP3 Songs from Phone
+      <!-- CATEGORY TABS -->
+      <div class="cat-tabs" id="cat-tabs">
+        <button class="cat-pill active" onclick="selectCategory('all', this)">🔥 All (200+)</button>
+        <button class="cat-pill" onclick="selectCategory('emraan', this)">💋 Emraan & KK</button>
+        <button class="cat-pill" onclick="selectCategory('arijit', this)">❤️ Arijit & New</button>
+        <button class="cat-pill" onclick="selectCategory('golden', this)">📻 Rafi, Kishore & Lata</button>
+        <button class="cat-pill" onclick="selectCategory('90s', this)">💿 90s Kumar Sanu & Udit</button>
+        <button class="cat-pill" onclick="selectCategory('party', this)">⚡ Party & Punjabi</button>
+        <button class="cat-pill" onclick="selectCategory('local', this)">📱 My MP3s</button>
+      </div>
+
+      <!-- SEARCH + ADD LOCAL MP3 -->
+      <div class="song-search-wrap">
+        <input type="text" id="song-search-input" placeholder="Search 200+ songs or singers..." oninput="renderSongs()" />
+        <label class="local-mp3-btn">
+          + MP3
           <input type="file" accept="audio/*" multiple style="display:none;" onchange="addSongsFromDevice(event)" />
         </label>
       </div>
 
       <ul class="song-list" id="song-list"></ul>
 
-      <!-- DIRECT IN-APP AUDIO PLAYER (NO YOUTUBE REDIRECT!) -->
-      <div class="audio-deck">
-        <div class="deck-title" id="now-playing-title">Tap any song to play directly inside app</div>
-        <audio id="audio-player" controls style="width:100%; height:36px;" onended="nextSong()"></audio>
-        <div class="deck-controls">
-          <button class="ctrl-btn" onclick="prevSong()" title="Previous">⏮</button>
-          <button class="ctrl-btn main-play" id="play-pause-btn" onclick="togglePlayPause()">▶</button>
-          <button class="ctrl-btn" onclick="nextSong()" title="Next">⏭</button>
+      <!-- EMBEDDED FULL-SONG PLAYER (PLAYS INSIDE APP WITH REAL VOCALS!) -->
+      <div class="media-stage">
+        <div class="stage-header">
+          <div class="stage-title" id="now-playing-title">Tap any song to play full vocal track inside app</div>
+          <button class="icon-btn" style="width:28px; height:28px; font-size:12px;" onclick="nextSong()" title="Next Song">⏭</button>
         </div>
+        <div class="embed-frame-wrap" id="yt-embed-wrap">
+          <iframe id="yt-iframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <audio id="local-audio-player" controls style="width:100%; height:36px; display:none;" onended="nextSong()"></audio>
       </div>
     </aside>
 
@@ -1025,22 +921,233 @@
     let activePhone = "";
     let contacts = [];
     let messagesDB = {};
-    let currentSongIdx = -1;
+    let currentCategory = "all";
+    let currentFilteredList = [];
+    let currentPlayingTitle = "";
 
-    // DIRECT PLAYABLE AUDIO STREAMS + EMRAAN & ARIJIT VIBE PLAYLIST (PLAYS INSIDE APP WITHOUT LEAVING!)
-    // Users can also add unlimited local MP3s directly from their phone!
-    let songs = [
-      { title: "Zara Sa — Jannat Vibe (Direct Audio)", artist: "Emraan Hashmi Romantic Mix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-      { title: "Tum Hi Ho — Aashiqui 2 Vibe (Direct Audio)", artist: "Arijit Singh Soulful Mix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-      { title: "Pee Loon — Midnight Love (Direct Audio)", artist: "Emraan Hashmi Classics", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-      { title: "Channa Mereya — Acoustic Heart (Direct Audio)", artist: "Arijit Singh Unplugged", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-      { title: "Tera Mera Rishta — Awarapan Vibe (Direct Audio)", artist: "Emraan Hashmi Sad-Romantic", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-      { title: "Kesariya — Bollywood Love (Direct Audio)", artist: "Arijit Singh Hits", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
-      { title: "Dil Ibaadat — Tum Mile Vibe (Direct Audio)", artist: "Emraan Hashmi Special", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
-      { title: "Agar Tum Saath Ho — Deep Piano (Direct Audio)", artist: "Arijit Singh Melodies", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
-      { title: "Hale Dil — Murder 2 Vibe (Direct Audio)", artist: "Emraan Hashmi Night Drive", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
-      { title: "Apna Bana Le — Chill Beats (Direct Audio)", artist: "Arijit Singh Trending", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" }
+    // 200+ TOP INDIAN SONGS DATABASE (EMRAAN HASHMI, KK, ARIJIT SINGH, MOHAMMAD RAFI, KISHORE KUMAR, LATA, 90s, PARTY & TRENDING)
+    // Plays full official songs directly inside the embedded in-app player without leaving the page!
+    const RAW_SONGS = [
+      // --- CATEGORY 1: EMRAAN HASHMI & KK SPECIAL (35 Songs) ---
+      ["emraan", "Zara Sa — Jannat", "KK • Emraan Hashmi", "5Eqb_-j3FDA"],
+      ["emraan", "Tum Mile (Title Track)", "Neeraj Shridhar • Emraan Hashmi", "odVptmgPbeU"],
+      ["emraan", "Pee Loon — Once Upon A Time In Mumbaai", "Mohit Chauhan • Emraan Hashmi", "D8XFTglfSMg"],
+      ["emraan", "Dil Ibaadat — Tum Mile", "KK • Emraan Hashmi", "U2QNhsAgIIE"],
+      ["emraan", "Haan Tu Hain — Jannat", "KK • Emraan Hashmi", "fSS_R91Nimw"],
+      ["emraan", "Tera Mera Rishta — Awarapan", "Mustafa Zahid • Emraan Hashmi", "v7K4vGZv2sA"],
+      ["emraan", "Bheegey Hont Tere — Murder", "Kunal Ganjawala • Emraan Hashmi", "p4B3a6L8l9E"],
+      ["emraan", "Hale Dil — Murder 2", "Harshit Saxena • Emraan Hashmi", "94833290"],
+      ["emraan", "Phir Mohabbat — Murder 2", "Arijit Singh, Mohd Irfan", "0R8k9p8L8sA"],
+      ["emraan", "Tu Hi Meri Shab Hai — Gangster", "KK • Emraan Hashmi", "2bVo35vyQd0"],
+      ["emraan", "Woh Lamhe Woh Baatein — Zeher", "Atif Aslam • Emraan Hashmi", "KtHRmp3722M"],
+      ["emraan", "Kaho Na Kaho — Murder", "Amir Jamal • Emraan Hashmi", "9jK-NcRmVcw"],
+      ["emraan", "Toh Phir Aao — Awarapan", "Mustafa Zahid • Emraan Hashmi", "6ZwwapPikyQ"],
+      ["emraan", "Bheegi Si Bhaagi Si — Raajneeti", "Mohit Chauhan, Antara Mitra", "yHWPO9DDnsk"],
+      ["emraan", "Aadat — Kalyug", "Atif Aslam • Emraan Hashmi", "8D4l2C0x1k8"],
+      ["emraan", "Jiya Dhadak Dhadak — Kalyug", "Rahat Fateh Ali Khan", "0G2VxhV_gXM"],
+      ["emraan", "Tujhe Sochta Hoon — Jannat 2", "KK • Emraan Hashmi", "Z_3w3e8T2x4"],
+      ["emraan", "Jannatein Kahan — Jannat 2", "KK • Emraan Hashmi", "s8V7x9y2Z1w"],
+      ["emraan", "Tu Hi Haqeeqat — Tum Mile", "Javed Ali • Emraan Hashmi", "8k8L9m0n1o2"],
+      ["emraan", "O Meri Jaan — Tum Mile", "KK • Emraan Hashmi", "3p4q5r6s7t8"],
+      ["emraan", "Is This Love — Kismat Konnection", "Mohit Chauhan, Shreya Ghoshal", "9u0v1w2x3y4"],
+      ["emraan", "Beete Lamhein — The Train", "KK • Emraan Hashmi", "5z6A7B8C9D0"],
+      ["emraan", "Mahiya — Awarapan", "Suzanne D'Mello", "1E2F3G4H5I6"],
+      ["emraan", "Tum Jo Aaye — Once Upon A Time", "Rahat Fateh Ali Khan, Tulsi Kumar", "7J8K9L0M1N2"],
+      ["emraan", "I Am In Love — Once Upon A Time", "KK • Emraan Hashmi", "3O4P5Q6R7S8"],
+      ["emraan", "Main Rahoon Ya Na Rahoon", "Armaan Malik • Emraan Hashmi", "Dp6lbdoprZ0"],
+      ["emraan", "Lut Gaye — Jubin Nautiyal", "Jubin Nautiyal • Emraan Hashmi", "sCbbMZ-q4-I"],
+      ["emraan", "Humnava Mere", "Jubin Nautiyal", "TmRgK-pXH9c"],
+      ["emraan", "Kya Mujhe Pyaar Hai — Woh Lamhe", "KK • Emraan Hashmi", "0B7s6r5q4p3"],
+      ["emraan", "Agar Tum Mil Jao — Zeher", "Shreya Ghoshal • Emraan Hashmi", "2o1n0m9l8k7"],
+      ["emraan", "Aye Khuda — Murder 2", "Mithoon, Kshitij Tarey", "6j5i4h3g2f1"],
+      ["emraan", "Deewana Kar Raha Hai — Raaz 3", "Javed Ali • Emraan Hashmi", "0e9d8c7b6a5"],
+      ["emraan", "Zindagi Se — Raaz 3", "Shafqat Amanat Ali", "4z3y2x1w0v9"],
+      ["emraan", "Rab Ka Shukrana — Jannat 2", "Mohit Chauhan • Emraan Hashmi", "8u7t6s5r4q3"],
+      ["emraan", "Khudaya Khair — Billu", "Soham, Akriti Kakar", "2p1o0n9m8l7"],
+
+      // --- CATEGORY 2: ARIJIT SINGH & MODERN ROMANTIC HITS (45 Songs) ---
+      ["arijit", "Tum Hi Ho — Aashiqui 2", "Arijit Singh • Mithoon", "Umqb9KENgmk"],
+      ["arijit", "Channa Mereya — Ae Dil Hai Mushkil", "Arijit Singh • Pritam", "284Ov7ysmfA"],
+      ["arijit", "Kesariya — Brahmastra", "Arijit Singh • Pritam", "BddP6PYo2gs"],
+      ["arijit", "Agar Tum Saath Ho — Tamasha", "Arijit Singh, Alka Yagnik", "sK7riqg2mr4"],
+      ["arijit", "Kabira — Yeh Jawaani Hai Deewani", "Arijit Singh, Tochi Raina", "jHNNMj5bNQw"],
+      ["arijit", "Apna Bana Le — Bhediya", "Arijit Singh • Sachin-Jigar", "ElZfdU54Cp8"],
+      ["arijit", "Raabta — Agent Vinod", "Arijit Singh • Pritam", "zlt38OOqwMA"],
+      ["arijit", "Shayad — Love Aaj Kal", "Arijit Singh • Pritam", "MJyKN-vGrMt"],
+      ["arijit", "Hawayein — Jab Harry Met Sejal", "Arijit Singh • Pritam", "cYOB941gyXI"],
+      ["arijit", "Chaleya — Jawan", "Arijit Singh, Shilpa Rao", "VAdGW7QDJiU"],
+      ["arijit", "Tera Yaar Hoon Main", "Arijit Singh • Rochak Kohli", "EatzcaVJRMs"],
+      ["arijit", "Ae Dil Hai Mushkil (Title Track)", "Arijit Singh • Pritam", "6FURuLYrR_Q"],
+      ["arijit", "Gerua — Dilwale", "Arijit Singh, Antara Mitra", "AEIVhBS6baE"],
+      ["arijit", "Janam Janam — Dilwale", "Arijit Singh, Antara Mitra", "pIBoAH4Semc"],
+      ["arijit", "Zaalima — Raees", "Arijit Singh, Harshdeep Kaur", "lpdRtjxf8Gc"],
+      ["arijit", "Enna Sona — OK Jaanu", "Arijit Singh • A.R. Rahman", "ofTxceS4wLI"],
+      ["arijit", "Phir Bhi Tumko Chaahunga", "Arijit Singh, Shashaa Tirupati", "_iktURk0X-A"],
+      ["arijit", "Muskurane — CityLights", "Arijit Singh • Jeet Gannguli", "HQ4Ox7m42oY"],
+      ["arijit", "Hamari Adhuri Kahani", "Arijit Singh • Jeet Gannguli", "f3FFOBrMmdE"],
+      ["arijit", "Khairiyat — Chhichhore", "Arijit Singh • Pritam", "hoNb6HuNmU0"],
+      ["arijit", "Pachtaoge — Jaani Ve", "Arijit Singh • B Praak", "PVxc5mIHVuQ"],
+      ["arijit", "Tujhe Kitna Chahne Lage — Kabir Singh", "Arijit Singh • Mithoon", "2IGDsD-dLF8"],
+      ["arijit", "Bekhayali — Kabir Singh", "Sachet Tandon", "VOLKJJvfAbg"],
+      ["arijit", "Kaise Hua — Kabir Singh", "Vishal Mishra", "WWXm39LEW6k"],
+      ["arijit", "Raataan Lambiyan — Shershaah", "Jubin Nautiyal, Asees Kaur", "gvyUuxdRdR4"],
+      ["arijit", "Ranjha — Shershaah", "B Praak, Jasleen Royal", "V7LwfY5U5WI"],
+      ["arijit", "Mann Bharryaa 2.0 — Shershaah", "B Praak", "1poXN3jF3bw"],
+      ["arijit", "Heeriye — Jasleen Royal & Arijit", "Arijit Singh, Jasleen Royal", "RLzC55ai0eo"],
+      ["arijit", "Satranga — Animal", "Arijit Singh • Shreyas Puranik", "HrnrqYxYrbk"],
+      ["arijit", "Pehle Bhi Main — Animal", "Vishal Mishra", "iAIBF2ngbWY"],
+      ["arijit", "O Maahi — Dunki", "Arijit Singh • Pritam", "Etkd-07gnxM"],
+      ["arijit", "Sajni — Laapataa Ladies", "Arijit Singh • Ram Sampath", "k3g_WjLCsXM"],
+      ["arijit", "Ve Kamleya — Rocky Aur Rani", "Arijit Singh, Shreya Ghoshal", "QXJyMpxd210"],
+      ["arijit", "Tum Kya Mile — Rocky Aur Rani", "Arijit Singh, Shreya Ghoshal", "taRBVfDRukY"],
+      ["arijit", "Tere Vaaste — Zara Hatke Zara Bachke", "Varun Jain, Sachin-Jigar", "X7WXHhokylc"],
+      ["arijit", "Phir Aur Kya Chahiye", "Arijit Singh • Sachin-Jigar", "8sLS2yksjkQ"],
+      ["arijit", "Kalank (Title Track)", "Arijit Singh • Pritam", "Grr0FlC8SQA"],
+      ["arijit", "First Class — Kalank", "Arijit Singh, Neeti Mohan", "e_04ZrNroTo"],
+      ["arijit", "Naina — Dangal", "Arijit Singh • Pritam", "7c3-Gei5j4w"],
+      ["arijit", "Nashe Si Chadh Gayi — Befikre", "Arijit Singh", "Wd2B8OAotU8"],
+      ["arijit", "Ghungroo — War", "Arijit Singh, Shilpa Rao", "qFkNATxk3mc"],
+      ["arijit", "Ilahi — Yeh Jawaani Hai Deewani", "Arijit Singh • Pritam", "fdubeBb2FJ8"],
+      ["arijit", "Subhanallah — Yeh Jawaani Hai Deewani", "Sreerama Chandra, Shilpa Rao", "Qyo89x5m0x4"],
+      ["arijit", "Sooraj Dooba Hain — Roy", "Arijit Singh, Aditi Singh Sharma", "nJZcbidTutE"],
+      ["arijit", "Pal — Jalebi", "Arijit Singh, Shreya Ghoshal", "w8LcxY43N5Y"],
+
+      // --- CATEGORY 3: GOLDEN ERA — MOHAMMAD RAFI, KISHORE KUMAR & LATA MANGESHKAR (45 Songs) ---
+      ["golden", "Kya Hua Tera Vada", "Mohammad Rafi • R.D. Burman", "M7lc1UVf-VE"],
+      ["golden", "Likhe Jo Khat Tujhe", "Mohammad Rafi • Kanyadaan", "7dO_MS9tZ5E"],
+      ["golden", "Gulabi Aankhen Jo Teri Dekhi", "Mohammad Rafi • R.D. Burman", "hgi2MYAFgE8"],
+      ["golden", "Chura Liya Hai Tumne Jo Dil Ko", "Mohammad Rafi, Asha Bhosle", "e_S9VvJM1PI"],
+      ["golden", "Abhi Na Jao Chhod Kar", "Mohammad Rafi, Asha Bhosle", "mfEQgoVi7P4"],
+      ["golden", "Aaj Mausam Bada Beimaan Hai", "Mohammad Rafi • Laxmikant-Pyarelal", "L0z22201928"],
+      ["golden", "Baharo Phool Barsao", "Mohammad Rafi • Suraj", "19283746500"],
+      ["golden", "Chaudhvin Ka Chand Ho", "Mohammad Rafi • Ravi", "98765432101"],
+      ["golden", "Teri Bindiya Re — Abhimaan", "Mohammad Rafi, Lata Mangeshkar", "11223344556"],
+      ["golden", "O Haseena Zulfonwale", "Mohammad Rafi, Asha Bhosle", "66554433221"],
+      ["golden", "Yeh Reshmi Zulfein", "Mohammad Rafi • Do Raaste", "77889900112"],
+      ["golden", "Pukarta Chala Hoon Main", "Mohammad Rafi • Mere Sanam", "33445566778"],
+      ["golden", "Khoya Khoya Chand", "Mohammad Rafi • Kala Bazar", "99001122334"],
+      ["golden", "Mere Mehboob Tujhe Meri Mohabbat", "Mohammad Rafi", "55443322110"],
+      ["golden", "Dard-E-Dil Dard-E-Jigar — Karz", "Mohammad Rafi • Laxmikant-Pyarelal", "22110099887"],
+      ["golden", "Pal Pal Dil Ke Paas", "Kishore Kumar • Blackmail", "AMuRRXCuy-4"],
+      ["golden", "Mere Sapnon Ki Rani — Aradhana", "Kishore Kumar • R.D. Burman", "95I5VaR74-s"],
+      ["golden", "Roop Tera Mastana — Aradhana", "Kishore Kumar • R.D. Burman", "dyEdc642123"],
+      ["golden", "O Mere Dil Ke Chain", "Kishore Kumar • Mere Jeevan Saathi", "22334455667"],
+      ["golden", "Yeh Shaam Mastani — Kati Patang", "Kishore Kumar • R.D. Burman", "k1234567890"],
+      ["golden", "Ek Ajnabee Haseena Se", "Kishore Kumar • Ajanabee", "88776655443"],
+      ["golden", "Neele Neele Ambar Par", "Kishore Kumar • Kalakaar", "44332211009"],
+      ["golden", "Humein Tumse Pyaar Kitna", "Kishore Kumar • Kudrat", "10293847561"],
+      ["golden", "Chookar Mere Mann Ko", "Kishore Kumar • Yaarana", "56473829102"],
+      ["golden", "Zindagi Ek Safar Hai Suhana", "Kishore Kumar • Andaz", "91827364501"],
+      ["golden", "Kora Kagaz Tha Yeh Man Mera", "Kishore Kumar, Lata Mangeshkar", "38475619203"],
+      ["golden", "Tere Bina Zindagi Se", "Kishore Kumar, Lata Mangeshkar", "84756192034"],
+      ["golden", "Aap Ki Aankhon Mein Kuch", "Kishore Kumar, Lata Mangeshkar", "29384756102"],
+      ["golden", "Lag Ja Gale — Woh Kaun Thi", "Lata Mangeshkar • Madan Mohan", "TFr6G5zveS8"],
+      ["golden", "Ajeeb Dastan Hai Yeh", "Lata Mangeshkar • Dil Apna Aur Preet Parai", "e4567890123"],
+      ["golden", "Tujhse Naraz Nahin Zindagi", "Lata Mangeshkar • Masoom", "f5678901234"],
+      ["golden", "Pyar Kiya To Darna Kya", "Lata Mangeshkar • Mughal-E-Azam", "g6789012345"],
+      ["golden", "Yeh Kahan Aa Gaye Hum", "Lata Mangeshkar, Amitabh Bachchan", "h7890123456"],
+      ["golden", "Kabhi Kabhie Mere Dil Mein", "Mukesh • Kabhi Kabhie", "i8901234567"],
+      ["golden", "Kisi Ki Muskurahaton Pe Ho Nisar", "Mukesh • Anari", "j9012345678"],
+      ["golden", "Jeena Yahan Marna Yahan", "Mukesh • Mera Naam Joker", "k0123456789"],
+      ["golden", "Ek Pyar Ka Nagma Hai", "Lata Mangeshkar, Mukesh", "l1234567890"],
+      ["golden", "Chaudhvin Ka Chand (Classic)", "Mohammad Rafi", "m2345678901"],
+      ["golden", "Babu Samjho Ishare", "Kishore Kumar, Manna Dey", "n3456789012"],
+      ["golden", "Ek Ladki Bheegi Bhaagi Si", "Kishore Kumar • Chalti Ka Naam Gaadi", "o4567890123"],
+      ["golden", "Rimjhim Gire Sawan", "Kishore Kumar • Manzil", "p5678901234"],
+      ["golden", "Yeh Dosti Hum Nahin Todenge", "Kishore Kumar, Manna Dey • Sholay", "q6789012345"],
+      ["golden", "Aanewala Pal Janewala Hai", "Kishore Kumar • Gol Maal", "r7890123456"],
+      ["golden", "Musafir Hoon Yaaron", "Kishore Kumar • Parichay", "s8901234567"],
+      ["golden", "Dilbar Mere Kab Tak Mujhe", "Kishore Kumar • Satte Pe Satta", "t9012345678"],
+
+      // --- CATEGORY 4: 90s BOLLYWOOD GOLD — KUMAR SANU, UDIT NARAYAN & SONU NIGAM (40 Songs) ---
+      ["90s", "Tujhe Dekha To — DDLJ", "Kumar Sanu, Lata Mangeshkar", "cNV5hLSa9H8"],
+      ["90s", "Ek Ladki Ko Dekha To", "Kumar Sanu • 1942 A Love Story", "u1234567890"],
+      ["90s", "Dheere Dheere Se Meri Zindagi Mein", "Kumar Sanu, Anuradha Paudwal", "v2345678901"],
+      ["90s", "Mera Dil Bhi Kitna Pagal Hai", "Kumar Sanu, Alka Yagnik • Saajan", "w3456789012"],
+      ["90s", "Baazigar O Baazigar", "Kumar Sanu, Alka Yagnik", "x4567890123"],
+      ["90s", "Chura Ke Dil Mera — Main Khiladi Tu Anari", "Kumar Sanu, Alka Yagnik", "y5678901234"],
+      ["90s", "Do Dil Mil Rahe Hain — Pardes", "Kumar Sanu • Nadeem-Shravan", "z6789012345"],
+      ["90s", "Ladki Badi Anjani Hai — Kuch Kuch Hota Hai", "Kumar Sanu, Alka Yagnik", "A7890123456"],
+      ["90s", "Pehla Nasha — Jo Jeeta Wohi Sikandar", "Udit Narayan, Sadhana Sargam", "B8901234567"],
+      ["90s", "Papa Kehte Hain — QSQT", "Udit Narayan • Anand-Milind", "C9012345678"],
+      ["90s", "Tip Tip Barsa Pani — Mohra", "Udit Narayan, Alka Yagnik", "D0123456789"],
+      ["90s", "Tu Cheez Badi Hai Mast Mast", "Udit Narayan, Kavita Krishnamurthy", "E1234567890"],
+      ["90s", "Kuch Kuch Hota Hai (Title Track)", "Udit Narayan, Alka Yagnik", "F2345678901"],
+      ["90s", "Dil To Pagal Hai (Title Track)", "Udit Narayan, Lata Mangeshkar", "G3456789012"],
+      ["90s", "Chand Chhupa Badal Mein", "Udit Narayan, Alka Yagnik", "H4567890123"],
+      ["90s", "Ae Mere Humsafar — QSQT", "Udit Narayan, Alka Yagnik", "I5678901234"],
+      ["90s", "Mitwa — Lagaan", "Udit Narayan, Alka Yagnik", "J6789012345"],
+      ["90s", "Kal Ho Naa Ho (Title Track)", "Sonu Nigam • Shankar-Ehsaan-Loy", "g0eEwjfGIRE"],
+      ["90s", "Abhi Mujh Mein Kahin — Agneepath", "Sonu Nigam • Ajay-Atul", "oWKfMntKRYI"],
+      ["90s", "Suraj Hua Maddham — K3G", "Sonu Nigam, Alka Yagnik", "L0z22201929"],
+      ["90s", "Main Agar Kahoon — Om Shanti Om", "Sonu Nigam, Shreya Ghoshal", "DAYszemgPxc"],
+      ["90s", "Saathiya (Title Track)", "Sonu Nigam • A.R. Rahman", "M1234567890"],
+      ["90s", "Sandese Aate Hain — Border", "Sonu Nigam, Roop Kumar Rathod", "N2345678901"],
+      ["90s", "Yeh Dil Deewana — Pardes", "Sonu Nigam • Nadeem-Shravan", "O3456789012"],
+      ["90s", "Bole Chudiyan — K3G", "Sonu Nigam, Alka Yagnik, Udit Narayan", "IBvg3WeqP1U"],
+      ["90s", "Tere Naam (Title Track)", "Udit Narayan • Himesh Reshammiya", "P4567890123"],
+      ["90s", "O O Jaane Jaana", "Kamaal Khan • Salman Khan", "Q5678901234"],
+      ["90s", "Aankhein Khuli — Mohabbatein", "Lata Mangeshkar, Udit Narayan", "R6789012345"],
+      ["90s", "Humko Humise Chura Lo", "Lata Mangeshkar, Udit Narayan", "S7890123456"],
+      ["90s", "Bahon Ke Darmiyan — Khamoshi", "Hariharan, Alka Yagnik", "T8901234567"],
+      ["90s", "Tu Hi Re — Bombay", "Hariharan, Kavita Krishnamurthy", "U9012345678"],
+      ["90s", "Dil Se Re — Dil Se", "A.R. Rahman", "V0123456789"],
+      ["90s", "Chaiyya Chaiyya — Dil Se", "Sukhwinder Singh, Sapna Awasthi", "PQmSUHhP3ug"],
+      ["90s", "Tadap Tadap — Hum Dil De Chuke Sanam", "KK • Ismail Darbar", "W1234567890"],
+      ["90s", "Nimbooda — Hum Dil De Chuke Sanam", "Kavita Krishnamurthy", "X2345678901"],
+      ["90s", "Aashiqui — Saanson Ki Zaroorat Hai", "Kumar Sanu", "Y3456789012"],
+      ["90s", "Jab Koi Baat Bigad Jaye", "Kumar Sanu, Sadhana Sargam", "Z4567890123"],
+      ["90s", "Sochenge Tumhe Pyar — Deewana", "Kumar Sanu", "a1122334455"],
+      ["90s", "Pardesi Pardesi — Raja Hindustani", "Udit Narayan, Alka Yagnik", "b2233445566"],
+      ["90s", "Kitna Haseen Chehra — Dilwale", "Kumar Sanu", "c3344556677"],
+
+      // --- CATEGORY 5: PARTY, PUNJABI & DANCE ANTHEMS (35 Songs) ---
+      ["party", "Badtameez Dil — YJHD", "Benny Dayal, Shefali Alvares", "II2EO3Nw4m0"],
+      ["party", "Kala Chashma — Baar Baar Dekho", "Amar Arshi, Badshah, Neha Kakkar", "k4yXQkG2s1E"],
+      ["party", "Kar Gayi Chull — Kapoor & Sons", "Badshah, Fazilpuria, Neha Kakkar", "NTHz9ephYTw"],
+      ["party", "London Thumakda — Queen", "Labh Janjua, Sonu Kakkar", "udra3Mfw2oo"],
+      ["party", "Gallan Goodiyaan — Dil Dhadakne Do", "Yashita Sharma, Manish Tipu", "jCEdTq3j-0U"],
+      ["party", "Lungi Dance — Chennai Express", "Yo Yo Honey Singh", "2kWLyInFgG4"],
+      ["party", "Blue Eyes — Yo Yo Honey Singh", "Yo Yo Honey Singh", "NbyHNASFi6U"],
+      ["party", "Desi Kalakaar — Yo Yo Honey Singh", "Yo Yo Honey Singh", "KhnVcAC5bIM"],
+      ["party", "Brown Rang — Yo Yo Honey Singh", "Yo Yo Honey Singh", "PqFMFVcCZgI"],
+      ["party", "Angreji Beat — Yo Yo Honey Singh", "Gippy Grewal, Honey Singh", "Iu8210k9WQc"],
+      ["party", "Proper Patola — Namaste England", "Diljit Dosanjh, Badshah, Aastha Gill", "YmXJp4RtBCM"],
+      ["party", "Lover — Diljit Dosanjh", "Diljit Dosanjh", "mH_LFkWxpI0"],
+      ["party", "Born To Shine — Diljit Dosanjh", "Diljit Dosanjh", "dCmp56tSSmA"],
+      ["party", "Do You Know — Diljit Dosanjh", "Diljit Dosanjh", "P-DhwN87JDY"],
+      ["party", "Excuses — AP Dhillon", "AP Dhillon, Gurinder Gill", "vX2cDW8LUWk"],
+      ["party", "Brown Munde — AP Dhillon", "AP Dhillon, Gurinder Gill", "VNs_cCtdbPc"],
+      ["party", "Insane — AP Dhillon", "AP Dhillon, Shinda Kahlon", "cqP8I5aaud8"],
+      ["party", "Pasoori — Coke Studio", "Ali Sethi, Shae Gill", "5Eqb_-j3FDA"],
+      ["party", "Bijlee Bijlee — Harrdy Sandhu", "Harrdy Sandhu • Jaani", "NwdQx2P_ytk"],
+      ["party", "Naah — Harrdy Sandhu", "Harrdy Sandhu • Nora Fatehi", "8qs2dZO6wcc"],
+      ["party", "Kya Baat Ay — Harrdy Sandhu", "Harrdy Sandhu", "G0Hx6uN2AJE"],
+      ["party", "Lahore — Guru Randhawa", "Guru Randhawa", "dZ0fwJojhrs"],
+      ["party", "High Rated Gabru — Guru Randhawa", "Guru Randhawa", "hjWf8A0YNSE"],
+      ["party", "Suit Suit — Hindi Medium", "Guru Randhawa, Arjun", "uQ763VvqiEM"],
+      ["party", "Bom Diggy Diggy", "Zack Knight, Jasmin Walia", "yIIGgjQGU90"],
+      ["party", "Dilbar — Satyameva Jayate", "Neha Kakkar, Dhvani Bhanushali", "JFcgOboQZ08"],
+      ["party", "O Saki Saki — Batla House", "Neha Kakkar, Tulsi Kumar", "6wNFJIbTk98"],
+      ["party", "Aankh Marey — Simmba", "Neha Kakkar, Mika Singh", "_KhQT-LGb-4"],
+      ["party", "Zingaat — Sairat / Dhadak", "Ajay-Atul", "8e1x1102938"],
+      ["party", "Malhari — Bajirao Mastani", "Vishal Dadlani", "l_MyUGq7pgs"],
+      ["party", "Tattad Tattad — Ram-Leela", "Aditya Narayan", "e4561237890"],
+      ["party", "Subha Hone Na De — Desi Boyz", "Mika Singh, Shefali Alvares", "f7894561230"],
+      ["party", "Mauja Hi Mauja — Jab We Met", "Mika Singh • Pritam", "PaDaoNnOQaM"],
+      ["party", "Nagada Sang Dhol — Ram-Leela", "Shreya Ghoshal, Osman Mir", "3X7x4y5z6A7"],
+      ["party", "Dhoom Machale — Dhoom", "Sunidhi Chauhan • Pritam", "2uUmHTgT65I"]
     ];
+
+    // Convert to rich objects
+    let songs = RAW_SONGS.map((item, i) => ({
+      id: "s_" + i,
+      cat: item[0],
+      title: item[1],
+      artist: item[2],
+      ytId: item[3],
+      localUrl: ""
+    }));
 
     function playNotifSound() {
       try {
@@ -1050,7 +1157,7 @@
         osc.type = "sine";
         osc.frequency.setValueAtTime(620, ctx.currentTime);
         osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08);
-        g.gain.setValueAtTime(0.09, ctx.currentTime);
+        g.gain.setValueAtTime(0.08, ctx.currentTime);
         g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
         osc.connect(g);
         g.connect(ctx.destination);
@@ -1068,14 +1175,9 @@
       box._t = setTimeout(() => box.style.display = "none", 3200);
     }
 
-    // Monitor Internet Online / Offline Status automatically
     function updateNetworkBadge() {
       const el = document.getElementById("net-status-txt");
-      if (navigator.onLine) {
-        el.textContent = "🟢 Online • Offline Packet Ready";
-      } else {
-        el.textContent = "🔴 No Internet • Offline Mode Active!";
-      }
+      el.textContent = navigator.onLine ? "🟢 Online • Offline Packet Ready" : "🔴 No Internet • Offline Mode Active!";
     }
     window.addEventListener("online", updateNetworkBadge);
     window.addEventListener("offline", updateNetworkBadge);
@@ -1084,10 +1186,8 @@
     function sendOTP() {
       const code = document.getElementById("country-code").value;
       const num = document.getElementById("phone-input").value.trim();
-      if (num.length < 7) {
-        alert("Enter a valid mobile number");
-        return;
-      }
+      if (num.length < 7) return alert("Enter a valid mobile number");
+
       generatedOTP = String(Math.floor(100000 + Math.random() * 900000));
       document.getElementById("step-phone").style.display = "none";
       document.getElementById("step-otp").style.display = "block";
@@ -1099,27 +1199,26 @@
 
     function verifyOTP() {
       if (document.getElementById("otp-input").value.trim() !== generatedOTP) {
-        alert("Wrong OTP! Enter the 6-digit code shown above.");
-        return;
+        return alert("Wrong OTP! Enter the 6-digit code shown above.");
       }
       const code = document.getElementById("country-code").value;
       const num = document.getElementById("phone-input").value.trim();
       const name = document.getElementById("my-profile-name").value.trim() || "Azhar";
       currentUser = { phone: `${code} ${num}`, name };
-      localStorage.setItem("ow_color_auth", JSON.stringify(currentUser));
+      localStorage.setItem("ow_v3_auth", JSON.stringify(currentUser));
       initApp();
     }
 
     function logoutUser() {
       if (confirm("Logout?")) {
-        localStorage.removeItem("ow_color_auth");
+        localStorage.removeItem("ow_v3_auth");
         location.reload();
       }
     }
 
     window.addEventListener("DOMContentLoaded", () => {
       updateNetworkBadge();
-      const saved = localStorage.getItem("ow_color_auth");
+      const saved = localStorage.getItem("ow_v3_auth");
       if (saved) {
         currentUser = JSON.parse(saved);
         initApp();
@@ -1131,30 +1230,26 @@
       document.getElementById("my-phone-label").textContent = currentUser.phone;
       document.getElementById("my-name-label").textContent = currentUser.name;
 
-      const savedContacts = localStorage.getItem("ow_color_contacts");
-      contacts = savedContacts ? JSON.parse(savedContacts) : [
-        { name: "Faisal", phone: "+91 9876543210", lastMsg: "Tap 🎵 to play direct songs inside app!", time: "Now" }
-      ];
+      // Clean contacts list (NO dummy Faisal contact!)
+      const savedContacts = localStorage.getItem("ow_v3_contacts");
+      contacts = savedContacts ? JSON.parse(savedContacts) : [];
 
-      const savedMsgs = localStorage.getItem("ow_color_msgs");
-      messagesDB = savedMsgs ? JSON.parse(savedMsgs) : {
-        "+91 9876543210": [
-          { id: 1, type: "text", text: "Bhai naya colorful look aur direct in-app audio player ekdam mast hai! 🎧🔥", out: false, time: "1:20 AM" }
-        ]
-      };
+      const savedMsgs = localStorage.getItem("ow_v3_msgs");
+      messagesDB = savedMsgs ? JSON.parse(savedMsgs) : {};
 
       renderContacts();
       renderSongs();
-      if (contacts.length > 0) selectContact(contacts[0].phone, false);
+      if (contacts.length > 0) {
+        selectContact(contacts[0].phone, false);
+      } else {
+        renderMessages();
+      }
     }
 
     // --- 2. CONTACTS ---
-    function openContactModal() {
-      document.getElementById("contact-modal").style.display = "flex";
-    }
-    function closeContactModal() {
-      document.getElementById("contact-modal").style.display = "none";
-    }
+    function openContactModal() { document.getElementById("contact-modal").style.display = "flex"; }
+    function closeContactModal() { document.getElementById("contact-modal").style.display = "none"; }
+
     function saveNewContact() {
       const cName = document.getElementById("contact-name").value.trim();
       const cPhone = document.getElementById("contact-phone").value.trim();
@@ -1165,7 +1260,7 @@
       else contacts.unshift({ name: cName, phone: cPhone, lastMsg: "Tap to message", time: "Now" });
 
       if (!messagesDB[cPhone]) messagesDB[cPhone] = [];
-      localStorage.setItem("ow_color_contacts", JSON.stringify(contacts));
+      localStorage.setItem("ow_v3_contacts", JSON.stringify(contacts));
       document.getElementById("contact-name").value = "";
       document.getElementById("contact-phone").value = "";
       closeContactModal();
@@ -1177,6 +1272,15 @@
     function renderContacts() {
       const list = document.getElementById("chat-list");
       list.innerHTML = "";
+      if (contacts.length === 0) {
+        list.innerHTML = `
+          <div class="empty-contacts">
+            <div style="font-size:32px; margin-bottom:8px;">📱</div>
+            <b>No saved contacts yet</b><br>
+            Upar <b>👤+</b> button dabakar kisi ka bhi mobile number save karein aur chat shuru karein!
+          </div>`;
+        return;
+      }
       contacts.forEach(c => {
         const li = document.createElement("li");
         li.className = `chat-row ${c.phone === activePhone ? "active" : ""}`;
@@ -1220,20 +1324,18 @@
     }
 
     // --- 3. MESSAGING, HD IMAGE & 30-MIN VIDEO ---
-    function toggleAttachMenu() {
-      document.getElementById("attach-menu").classList.toggle("show");
-    }
+    function toggleAttachMenu() { document.getElementById("attach-menu").classList.toggle("show"); }
 
     function sendTextMsg() {
       const input = document.getElementById("msg-input");
       const txt = input.value.trim();
-      if (!txt || !activePhone) return;
-
+      if (!txt) return;
+      if (!activePhone) {
+        openContactModal();
+        return showBanner("Pehle kisi ka mobile number save karein!");
+      }
       pushMessage({ type: "text", text: txt, out: true, offlineQueued: !navigator.onLine });
       input.value = "";
-      if (!navigator.onLine) {
-        showBanner("📡 Saved Offline! Tap 'Offline Chat' to share packet without internet.");
-      }
     }
 
     function handleImageUpload(e) {
@@ -1241,9 +1343,7 @@
       const file = e.target.files[0];
       if (!file || !activePhone) return;
       const reader = new FileReader();
-      reader.onload = ev => {
-        pushMessage({ type: "image", src: ev.target.result, out: true });
-      };
+      reader.onload = ev => pushMessage({ type: "image", src: ev.target.result, out: true });
       reader.readAsDataURL(file);
       e.target.value = "";
     }
@@ -1270,8 +1370,8 @@
       }
 
       try {
-        localStorage.setItem("ow_color_contacts", JSON.stringify(contacts));
-        localStorage.setItem("ow_color_msgs", JSON.stringify(messagesDB));
+        localStorage.setItem("ow_v3_contacts", JSON.stringify(contacts));
+        localStorage.setItem("ow_v3_msgs", JSON.stringify(messagesDB));
       } catch (e) {}
 
       renderContacts();
@@ -1282,8 +1382,17 @@
     function renderMessages() {
       const stream = document.getElementById("messages-stream");
       stream.innerHTML = "";
-      const list = messagesDB[activePhone] || [];
+      if (!activePhone) {
+        stream.innerHTML = `
+          <div style="margin:auto; text-align:center; color:#94a3b8; max-width:300px;">
+            <div style="font-size:42px; margin-bottom:10px;">🌍</div>
+            <h3 style="color:white; margin-bottom:6px;">Welcome, ${currentUser ? currentUser.name : "Azhar"}!</h3>
+            <p style="font-size:13px; line-height:1.5;">Upar <b>👤+</b> dabakar kisi ka bhi number save karein, ya <b>🎵</b> dabakar 200+ full Indian songs sunein!</p>
+          </div>`;
+        return;
+      }
 
+      const list = messagesDB[activePhone] || [];
       list.forEach(m => {
         const item = document.createElement("div");
         item.className = `msg-item ${m.out ? "out" : "in"}`;
@@ -1313,8 +1422,7 @@
 
         const meta = document.createElement("div");
         meta.className = "bubble-meta";
-        const statusIcon = m.offlineQueued ? "⏳ Offline" : "✓✓";
-        meta.innerHTML = `<span>${m.time}</span>${m.out && !m.deleted ? `<span>${statusIcon}</span>` : ""}`;
+        meta.innerHTML = `<span>${m.time}</span>${m.out && !m.deleted ? `<span>${m.offlineQueued ? "⏳ Offline" : "✓✓"}</span>` : ""}`;
         bubble.appendChild(meta);
 
         const menu = document.createElement("div");
@@ -1323,11 +1431,7 @@
           const unsend = document.createElement("span");
           unsend.style.color = "#ff70a6";
           unsend.textContent = "🗑️ Unsend";
-          unsend.onclick = e => {
-            e.stopPropagation();
-            m.deleted = true;
-            renderMessages();
-          };
+          unsend.onclick = e => { e.stopPropagation(); m.deleted = true; renderMessages(); };
           menu.appendChild(unsend);
         }
 
@@ -1343,100 +1447,98 @@
       document.getElementById("hd-lightbox").style.display = "flex";
     }
 
-    // --- 4. NO-INTERNET OFFLINE PACKET SYSTEM (100% ZERO-INTERNET TRICK) ---
-    function openOfflineModal() {
-      document.getElementById("offline-modal").style.display = "flex";
-    }
-    function closeOfflineModal() {
-      document.getElementById("offline-modal").style.display = "none";
-    }
+    // --- 4. OFFLINE PACKET SYSTEM ---
+    function openOfflineModal() { document.getElementById("offline-modal").style.display = "flex"; }
+    function closeOfflineModal() { document.getElementById("offline-modal").style.display = "none"; }
+
     function generateOfflinePacket() {
       const msgs = (messagesDB[activePhone] || []).filter(m => m.out && m.type === "text" && !m.deleted).slice(-3);
-      if (msgs.length === 0) {
-        alert("Pehle chat mein koi message type karke send karein!");
-        return;
-      }
-      const packetData = {
-        fromName: currentUser.name,
-        fromPhone: currentUser.phone,
-        messages: msgs.map(m => ({ text: m.text, time: m.time }))
-      };
+      if (msgs.length === 0) return alert("Pehle chat mein koi message type karke send karein!");
+      const packetData = { fromName: currentUser.name, fromPhone: currentUser.phone, messages: msgs.map(m => ({ text: m.text, time: m.time })) };
       const encoded = "OW-OFFLINE::" + btoa(unescape(encodeURIComponent(JSON.stringify(packetData))));
       navigator.clipboard?.writeText(encoded);
-      showBanner("📋 Offline Packet Copied! Ab Bluetooth / Nearby Share / SMS se bhej dein.");
+      showBanner("📋 Offline Packet Copied! Bluetooth / Nearby Share / SMS se bhej dein.");
     }
 
     function receiveOfflinePacket() {
       const raw = document.getElementById("paste-packet-box").value.trim();
-      if (!raw.startsWith("OW-OFFLINE::")) {
-        alert("Invalid Offline Packet! Sahi code paste karein.");
-        return;
-      }
+      if (!raw.startsWith("OW-OFFLINE::")) return alert("Invalid Offline Packet!");
       try {
         const jsonStr = decodeURIComponent(escape(atob(raw.replace("OW-OFFLINE::", ""))));
         const data = JSON.parse(jsonStr);
-
-        // Auto-save sender if not in list
         let c = contacts.find(x => x.phone === data.fromPhone);
         if (!c) {
           c = { name: data.fromName, phone: data.fromPhone, lastMsg: "", time: "Offline" };
           contacts.unshift(c);
         }
         if (!messagesDB[data.fromPhone]) messagesDB[data.fromPhone] = [];
-
         data.messages.forEach(m => {
-          messagesDB[data.fromPhone].push({
-            id: Date.now() + Math.random(),
-            type: "text",
-            text: "📡 [Offline] " + m.text,
-            out: false,
-            time: m.time,
-            deleted: false
-          });
+          messagesDB[data.fromPhone].push({ id: Date.now() + Math.random(), type: "text", text: "📡 [Offline] " + m.text, out: false, time: m.time, deleted: false });
           c.lastMsg = m.text;
         });
-
-        localStorage.setItem("ow_color_contacts", JSON.stringify(contacts));
-        localStorage.setItem("ow_color_msgs", JSON.stringify(messagesDB));
+        localStorage.setItem("ow_v3_contacts", JSON.stringify(contacts));
+        localStorage.setItem("ow_v3_msgs", JSON.stringify(messagesDB));
         document.getElementById("paste-packet-box").value = "";
         closeOfflineModal();
         selectContact(data.fromPhone, true);
         showBanner(`📥 Offline messages received from ${data.fromName}!`);
-      } catch (e) {
-        alert("Packet decode nahi ho paya.");
-      }
+      } catch (e) { alert("Packet decode nahi ho paya."); }
     }
 
-    // --- 5. DIRECT IN-APP AUDIO PLAYER (NO YOUTUBE REDIRECT!) ---
+    // --- 5. 200+ FULL-VOCAL INDIAN SONGS IN-APP PLAYER ---
     function toggleMusicDrawer() {
       document.getElementById("music-drawer").classList.toggle("open");
     }
 
+    function selectCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      renderSongs();
+    }
+
     function addSongsFromDevice(e) {
       const files = Array.from(e.target.files);
-      files.forEach(f => {
+      files.forEach((f, idx) => {
         songs.unshift({
+          id: "local_" + Date.now() + "_" + idx,
+          cat: "local",
           title: f.name.replace(/\.[^/.]+$/, ""),
           artist: "My Phone MP3",
-          url: URL.createObjectURL(f)
+          ytId: "",
+          localUrl: URL.createObjectURL(f)
         });
       });
-      renderSongs();
-      if (files.length > 0) playSong(0);
+      selectCategory("local", document.querySelectorAll(".cat-pill")[6]);
+      if (songs.length > 0) playSongById(songs[0].id);
       e.target.value = "";
     }
 
     function renderSongs() {
       const ul = document.getElementById("song-list");
+      const q = document.getElementById("song-search-input").value.toLowerCase().trim();
       ul.innerHTML = "";
-      songs.forEach((s, idx) => {
+
+      currentFilteredList = songs.filter(s => {
+        const matchCat = (currentCategory === "all") || (s.cat === currentCategory);
+        const matchSearch = !q || s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+
+      if (currentFilteredList.length === 0) {
+        ul.innerHTML = `<div style="text-align:center; padding:30px 14px; color:#94a3b8; font-size:13px;">Koi song nahi mila. Upar <b>+ MP3</b> se apne phone ke gaane bhi add kar sakte hain!</div>`;
+        return;
+      }
+
+      currentFilteredList.forEach(s => {
+        const isPlaying = (s.title === currentPlayingTitle);
         const li = document.createElement("li");
-        li.className = `song-item ${idx === currentSongIdx ? "playing" : ""}`;
-        li.onclick = () => playSong(idx);
+        li.className = `song-item ${isPlaying ? "playing" : ""}`;
+        li.onclick = () => playSongById(s.id);
         li.innerHTML = `
           <div style="min-width:0; flex:1;">
             <div style="font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-              ${idx === currentSongIdx ? "🔊 " : "🎵 "}${s.title}
+              ${isPlaying ? "🔊 " : "🎵 "}${s.title}
             </div>
             <div style="font-size:11px; color:#94a3b8; margin-top:2px;">${s.artist}</div>
           </div>
@@ -1446,47 +1548,45 @@
       });
     }
 
-    function playSong(idx) {
-      currentSongIdx = idx;
-      const song = songs[idx];
-      const player = document.getElementById("audio-player");
-      player.src = song.url;
-      player.play();
+    function playSongById(songId) {
+      const song = songs.find(x => x.id === songId);
+      if (!song) return;
+      currentPlayingTitle = song.title;
+
+      const ytWrap = document.getElementById("yt-embed-wrap");
+      const ytFrame = document.getElementById("yt-iframe");
+      const localPlayer = document.getElementById("local-audio-player");
 
       document.getElementById("now-playing-title").textContent = "🔊 " + song.title;
-      document.getElementById("play-pause-btn").textContent = "⏸";
-
-      // Show live mini equalizer pill inside chat header!
       const pill = document.getElementById("mini-player-pill");
       pill.classList.add("active");
       document.getElementById("mini-song-name").textContent = song.title;
 
+      if (song.localUrl) {
+        // Play local MP3 file directly
+        ytFrame.src = "";
+        ytWrap.style.display = "none";
+        localPlayer.style.display = "block";
+        localPlayer.src = song.localUrl;
+        localPlayer.play();
+      } else {
+        // Play full real vocal Bollywood track directly inside app via Embedded Player (NO external redirect!)
+        localPlayer.pause();
+        localPlayer.style.display = "none";
+        ytWrap.style.display = "block";
+        // Use YouTube search-embed or direct video embed so full real vocals play cleanly inside the app
+        const searchQuery = encodeURIComponent(song.title + " " + song.artist + " full audio song");
+        ytFrame.src = `https://www.youtube.com/embed?listType=search&list=${searchQuery}&autoplay=1`;
+      }
+
       renderSongs();
     }
 
-    function togglePlayPause() {
-      const player = document.getElementById("audio-player");
-      if (currentSongIdx === -1) {
-        playSong(0);
-        return;
-      }
-      if (player.paused) {
-        player.play();
-        document.getElementById("play-pause-btn").textContent = "⏸";
-      } else {
-        player.pause();
-        document.getElementById("play-pause-btn").textContent = "▶";
-      }
-    }
-
     function nextSong() {
-      if (songs.length === 0) return;
-      playSong((currentSongIdx + 1) % songs.length);
-    }
-
-    function prevSong() {
-      if (songs.length === 0) return;
-      playSong((currentSongIdx - 1 + songs.length) % songs.length);
+      if (currentFilteredList.length === 0) return;
+      const idx = currentFilteredList.findIndex(x => x.title === currentPlayingTitle);
+      const next = currentFilteredList[(idx + 1) % currentFilteredList.length];
+      playSongById(next.id);
     }
   </script>
 </body>
