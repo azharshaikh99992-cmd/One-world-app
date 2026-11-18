@@ -1,7 +1,7 @@
 {
   "name": "ONE WORLD",
   "short_name": "ONE WORLD",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#050b14",
   "theme_color": "#050b14",
