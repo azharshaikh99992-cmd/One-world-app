@@ -855,7 +855,7 @@
     <!-- RIGHT: SONG PLAYLIST & PLAYER -->
     <aside class="music-drawer" id="music-drawer">
       <div class="music-header">
-        <div style="font-weight:700; font-size:15px;">🎵 Song Playlist</div>
+        <div style="font-weight:700; font-size:15px;">🎵 Emraan & Arijit Hits</div>
         <button class="icon-btn" onclick="toggleMusicDrawer()">✕</button>
       </div>
 
@@ -883,8 +883,29 @@
     let contacts = [];
     let messagesDB = {};
     let songs = [
-      { title: "Chill Lofi Beats (Demo Track)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-      { title: "Midnight Drive Vibes (Demo)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
+      { title: "Zara Sa — Jannat (Emraan Hashmi)", artist: "KK • Pritam", query: "Zara Sa Jannat Emraan Hashmi song", url: "" },
+      { title: "Tum Mile — Tum Mile", artist: "Neeraj Shridhar • Pritam", query: "Tum Mile title track Emraan Hashmi", url: "" },
+      { title: "Pee Loon — Once Upon A Time In Mumbaai", artist: "Mohit Chauhan • Pritam", query: "Pee Loon Emraan Hashmi song", url: "" },
+      { title: "Tera Mera Rishta — Awarapan", artist: "Mustafa Zahid", query: "Tera Mera Rishta Awarapan Emraan Hashmi", url: "" },
+      { title: "Bheegey Hont Tere — Murder", artist: "Kunal Ganjawala", query: "Bheegey Hont Tere Murder Emraan Hashmi", url: "" },
+      { title: "Haan Tu Hain — Jannat", artist: "KK • Pritam", query: "Haan Tu Hain Jannat Emraan Hashmi", url: "" },
+      { title: "Dil Ibaadat — Tum Mile", artist: "KK • Pritam", query: "Dil Ibaadat Tum Mile Emraan Hashmi", url: "" },
+      { title: "Hale Dil — Murder 2", artist: "Harshit Saxena", query: "Hale Dil Murder 2 Emraan Hashmi", url: "" },
+      { title: "Tu Hi Meri Shab Hai — Gangster", artist: "KK • Pritam", query: "Tu Hi Meri Shab Hai Gangster Emraan Hashmi", url: "" },
+      { title: "Kaho Na Kaho — Murder", artist: "Amir Jamal", query: "Kaho Na Kaho Murder Emraan Hashmi", url: "" },
+      { title: "Woh Lamhe Woh Baatein — Zeher", artist: "Atif Aslam", query: "Woh Lamhe Woh Baatein Zeher Emraan Hashmi", url: "" },
+      { title: "Phir Mohabbat — Murder 2", artist: "Arijit Singh, Mohd Irfan", query: "Phir Mohabbat Murder 2 Emraan Hashmi", url: "" },
+      { title: "Tum Hi Ho — Aashiqui 2", artist: "Arijit Singh • Mithoon", query: "Tum Hi Ho Aashiqui 2 Arijit Singh", url: "" },
+      { title: "Channa Mereya — Ae Dil Hai Mushkil", artist: "Arijit Singh • Pritam", query: "Channa Mereya Arijit Singh", url: "" },
+      { title: "Kesariya — Brahmastra", artist: "Arijit Singh • Pritam", query: "Kesariya Brahmastra Arijit Singh", url: "" },
+      { title: "Agar Tum Saath Ho — Tamasha", artist: "Arijit Singh, Alka Yagnik", query: "Agar Tum Saath Ho Arijit Singh", url: "" },
+      { title: "Kabira — Yeh Jawaani Hai Deewani", artist: "Arijit Singh, Tochi Raina", query: "Kabira Arijit Singh", url: "" },
+      { title: "Apna Bana Le — Bhediya", artist: "Arijit Singh • Sachin-Jigar", query: "Apna Bana Le Arijit Singh", url: "" },
+      { title: "Raabta — Agent Vinod", artist: "Arijit Singh • Pritam", query: "Raabta Arijit Singh", url: "" },
+      { title: "Shayad — Love Aaj Kal", artist: "Arijit Singh • Pritam", query: "Shayad Love Aaj Kal Arijit Singh", url: "" },
+      { title: "Hawayein — Jab Harry Met Sejal", artist: "Arijit Singh • Pritam", query: "Hawayein Arijit Singh", url: "" },
+      { title: "Chaleya — Jawan", artist: "Arijit Singh, Shilpa Rao", query: "Chaleya Jawan Arijit Singh", url: "" },
+      { title: "Tera Yaar Hoon Main — Sonu Ke Titu Ki Sweety", artist: "Arijit Singh", query: "Tera Yaar Hoon Main Arijit Singh", url: "" }
     ];
     let currentSongIdx = -1;
 
@@ -1258,6 +1279,7 @@
       files.forEach(f => {
         songs.unshift({
           title: f.name.replace(/\.[^/.]+$/, ""),
+          artist: "My Device MP3",
           url: URL.createObjectURL(f)
         });
       });
@@ -1275,9 +1297,10 @@
         li.onclick = () => playSong(idx);
         li.innerHTML = `
           <div style="min-width:0; flex:1;">
-            <div style="font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${idx === currentSongIdx ? "🔊 " : "🎵 "}${s.title}</div>
+            <div style="font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${idx === currentSongIdx ? "🔊 " : "🎵 "}${s.title}</div>
+            <div style="font-size:11px; color:#8696a0; margin-top:2px;">${s.artist || "Emraan Hashmi Hit"}</div>
           </div>
-          <span style="font-size:12px; color:#00a884;">Play</span>
+          <span style="font-size:11px; color:#00a884; font-weight:600;">${s.url ? "▶ Play" : "▶ Listen"}</span>
         `;
         ul.appendChild(li);
       });
@@ -1285,11 +1308,18 @@
 
     function playSong(idx) {
       currentSongIdx = idx;
+      const song = songs[idx];
       const player = document.getElementById("audio-player");
-      player.src = songs[idx].url;
-      player.play();
-      document.getElementById("now-playing-title").textContent = "Playing: " + songs[idx].title;
+      document.getElementById("now-playing-title").textContent = "Playing: " + song.title;
       renderSongs();
+
+      if (song.url) {
+        player.src = song.url;
+        player.play();
+      } else {
+        // Open official YouTube Music / YouTube search for full copyrighted Emraan Hashmi track
+        window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(song.query), "_blank");
+      }
     }
   </script>
 </body>
