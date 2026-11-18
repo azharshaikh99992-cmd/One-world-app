@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ONE WORLD</title>
+  <title>ONE WORLD — WhatsApp + Music + HD Media</title>
   <style>
     :root {
       --wa-bg: #0b141a;
       --wa-header: #202c33;
       --wa-panel: #111b21;
-      --wa-border: rgba(134, 150, 160, 0.15);
+      --wa-border: rgba(134, 150, 160, 0.16);
       --wa-green: #00a884;
       --wa-green-dark: #005c4b;
       --wa-in-bubble: #202c33;
       --wa-text: #e9edef;
       --wa-muted: #8696a0;
       --wa-blue-tick: #53bdeb;
+      --wa-danger: #f15c6d;
     }
 
     * {
@@ -27,121 +28,124 @@
     }
 
     body {
-      background-color: var(--wa-bg);
+      background: var(--wa-bg);
       color: var(--wa-text);
       height: 100dvh;
       overflow: hidden;
     }
 
-    /* --- 1. WELCOME / SETUP SCREEN --- */
-    #setup-screen {
+    /* --- 1. PHONE + OTP LOGIN SCREEN --- */
+    #auth-screen {
       position: fixed;
       inset: 0;
       background: var(--wa-bg);
-      z-index: 500;
+      z-index: 600;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
     }
 
-    .setup-box {
+    .auth-card {
       width: 100%;
       max-width: 380px;
       text-align: center;
     }
 
-    .wa-logo {
+    .wa-badge {
       width: 68px;
       height: 68px;
       border-radius: 50%;
       background: var(--wa-green);
       color: #0b141a;
-      font-size: 34px;
+      font-size: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 18px;
-      font-weight: bold;
+      margin: 0 auto 16px;
+      font-weight: 800;
     }
 
-    .setup-box h1 {
-      font-size: 24px;
-      font-weight: 600;
+    .auth-card h1 {
+      font-size: 22px;
       margin-bottom: 8px;
     }
 
-    .setup-box p {
+    .auth-card p {
       font-size: 13.5px;
       color: var(--wa-muted);
-      margin-bottom: 26px;
-      line-height: 1.4;
-    }
-
-    .setup-input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid var(--wa-green);
-      color: var(--wa-text);
-      font-size: 16px;
-      padding: 10px 4px;
       margin-bottom: 22px;
-      outline: none;
-      text-align: center;
+      line-height: 1.45;
     }
 
-    .avatar-row {
+    .phone-row {
       display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 28px;
+      gap: 8px;
+      margin-bottom: 16px;
     }
 
-    .av-choice {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
+    .code-select {
       background: var(--wa-header);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      cursor: pointer;
-      border: 2px solid transparent;
+      color: var(--wa-text);
+      border: 1px solid var(--wa-border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      font-size: 15px;
+      outline: none;
     }
 
-    .av-choice.active {
+    .wa-input {
+      width: 100%;
+      background: var(--wa-header);
+      border: 1px solid var(--wa-border);
+      border-radius: 10px;
+      color: var(--wa-text);
+      font-size: 15.5px;
+      padding: 12px 14px;
+      outline: none;
+    }
+
+    .wa-input:focus {
       border-color: var(--wa-green);
-      background: rgba(0, 168, 132, 0.2);
     }
 
     .wa-btn {
+      width: 100%;
       background: var(--wa-green);
       color: #0b141a;
       border: none;
-      padding: 12px 32px;
       border-radius: 24px;
-      font-size: 14.5px;
+      padding: 13px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      width: 100%;
+      margin-top: 8px;
     }
 
-    /* --- MAIN WHATSAPP LAYOUT --- */
-    .app-container {
+    .otp-demo-box {
+      background: rgba(0, 168, 132, 0.14);
+      border: 1px dashed var(--wa-green);
+      color: #00a884;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    /* --- 2. MAIN APP SHELL --- */
+    .app-shell {
       display: flex;
       height: 100%;
       width: 100%;
-      max-width: 1360px;
+      max-width: 1440px;
       margin: 0 auto;
       background: var(--wa-panel);
     }
 
-    /* --- LEFT SIDEBAR (CHATS LIST) --- */
-    .chats-pane {
-      width: 360px;
+    /* LEFT: CHATS & CONTACTS */
+    .sidebar {
+      width: 350px;
       background: var(--wa-panel);
       border-right: 1px solid var(--wa-border);
       display: flex;
@@ -151,55 +155,54 @@
 
     .top-bar {
       height: 60px;
-      padding: 0 16px;
+      padding: 0 14px;
       background: var(--wa-header);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .app-name {
-      font-size: 20px;
+    .brand-txt {
+      font-size: 19px;
       font-weight: 700;
-      color: var(--wa-text);
-      letter-spacing: 0.3px;
     }
 
-    .top-icons {
+    .top-actions {
       display: flex;
+      gap: 10px;
       align-items: center;
-      gap: 14px;
     }
 
-    .icon-action {
+    .icon-btn {
       background: none;
       border: none;
       color: var(--wa-muted);
       font-size: 19px;
       cursor: pointer;
-      padding: 4px;
+      padding: 5px;
+      border-radius: 50%;
     }
 
-    .icon-action:hover {
+    .icon-btn:hover {
+      background: rgba(255,255,255,0.06);
       color: var(--wa-text);
     }
 
-    /* SEARCH & NEW CHAT BAR */
-    .search-wrap {
+    .search-bar {
       padding: 8px 12px;
       border-bottom: 1px solid var(--wa-border);
     }
 
-    .search-box {
+    .search-inner {
       background: var(--wa-header);
       border-radius: 8px;
+      padding: 7px 12px;
       display: flex;
       align-items: center;
-      padding: 7px 12px;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .search-box input {
+    .search-inner input {
       background: transparent;
       border: none;
       color: var(--wa-text);
@@ -208,56 +211,26 @@
       outline: none;
     }
 
-    /* FILTER CHIPS (All, Unread, Groups) */
-    .filter-chips {
-      display: flex;
-      gap: 8px;
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--wa-border);
-    }
-
-    .chip {
-      padding: 5px 12px;
-      border-radius: 99px;
-      background: var(--wa-header);
-      color: var(--wa-muted);
-      font-size: 12.5px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .chip.active {
-      background: rgba(0, 168, 132, 0.22);
-      color: #00a884;
-      font-weight: 600;
-    }
-
-    /* CHAT LIST ITEMS */
     .chat-list {
       flex: 1;
       overflow-y: auto;
       list-style: none;
     }
 
-    .chat-item {
+    .chat-row {
       display: flex;
       align-items: center;
       padding: 12px 14px;
-      gap: 13px;
+      gap: 12px;
       cursor: pointer;
-      border-bottom: 1px solid rgba(134, 150, 160, 0.08);
-      transition: background 0.15s;
+      border-bottom: 1px solid rgba(134,150,160,0.08);
     }
 
-    .chat-item:hover {
+    .chat-row:hover, .chat-row.active {
       background: #202c33;
     }
 
-    .chat-item.active {
-      background: #2a3942;
-    }
-
-    .chat-avatar {
+    .avatar-circle {
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -265,79 +238,75 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 21px;
       flex-shrink: 0;
     }
 
-    .chat-info {
+    .chat-meta {
       flex: 1;
       min-width: 0;
     }
 
-    .chat-row-top {
+    .chat-top {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
       margin-bottom: 3px;
     }
 
-    .chat-title {
-      font-size: 16px;
+    .chat-name {
+      font-size: 15.5px;
       font-weight: 500;
-      color: var(--wa-text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .chat-time {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--wa-muted);
-      flex-shrink: 0;
     }
 
-    .chat-preview {
-      font-size: 13.5px;
+    .chat-sub {
+      font-size: 13px;
       color: var(--wa-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* MY ID STRIP AT BOTTOM OF SIDEBAR */
-    .my-id-footer {
+    .my-account-bar {
       padding: 10px 14px;
       background: var(--wa-header);
       border-top: 1px solid var(--wa-border);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       font-size: 12.5px;
     }
 
-    /* --- RIGHT CHAT CONVERSATION PANE --- */
-    .chat-pane {
+    /* CENTER: CONVERSATION WINDOW */
+    .chat-window {
       flex: 1;
       display: flex;
       flex-direction: column;
       background-color: #0b141a;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
-      background-size: 24px 24px;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 0);
+      background-size: 22px 22px;
+      min-width: 0;
       position: relative;
     }
 
     .chat-header {
       height: 60px;
-      padding: 0 14px;
+      padding: 0 12px;
       background: var(--wa-header);
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--wa-border);
-      z-index: 10;
     }
 
-    .chat-header-left {
+    .header-left {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -351,133 +320,137 @@
       color: var(--wa-text);
       font-size: 22px;
       cursor: pointer;
-      padding-right: 4px;
     }
 
-    .header-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #2a3942;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .header-meta h2 {
-      font-size: 16px;
+    .header-title h2 {
+      font-size: 15.5px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .header-meta span {
-      font-size: 12px;
-      color: var(--wa-muted);
+    .header-title span {
+      font-size: 11.5px;
+      color: var(--wa-green);
       display: block;
     }
 
-    /* MESSAGES AREA */
-    .messages-area {
+    /* MESSAGES STREAM */
+    .messages-stream {
       flex: 1;
-      padding: 14px 16px;
+      padding: 14px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .date-pill {
-      align-self: center;
-      background: #182229;
-      color: var(--wa-muted);
-      font-size: 11.5px;
-      padding: 5px 12px;
-      border-radius: 8px;
-      margin: 8px 0;
-    }
-
-    .bubble-wrap {
+    .msg-item {
       display: flex;
       flex-direction: column;
       max-width: 78%;
-      position: relative;
-      margin-bottom: 2px;
     }
 
-    .bubble-wrap.out {
+    .msg-item.out {
       align-self: flex-end;
     }
 
-    .bubble-wrap.in {
+    .msg-item.in {
       align-self: flex-start;
     }
 
     .bubble {
-      padding: 7px 10px 8px 11px;
+      padding: 7px 10px;
       border-radius: 10px;
       font-size: 14.5px;
       line-height: 1.4;
-      position: relative;
       word-break: break-word;
       box-shadow: 0 1px 1px rgba(0,0,0,0.25);
     }
 
-    .bubble-wrap.in .bubble {
+    .msg-item.in .bubble {
       background: var(--wa-in-bubble);
       border-top-left-radius: 0;
     }
 
-    .bubble-wrap.out .bubble {
+    .msg-item.out .bubble {
       background: var(--wa-green-dark);
       border-top-right-radius: 0;
     }
 
-    .sender-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #00a884;
-      margin-bottom: 2px;
-      cursor: pointer;
-    }
-
-    .quoted-msg {
-      background: rgba(0, 0, 0, 0.22);
-      border-left: 4px solid var(--wa-green);
-      border-radius: 6px;
-      padding: 5px 8px;
+    /* HD IMAGE & 30-MIN VIDEO STYLES */
+    .hd-badge {
+      display: inline-block;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
       margin-bottom: 5px;
-      font-size: 12.5px;
-      color: #d1d7db;
+      border: 1px solid rgba(255,255,255,0.25);
     }
 
-    .bubble-footer {
+    .chat-img {
+      max-width: 100%;
+      max-height: 290px;
+      border-radius: 8px;
+      display: block;
+      cursor: zoom-in;
+      object-fit: contain;
+    }
+
+    .video-card {
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .video-timer-tag {
+      font-size: 11px;
+      color: #fbbf24;
+      font-weight: 600;
+      margin-bottom: 5px;
       display: flex;
-      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-video {
+      width: 100%;
+      max-height: 240px;
+      border-radius: 6px;
+      background: #000;
+    }
+
+    .video-expired {
+      padding: 14px;
+      text-align: center;
+      color: var(--wa-muted);
+      font-size: 12.5px;
+      font-style: italic;
+      background: rgba(0,0,0,0.25);
+      border-radius: 8px;
+    }
+
+    .bubble-meta {
+      display: flex;
       justify-content: flex-end;
+      align-items: center;
       gap: 4px;
-      margin-top: 3px;
       font-size: 10.5px;
-      color: rgba(233, 237, 239, 0.65);
+      color: rgba(233,237,239,0.65);
+      margin-top: 3px;
     }
 
     .ticks {
       color: var(--wa-blue-tick);
-      font-size: 12px;
       font-weight: bold;
     }
 
-    .deleted-msg {
-      font-style: italic;
-      color: var(--wa-muted);
-      font-size: 13.5px;
-    }
-
-    /* CONTEXT MENU ON MESSAGE TAP */
-    .msg-menu {
+    /* TAP MENU FOR REPLY / UNSEND */
+    .tap-menu {
       display: none;
       gap: 10px;
       background: #233138;
@@ -485,59 +458,76 @@
       border-radius: 8px;
       margin-top: 3px;
       font-size: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       align-self: flex-end;
     }
 
-    .bubble-wrap.in .msg-menu {
+    .msg-item.in .tap-menu {
       align-self: flex-start;
     }
 
-    .msg-menu.show {
+    .tap-menu.show {
       display: flex;
     }
 
-    .msg-menu span {
+    .tap-menu span {
       cursor: pointer;
-      color: var(--wa-text);
     }
 
-    .msg-menu span.del {
-      color: #f15c6d;
-    }
-
-    /* REPLY BAR */
-    #reply-preview {
-      display: none;
-      background: var(--wa-header);
-      padding: 8px 14px;
-      border-left: 4px solid var(--wa-green);
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-    }
-
-    /* INPUT BAR */
-    .input-footer {
+    /* INPUT FOOTER WITH ATTACHMENTS */
+    .chat-footer {
       padding: 8px 10px;
       background: var(--wa-header);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      position: relative;
     }
 
-    .msg-field {
+    .attach-menu {
+      display: none;
+      position: absolute;
+      bottom: 62px;
+      left: 12px;
+      background: #233138;
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      flex-direction: column;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .attach-menu.show {
+      display: flex;
+    }
+
+    .attach-opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13.5px;
+      color: var(--wa-text);
+    }
+
+    .attach-opt:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .msg-input {
       flex: 1;
       background: #2a3942;
       border: none;
       border-radius: 22px;
-      padding: 11px 16px;
+      padding: 11px 15px;
       color: var(--wa-text);
       font-size: 15px;
       outline: none;
     }
 
-    .send-circle {
+    .send-btn {
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -545,516 +535,761 @@
       border: none;
       color: #0b141a;
       font-size: 18px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
       flex-shrink: 0;
     }
 
-    /* MODAL FOR NEW PRIVATE CHAT */
-    .modal-bg {
+    /* --- RIGHT SIDEBAR: SONG LIST & MUSIC PLAYER --- */
+    .music-drawer {
+      width: 310px;
+      background: var(--wa-panel);
+      border-left: 1px solid var(--wa-border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      z-index: 80;
+    }
+
+    .music-header {
+      height: 60px;
+      padding: 0 14px;
+      background: var(--wa-header);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--wa-border);
+    }
+
+    .add-song-box {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--wa-border);
+      background: rgba(0, 168, 132, 0.06);
+    }
+
+    .add-song-btn {
+      width: 100%;
+      padding: 9px;
+      border-radius: 10px;
+      border: 1px dashed var(--wa-green);
+      background: rgba(0, 168, 132, 0.14);
+      color: #00a884;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .song-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+      padding: 8px;
+    }
+
+    .song-item {
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      background: var(--wa-header);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      gap: 8px;
+    }
+
+    .song-item.playing {
+      border: 1px solid var(--wa-green);
+      background: rgba(0, 168, 132, 0.16);
+    }
+
+    .now-playing-bar {
+      padding: 12px;
+      background: var(--wa-header);
+      border-top: 1px solid var(--wa-border);
+    }
+
+    .now-playing-bar audio {
+      width: 100%;
+      height: 36px;
+      margin-top: 6px;
+    }
+
+    /* MODALS & LIGHTBOX */
+    .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 400;
+      background: rgba(0,0,0,0.75);
+      z-index: 500;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
 
-    .modal-card {
+    .modal-box {
       background: var(--wa-header);
-      padding: 22px;
+      padding: 20px;
       border-radius: 14px;
       width: 100%;
-      max-width: 340px;
+      max-width: 350px;
     }
 
-    .modal-card h3 {
+    .modal-box h3 {
+      margin-bottom: 12px;
       font-size: 17px;
-      margin-bottom: 8px;
     }
 
-    .modal-card p {
-      font-size: 13px;
-      color: var(--wa-muted);
-      margin-bottom: 14px;
-    }
-
-    .modal-card input {
+    .modal-box input {
       width: 100%;
       padding: 10px 12px;
+      margin-bottom: 12px;
       border-radius: 8px;
       border: 1px solid var(--wa-border);
       background: var(--wa-bg);
       color: white;
-      font-size: 15px;
-      margin-bottom: 14px;
       outline: none;
     }
 
-    .modal-btns {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-
-    .modal-btns button {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    /* TOAST */
-    #toast {
+    #hd-lightbox {
+      display: none;
       position: fixed;
-      bottom: 75px;
+      inset: 0;
+      background: rgba(0,0,0,0.94);
+      z-index: 700;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    #hd-lightbox img {
+      max-width: 100%;
+      max-height: 85dvh;
+      object-fit: contain;
+    }
+
+    /* PUSH NOTIFICATION BANNER */
+    #push-notif {
+      position: fixed;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%);
       background: #233138;
+      border-left: 4px solid var(--wa-green);
       color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 12.5px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      z-index: 800;
       display: none;
-      z-index: 600;
+      min-width: 270px;
+      max-width: 92%;
+      font-size: 13px;
     }
 
-    /* MOBILE VIEWPORT BEHAVIOR (EXACT WHATSAPP STYLE) */
+    /* RESPONSIVE MOBILE */
+    @media (max-width: 960px) {
+      .music-drawer {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+      }
+      .music-drawer.open {
+        transform: translateX(0);
+      }
+    }
+
     @media (max-width: 768px) {
-      .chats-pane {
+      .sidebar {
         width: 100%;
       }
-      .chat-pane {
+      .chat-window {
         position: fixed;
         inset: 0;
         transform: translateX(100%);
-        transition: transform 0.22s ease-out;
-        z-index: 50;
+        transition: transform 0.22s ease;
+        z-index: 60;
       }
-      .chat-pane.open {
+      .chat-window.open {
         transform: translateX(0);
       }
       .back-btn {
         display: block;
       }
-      .bubble-wrap {
-        max-width: 84%;
+      .msg-item {
+        max-width: 85%;
       }
     }
   </style>
 </head>
 <body>
 
-  <div id="toast"></div>
+  <!-- PUSH NOTIFICATION POPUP -->
+  <div id="push-notif">
+    <div style="font-weight:700; color:#00a884; font-size:12px;" id="notif-sender">New Message</div>
+    <div id="notif-body" style="margin-top:2px;">Hello!</div>
+  </div>
 
-  <!-- 1. SIMPLE SETUP SCREEN -->
-  <div id="setup-screen">
-    <div class="setup-box">
-      <div class="wa-logo">🌍</div>
-      <h1>ONE WORLD</h1>
-      <p>Enter your name to get your personal Chat ID and start messaging.</p>
-      <input type="text" id="name-input" class="setup-input" placeholder="Your Name" maxlength="20" />
-      <div class="avatar-row" id="avatar-row">
-        <div class="av-choice active" data-av="😎">😎</div>
-        <div class="av-choice" data-av="🧑🏻">🧑🏻</div>
-        <div class="av-choice" data-av="👩🏻">👩🏻</div>
-        <div class="av-choice" data-av="🦁">🦁</div>
-        <div class="av-choice" data-av="🚀">🚀</div>
+  <!-- HD IMAGE LIGHTBOX -->
+  <div id="hd-lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="HD Preview" />
+    <div style="color:#8696a0; font-size:12px; margin-top:10px;">Tap anywhere to close • Original HD Quality</div>
+  </div>
+
+  <!-- 1. PHONE NUMBER + OTP LOGIN -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="wa-badge">💬</div>
+      <h1>Verify your phone number</h1>
+      <p>ONE WORLD will send an OTP to verify your mobile number.</p>
+
+      <div id="step-phone">
+        <div class="phone-row">
+          <select id="country-code" class="code-select">
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+966">🇸🇦 +966</option>
+          </select>
+          <input type="tel" id="phone-input" class="wa-input" placeholder="Enter mobile number" maxlength="12" />
+        </div>
+        <input type="text" id="my-profile-name" class="wa-input" placeholder="Your Name (e.g. Azhar)" style="margin-bottom:14px;" />
+        <button class="wa-btn" onclick="sendOTP()">SEND OTP</button>
       </div>
-      <button class="wa-btn" onclick="completeSetup()">AGREE AND CONTINUE</button>
+
+      <div id="step-otp" style="display:none;">
+        <div class="otp-demo-box" id="otp-hint"></div>
+        <input type="number" id="otp-input" class="wa-input" placeholder="Enter 6-digit OTP" style="text-align:center; letter-spacing:4px; font-weight:bold; margin-bottom:14px;" />
+        <button class="wa-btn" onclick="verifyOTP()">VERIFY & CONTINUE</button>
+      </div>
     </div>
   </div>
 
-  <!-- NEW PRIVATE CHAT MODAL -->
-  <div class="modal-bg" id="new-chat-modal">
-    <div class="modal-card">
-      <h3>New Private Chat</h3>
-      <p>Enter the User ID of the person you want to message privately.</p>
-      <input type="text" id="new-uid-field" placeholder="e.g. OW-8821" />
-      <div class="modal-btns">
-        <button style="background:transparent; color:var(--wa-muted);" onclick="closeNewChatModal()">Cancel</button>
-        <button style="background:var(--wa-green); color:#0b141a;" onclick="createPrivateChat()">Start Chat</button>
+  <!-- SAVE NEW CONTACT MODAL -->
+  <div class="modal-overlay" id="contact-modal">
+    <div class="modal-box">
+      <h3>Save New Contact</h3>
+      <input type="text" id="contact-name" placeholder="Contact Name (e.g. Rahul)" />
+      <input type="tel" id="contact-phone" placeholder="Mobile Number (e.g. +91 9876543210)" />
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button style="background:none; border:none; color:#8696a0; cursor:pointer;" onclick="closeContactModal()">Cancel</button>
+        <button style="background:var(--wa-green); border:none; padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="saveNewContact()">Save & Chat</button>
       </div>
     </div>
   </div>
 
-  <!-- 2. MAIN WHATSAPP-STYLE APP -->
-  <div class="app-container">
+  <!-- 2. MAIN WHATSAPP + MUSIC APP -->
+  <div class="app-shell">
 
-    <!-- LEFT: CHATS LIST -->
-    <section class="chats-pane" id="chats-pane">
+    <!-- LEFT: CONTACTS & CHATS -->
+    <aside class="sidebar">
       <div class="top-bar">
-        <div class="app-name">ONE WORLD</div>
-        <div class="top-icons">
-          <button class="icon-action" onclick="openNewChatModal()" title="New Private Chat">💬+</button>
-          <button class="icon-action" onclick="editProfile()" title="Profile Settings">⋮</button>
+        <div class="brand-txt">ONE WORLD</div>
+        <div class="top-actions">
+          <button class="icon-btn" onclick="openContactModal()" title="Save New Number">👤+</button>
+          <button class="icon-btn" onclick="toggleMusicDrawer()" title="Song List">🎵</button>
+          <button class="icon-btn" onclick="logoutUser()" title="Logout">🚪</button>
         </div>
       </div>
 
-      <div class="search-wrap">
-        <div class="search-box">
+      <div class="search-bar">
+        <div class="search-inner">
           <span style="color:var(--wa-muted);">🔍</span>
-          <input type="text" id="search-input" placeholder="Search chats or enter ID..." oninput="filterChats()" />
+          <input type="text" id="search-contacts" placeholder="Search saved name or number..." oninput="searchChats()" />
         </div>
       </div>
 
-      <div class="filter-chips">
-        <button class="chip active" onclick="filterType('all', this)">All</button>
-        <button class="chip" onclick="filterType('group', this)">World Groups</button>
-        <button class="chip" onclick="filterType('private', this)">Private DMs</button>
+      <ul class="chat-list" id="chat-list"></ul>
+
+      <div class="my-account-bar">
+        <span>My No: <b id="my-phone-label" style="color:var(--wa-green);">+91 ...</b></span>
+        <span style="color:var(--wa-muted);" id="my-name-label">User</span>
       </div>
+    </aside>
 
-      <ul class="chat-list" id="chat-list">
-        <!-- Public Global Group -->
-        <li class="chat-item active" data-type="group" data-id="global" onclick="openChat('global', '🌐', 'Global Lounge', 'Public World Group • Tap any name to DM')">
-          <div class="chat-avatar">🌐</div>
-          <div class="chat-info">
-            <div class="chat-row-top">
-              <span class="chat-title">Global Lounge</span>
-              <span class="chat-time" id="time-global">12:55 AM</span>
-            </div>
-            <div class="chat-preview" id="prev-global">Welcome to ONE WORLD!</div>
-          </div>
-        </li>
-
-        <!-- Sample Private Contact -->
-        <li class="chat-item" data-type="private" data-id="OW-8821" onclick="openChat('OW-8821', '🚀', 'Sofia (OW-8821)', 'online')">
-          <div class="chat-avatar">🚀</div>
-          <div class="chat-info">
-            <div class="chat-row-top">
-              <span class="chat-title">Sofia (OW-8821)</span>
-              <span class="chat-time" id="time-OW-8821">12:51 AM</span>
-            </div>
-            <div class="chat-preview" id="prev-OW-8821">Hi! Tap my chat to send a private message.</div>
-          </div>
-        </li>
-      </ul>
-
-      <div class="my-id-footer">
-        <span>Your ID: <b id="my-id-label" style="color:var(--wa-green);">OW-0000</b></span>
-        <button style="background:none; border:none; color:var(--wa-green); font-weight:600; cursor:pointer;" onclick="copyMyID()">Copy ID</button>
-      </div>
-    </section>
-
-    <!-- RIGHT: CONVERSATION WINDOW -->
-    <section class="chat-pane" id="chat-pane">
+    <!-- CENTER: CHAT CONVERSATION -->
+    <main class="chat-window" id="chat-window">
       <header class="chat-header">
-        <div class="chat-header-left">
+        <div class="header-left">
           <button class="back-btn" onclick="closeMobileChat()">←</button>
-          <div class="header-avatar" id="header-av">🌐</div>
-          <div class="header-meta">
-            <h2 id="header-title">Global Lounge</h2>
-            <span id="header-sub">Public World Group • Tap any name to DM</span>
+          <div class="avatar-circle" id="active-av">👤</div>
+          <div class="header-title">
+            <h2 id="active-name">Select a Contact</h2>
+            <span id="active-sub">online</span>
           </div>
         </div>
-        <button class="icon-action" onclick="openNewChatModal()" title="New Private Chat">➕</button>
+        <div style="display:flex; gap:6px;">
+          <button class="icon-btn" onclick="toggleMusicDrawer()" title="Open Song List">🎵</button>
+          <button class="icon-btn" onclick="openContactModal()" title="Save Contact">👤+</button>
+        </div>
       </header>
 
-      <div class="messages-area" id="messages-area"></div>
+      <div class="messages-stream" id="messages-stream"></div>
 
-      <div id="reply-preview">
-        <div>
-          <div style="color:var(--wa-green); font-weight:600; font-size:12px;" id="reply-sender">Name</div>
-          <div style="color:var(--wa-muted); font-size:12.5px;" id="reply-msg">Message</div>
-        </div>
-        <span style="cursor:pointer; font-size:16px; color:var(--wa-muted);" onclick="cancelReply()">✕</span>
+      <!-- ATTACHMENT POPUP MENU -->
+      <div class="attach-menu" id="attach-menu">
+        <label class="attach-opt">
+          <span>🖼️ Send HD Image (Original Clarity)</span>
+          <input type="file" accept="image/*" style="display:none;" onchange="handleImageUpload(event)" />
+        </label>
+        <label class="attach-opt">
+          <span>🎬 Send Video (30-Min View Window)</span>
+          <input type="file" accept="video/*" style="display:none;" onchange="handleVideoUpload(event)" />
+        </label>
       </div>
 
-      <footer class="input-footer">
-        <input type="text" id="msg-box" class="msg-field" placeholder="Message" autocomplete="off" onkeydown="if(event.key==='Enter') sendMsg()" />
-        <button class="send-circle" onclick="sendMsg()">➤</button>
+      <footer class="chat-footer">
+        <button class="icon-btn" onclick="toggleAttachMenu()" title="Attach HD Photo / Video">📎</button>
+        <input type="text" id="msg-input" class="msg-input" placeholder="Message" autocomplete="off" onkeydown="if(event.key==='Enter') sendTextMsg()" />
+        <button class="send-btn" onclick="sendTextMsg()">➤</button>
       </footer>
-    </section>
+    </main>
+
+    <!-- RIGHT: SONG PLAYLIST & PLAYER -->
+    <aside class="music-drawer" id="music-drawer">
+      <div class="music-header">
+        <div style="font-weight:700; font-size:15px;">🎵 Song Playlist</div>
+        <button class="icon-btn" onclick="toggleMusicDrawer()">✕</button>
+      </div>
+
+      <div class="add-song-box">
+        <label class="add-song-btn" style="display:block; text-align:center;">
+          ➕ Add Songs from Phone (MP3 / Audio)
+          <input type="file" accept="audio/*" multiple style="display:none;" onchange="addSongsFromDevice(event)" />
+        </label>
+      </div>
+
+      <ul class="song-list" id="song-list"></ul>
+
+      <div class="now-playing-bar">
+        <div style="font-size:12px; color:#00a884; font-weight:600;" id="now-playing-title">No song playing</div>
+        <audio id="audio-player" controls></audio>
+      </div>
+    </aside>
 
   </div>
 
   <script>
-    let user = { name: "", avatar: "😎", uid: "" };
-    let activeChatId = "global";
-    let replyData = null;
+    let currentUser = null;
+    let generatedOTP = "";
+    let activePhone = "";
+    let contacts = [];
+    let messagesDB = {};
+    let songs = [
+      { title: "Chill Lofi Beats (Demo Track)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+      { title: "Midnight Drive Vibes (Demo)", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
+    ];
+    let currentSongIdx = -1;
 
-    // Store messages per chat cleanly
-    const chatStore = {
-      "global": [
-        { id: 1, sender: "Sofia", uid: "OW-8821", text: "Hello everyone! Welcome to ONE WORLD 🌍", out: false, time: "12:50 AM" }
-      ],
-      "OW-8821": [
-        { id: 2, sender: "Sofia", uid: "OW-8821", text: "Hi! Tap my chat to send a private message.", out: false, time: "12:51 AM" }
-      ]
-    };
-
-    function showToast(txt) {
-      const t = document.getElementById("toast");
-      t.textContent = txt;
-      t.style.display = "block";
-      clearTimeout(t._id);
-      t._id = setTimeout(() => t.style.display = "none", 2200);
+    // --- SOUND & PUSH NOTIFICATION ---
+    function playNotifSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(660, ctx.currentTime);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08);
+        g.gain.setValueAtTime(0.1, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+        osc.connect(g);
+        g.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.22);
+      } catch (e) {}
     }
 
-    // Avatar Picker
-    document.querySelectorAll(".av-choice").forEach(el => {
-      el.addEventListener("click", () => {
-        document.querySelectorAll(".av-choice").forEach(x => x.classList.remove("active"));
-        el.classList.add("active");
-        user.avatar = el.dataset.av;
-      });
-    });
+    function triggerNotification(senderName, text) {
+      playNotifSound();
+      const box = document.getElementById("push-notif");
+      document.getElementById("notif-sender").textContent = "💬 " + senderName;
+      document.getElementById("notif-body").textContent = text;
+      box.style.display = "block";
+      clearTimeout(box._t);
+      box._t = setTimeout(() => box.style.display = "none", 3200);
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const saved = localStorage.getItem("ow_wa_user");
-      if (saved) {
-        user = JSON.parse(saved);
-        document.getElementById("my-id-label").textContent = user.uid;
-        document.getElementById("setup-screen").style.display = "none";
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(senderName, { body: text });
       }
-      renderMessages();
-    });
+    }
 
-    function completeSetup() {
-      const val = document.getElementById("name-input").value.trim();
-      if (!val) {
-        showToast("Please enter your name");
+    // --- 1. PHONE + OTP FLOW ---
+    function sendOTP() {
+      const code = document.getElementById("country-code").value;
+      const num = document.getElementById("phone-input").value.trim();
+      const name = document.getElementById("my-profile-name").value.trim() || "User";
+      if (num.length < 7) {
+        alert("Please enter a valid mobile number");
         return;
       }
-      user.name = val;
-      if (!user.uid) user.uid = "OW-" + Math.floor(1000 + Math.random() * 9000);
-      localStorage.setItem("ow_wa_user", JSON.stringify(user));
-      document.getElementById("my-id-label").textContent = user.uid;
-      document.getElementById("setup-screen").style.display = "none";
+      generatedOTP = String(Math.floor(100000 + Math.random() * 900000));
+      document.getElementById("step-phone").style.display = "none";
+      document.getElementById("step-otp").style.display = "block";
+      const hint = document.getElementById("otp-hint");
+      hint.style.display = "block";
+      hint.innerHTML = `📩 SMS OTP sent to <b>${code} ${num}</b><br>Your Verification Code: <b style="font-size:16px;">${generatedOTP}</b>`;
+      playNotifSound();
+    }
+
+    function verifyOTP() {
+      const entered = document.getElementById("otp-input").value.trim();
+      if (entered !== generatedOTP) {
+        alert("Incorrect OTP! Please enter the 6-digit code shown above.");
+        return;
+      }
+      const code = document.getElementById("country-code").value;
+      const num = document.getElementById("phone-input").value.trim();
+      const name = document.getElementById("my-profile-name").value.trim() || "Azhar";
+
+      currentUser = { phone: `${code} ${num}`, name: name };
+      localStorage.setItem("ow_wa_auth", JSON.stringify(currentUser));
+
+      if ("Notification" in window && Notification.permission !== "granted") {
+        Notification.requestPermission();
+      }
+      initApp();
+    }
+
+    function logoutUser() {
+      if (confirm("Logout from this mobile number?")) {
+        localStorage.removeItem("ow_wa_auth");
+        location.reload();
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedAuth = localStorage.getItem("ow_wa_auth");
+      if (savedAuth) {
+        currentUser = JSON.parse(savedAuth);
+        initApp();
+      }
+    });
+
+    function initApp() {
+      document.getElementById("auth-screen").style.display = "none";
+      document.getElementById("my-phone-label").textContent = currentUser.phone;
+      document.getElementById("my-name-label").textContent = currentUser.name;
+
+      // Load saved contacts or add 1 default saved contact
+      const savedContacts = localStorage.getItem("ow_wa_contacts");
+      contacts = savedContacts ? JSON.parse(savedContacts) : [
+        { name: "Saved Contact Demo", phone: "+91 9876543210", lastMsg: "Tap 👤+ to save any mobile number", time: "Now" }
+      ];
+
+      const savedMsgs = localStorage.getItem("ow_wa_msgs");
+      messagesDB = savedMsgs ? JSON.parse(savedMsgs) : {
+        "+91 9876543210": [
+          { id: 1, type: "text", text: "Hi! Save any mobile number using 👤+ above and send HD photos or 30-min videos.", out: false, time: "1:00 AM" }
+        ]
+      };
+
+      renderContacts();
+      renderSongs();
+      if (contacts.length > 0) {
+        selectContact(contacts[0].phone, false);
+      }
+    }
+
+    // --- 2. SAVE NUMBER & SHOW SAME SAVED NAME ---
+    function openContactModal() {
+      document.getElementById("contact-modal").style.display = "flex";
+      document.getElementById("contact-name").focus();
+    }
+
+    function closeContactModal() {
+      document.getElementById("contact-modal").style.display = "none";
+    }
+
+    function saveNewContact() {
+      const cName = document.getElementById("contact-name").value.trim();
+      const cPhone = document.getElementById("contact-phone").value.trim();
+      if (!cName || !cPhone) {
+        alert("Enter both Name and Mobile Number");
+        return;
+      }
+
+      const existing = contacts.find(c => c.phone === cPhone);
+      if (existing) {
+        existing.name = cName; // Update saved name
+      } else {
+        contacts.unshift({ name: cName, phone: cPhone, lastMsg: "Tap to message", time: "Now" });
+      }
+      if (!messagesDB[cPhone]) messagesDB[cPhone] = [];
+
+      localStorage.setItem("ow_wa_contacts", JSON.stringify(contacts));
+      document.getElementById("contact-name").value = "";
+      document.getElementById("contact-phone").value = "";
+      closeContactModal();
+      renderContacts();
+      selectContact(cPhone, true);
+      triggerNotification("Contact Saved", `${cName} (${cPhone}) added to your list`);
+    }
+
+    function renderContacts() {
+      const list = document.getElementById("chat-list");
+      list.innerHTML = "";
+      contacts.forEach(c => {
+        const li = document.createElement("li");
+        li.className = `chat-row ${c.phone === activePhone ? "active" : ""}`;
+        li.onclick = () => selectContact(c.phone, true);
+        li.innerHTML = `
+          <div class="avatar-circle">👤</div>
+          <div class="chat-meta">
+            <div class="chat-top">
+              <span class="chat-name">${c.name}</span>
+              <span class="chat-time">${c.time || ""}</span>
+            </div>
+            <div class="chat-sub">${c.phone} • ${c.lastMsg || ""}</div>
+          </div>`;
+        list.appendChild(li);
+      });
+    }
+
+    function searchChats() {
+      const q = document.getElementById("search-contacts").value.toLowerCase();
+      document.querySelectorAll(".chat-row").forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(q) ? "flex" : "none";
+      });
+    }
+
+    function selectContact(phone, openMobile = true) {
+      activePhone = phone;
+      const c = contacts.find(x => x.phone === phone);
+      if (c) {
+        document.getElementById("active-name").textContent = c.name; // Shows exact saved name
+        document.getElementById("active-sub").textContent = `${c.phone} • online`;
+      }
+      renderContacts();
       renderMessages();
-    }
-
-    function editProfile() {
-      document.getElementById("name-input").value = user.name;
-      document.getElementById("setup-screen").style.display = "flex";
-    }
-
-    function copyMyID() {
-      navigator.clipboard?.writeText(user.uid);
-      showToast("ID Copied: " + user.uid);
-    }
-
-    function openChat(chatId, avatar, title, subtitle) {
-      activeChatId = chatId;
-      document.querySelectorAll(".chat-item").forEach(i => i.classList.remove("active"));
-      const item = document.querySelector(`.chat-item[data-id="${chatId}"]`);
-      if (item) item.classList.add("active");
-
-      document.getElementById("header-av").textContent = avatar;
-      document.getElementById("header-title").textContent = title;
-      document.getElementById("header-sub").textContent = subtitle;
-
-      cancelReply();
-      renderMessages();
-
-      if (window.innerWidth <= 768) {
-        document.getElementById("chat-pane").classList.add("open");
+      if (openMobile && window.innerWidth <= 768) {
+        document.getElementById("chat-window").classList.add("open");
       }
     }
 
     function closeMobileChat() {
-      document.getElementById("chat-pane").classList.remove("open");
+      document.getElementById("chat-window").classList.remove("open");
     }
 
-    function openNewChatModal() {
-      document.getElementById("new-chat-modal").style.display = "flex";
-      document.getElementById("new-uid-field").focus();
+    // --- 3. FAST MESSAGING + HD IMAGE + 30-MIN VIDEO ---
+    function toggleAttachMenu() {
+      document.getElementById("attach-menu").classList.toggle("show");
     }
 
-    function closeNewChatModal() {
-      document.getElementById("new-chat-modal").style.display = "none";
+    function sendTextMsg() {
+      const input = document.getElementById("msg-input");
+      const txt = input.value.trim();
+      if (!txt || !activePhone) return;
+
+      pushMessage({ type: "text", text: txt, out: true });
+      input.value = "";
+      simulateAutoReply();
     }
 
-    function createPrivateChat(prefillId = null, prefillName = null) {
-      const field = document.getElementById("new-uid-field");
-      const targetId = (prefillId || field.value.trim().toUpperCase());
-      if (!targetId) {
-        showToast("Enter a User ID");
-        return;
-      }
-      if (targetId === user.uid) {
-        showToast("You cannot message your own ID");
-        return;
-      }
+    // HD IMAGE (NO COMPRESSION / FULL CLARITY)
+    function handleImageUpload(e) {
+      toggleAttachMenu();
+      const file = e.target.files[0];
+      if (!file || !activePhone) return;
 
-      const title = prefillName ? `${prefillName} (${targetId})` : `User (${targetId})`;
-      if (!chatStore[targetId]) {
-        chatStore[targetId] = [];
-        const li = document.createElement("li");
-        li.className = "chat-item";
-        li.dataset.type = "private";
-        li.dataset.id = targetId;
-        li.onclick = () => openChat(targetId, "👤", title, "online");
-        li.innerHTML = `
-          <div class="chat-avatar">👤</div>
-          <div class="chat-info">
-            <div class="chat-row-top">
-              <span class="chat-title">${title}</span>
-              <span class="chat-time" id="time-${targetId}">Now</span>
-            </div>
-            <div class="chat-preview" id="prev-${targetId}">Tap to start messaging</div>
-          </div>`;
-        document.getElementById("chat-list").prepend(li);
-      }
-
-      field.value = "";
-      closeNewChatModal();
-      openChat(targetId, "👤", title, "online");
-    }
-
-    function sendMsg() {
-      const box = document.getElementById("msg-box");
-      const text = box.value.trim();
-      if (!text) return;
-
-      const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-      const msgObj = {
-        id: Date.now(),
-        sender: user.name,
-        uid: user.uid,
-        text: text,
-        out: true,
-        time: time,
-        reply: replyData ? { ...replyData } : null,
-        deleted: false
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        pushMessage({
+          type: "image",
+          src: ev.target.result, // Original full-res Data URL
+          fileName: file.name,
+          out: true
+        });
       };
+      reader.readAsDataURL(file);
+      e.target.value = "";
+    }
 
-      if (!chatStore[activeChatId]) chatStore[activeChatId] = [];
-      chatStore[activeChatId].push(msgObj);
+    // 30-MINUTE VIEWABLE VIDEO
+    function handleVideoUpload(e) {
+      toggleAttachMenu();
+      const file = e.target.files[0];
+      if (!file || !activePhone) return;
 
-      // Update sidebar preview
-      const prevEl = document.getElementById(`prev-${activeChatId}`);
-      const timeEl = document.getElementById(`time-${activeChatId}`);
-      if (prevEl) prevEl.textContent = "You: " + text;
-      if (timeEl) timeEl.textContent = time;
+      const videoURL = URL.createObjectURL(file);
+      const expiresAt = Date.now() + 30 * 60 * 1000; // Exact 30 minutes
+      pushMessage({
+        type: "video",
+        src: videoURL,
+        fileName: file.name,
+        expiresAt: expiresAt,
+        out: true
+      });
+      e.target.value = "";
+    }
 
-      box.value = "";
-      cancelReply();
+    function pushMessage(payload) {
+      const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const msg = { id: Date.now(), time, deleted: false, ...payload };
+
+      if (!messagesDB[activePhone]) messagesDB[activePhone] = [];
+      messagesDB[activePhone].push(msg);
+
+      const c = contacts.find(x => x.phone === activePhone);
+      if (c) {
+        c.lastMsg = payload.type === "text" ? payload.text : (payload.type === "image" ? "📷 HD Photo" : "🎬 Video (30m)");
+        c.time = time;
+      }
+
+      // Save text/image state safely
+      try {
+        localStorage.setItem("ow_wa_contacts", JSON.stringify(contacts));
+        localStorage.setItem("ow_wa_msgs", JSON.stringify(messagesDB));
+      } catch (err) {}
+
+      renderContacts();
       renderMessages();
+      playNotifSound();
+    }
+
+    function simulateAutoReply() {
+      const target = activePhone;
+      const contactObj = contacts.find(x => x.phone === target);
+      const displayName = contactObj ? contactObj.name : target;
+
+      setTimeout(() => {
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        const replyText = "Got your message! 👍";
+        messagesDB[target].push({ id: Date.now(), type: "text", text: replyText, out: false, time, deleted: false });
+        if (contactObj) {
+          contactObj.lastMsg = replyText;
+          contactObj.time = time;
+        }
+        renderContacts();
+        if (activePhone === target) renderMessages();
+        triggerNotification(displayName, replyText);
+      }, 1200);
     }
 
     function renderMessages() {
-      const area = document.getElementById("messages-area");
-      area.innerHTML = `<div class="date-pill">TODAY</div>`;
-      const msgs = chatStore[activeChatId] || [];
+      const stream = document.getElementById("messages-stream");
+      stream.innerHTML = "";
+      const list = messagesDB[activePhone] || [];
 
-      msgs.forEach(m => {
-        const wrap = document.createElement("div");
-        wrap.className = `bubble-wrap ${m.out ? "out" : "in"}`;
+      list.forEach(m => {
+        const item = document.createElement("div");
+        item.className = `msg-item ${m.out ? "out" : "in"}`;
 
         const bubble = document.createElement("div");
         bubble.className = "bubble";
 
-        // Show sender name in group chats for incoming messages
-        if (!m.out && activeChatId === "global") {
-          const sLabel = document.createElement("div");
-          sLabel.className = "sender-label";
-          sLabel.textContent = `${m.sender} (${m.uid})`;
-          sLabel.onclick = () => createPrivateChat(m.uid, m.sender);
-          bubble.appendChild(sLabel);
-        }
-
         if (m.deleted) {
-          const delTxt = document.createElement("div");
-          delTxt.className = "deleted-msg";
-          delTxt.textContent = m.out ? "🚫 You deleted this message" : "🚫 This message was deleted";
-          bubble.appendChild(delTxt);
-        } else {
-          if (m.reply) {
-            const q = document.createElement("div");
-            q.className = "quoted-msg";
-            q.innerHTML = `<b style="color:#00a884;">${m.reply.sender}</b><br>${m.reply.text}`;
-            bubble.appendChild(q);
+          bubble.innerHTML = `<i style="color:#8696a0; font-size:13px;">🚫 This message was unsent</i>`;
+        } else if (m.type === "image") {
+          bubble.innerHTML = `
+            <span class="hd-badge">HD • ORIGINAL CLARITY</span>
+            <img src="${m.src}" class="chat-img" onclick="openLightbox('${m.src}')" />
+          `;
+        } else if (m.type === "video") {
+          const remainingMs = m.expiresAt - Date.now();
+          if (remainingMs <= 0) {
+            bubble.innerHTML = `<div class="video-expired">⏳ This video expired after 30 minutes</div>`;
+          } else {
+            const minsLeft = Math.ceil(remainingMs / 60000);
+            bubble.innerHTML = `
+              <div class="video-card">
+                <div class="video-timer-tag">
+                  <span>🎬 Video</span>
+                  <span>⏳ Available for ${minsLeft} min</span>
+                </div>
+                <video src="${m.src}" controls class="chat-video"></video>
+              </div>`;
           }
-
-          const body = document.createElement("div");
-          body.textContent = m.text;
-          bubble.appendChild(body);
+        } else {
+          const txtDiv = document.createElement("div");
+          txtDiv.textContent = m.text;
+          bubble.appendChild(txtDiv);
         }
 
-        const foot = document.createElement("div");
-        foot.className = "bubble-footer";
-        foot.innerHTML = `<span>${m.time}</span>${m.out && !m.deleted ? '<span class="ticks">✓✓</span>' : ''}`;
-        bubble.appendChild(foot);
+        const meta = document.createElement("div");
+        meta.className = "bubble-meta";
+        meta.innerHTML = `<span>${m.time}</span>${m.out && !m.deleted ? '<span class="ticks">✓✓</span>' : ''}`;
+        bubble.appendChild(meta);
 
-        // Tap bubble to toggle Reply / Unsend menu (WhatsApp style)
+        // Tap bubble for Unsend
         const menu = document.createElement("div");
-        menu.className = "msg-menu";
-
-        if (!m.deleted) {
-          const repBtn = document.createElement("span");
-          repBtn.textContent = "↩ Reply";
-          repBtn.onclick = (e) => {
+        menu.className = "tap-menu";
+        if (m.out && !m.deleted) {
+          const unsend = document.createElement("span");
+          unsend.style.color = "#f15c6d";
+          unsend.textContent = "🗑️ Unsend";
+          unsend.onclick = (e) => {
             e.stopPropagation();
-            setReply(m.out ? "You" : m.sender, m.text);
-            menu.classList.remove("show");
+            m.deleted = true;
+            renderMessages();
           };
-          menu.appendChild(repBtn);
-
-          if (m.out) {
-            const unsendBtn = document.createElement("span");
-            unsendBtn.className = "del";
-            unsendBtn.textContent = "🗑️ Unsend";
-            unsendBtn.onclick = (e) => {
-              e.stopPropagation();
-              m.deleted = true;
-              renderMessages();
-              showToast("Message deleted for everyone");
-            };
-            menu.appendChild(unsendBtn);
-          }
+          menu.appendChild(unsend);
         }
 
         bubble.onclick = () => {
-          document.querySelectorAll(".msg-menu").forEach(x => {
-            if (x !== menu) x.classList.remove("show");
-          });
-          menu.classList.toggle("show");
+          if (menu.children.length > 0) menu.classList.toggle("show");
         };
 
-        wrap.append(bubble, menu);
-        area.appendChild(wrap);
+        item.append(bubble, menu);
+        stream.appendChild(item);
       });
 
-      area.scrollTop = area.scrollHeight;
+      stream.scrollTop = stream.scrollHeight;
     }
 
-    function setReply(sender, text) {
-      replyData = { sender, text };
-      document.getElementById("reply-preview").style.display = "flex";
-      document.getElementById("reply-sender").textContent = sender;
-      document.getElementById("reply-msg").textContent = text;
-      document.getElementById("msg-box").focus();
+    function openLightbox(src) {
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("hd-lightbox").style.display = "flex";
     }
 
-    function cancelReply() {
-      replyData = null;
-      document.getElementById("reply-preview").style.display = "none";
+    // --- 4. SIDE SONG LIST & PLAYER ---
+    function toggleMusicDrawer() {
+      document.getElementById("music-drawer").classList.toggle("open");
     }
 
-    function filterChats() {
-      const q = document.getElementById("search-input").value.toLowerCase();
-      document.querySelectorAll(".chat-item").forEach(item => {
-        const txt = item.innerText.toLowerCase();
-        item.style.display = txt.includes(q) ? "flex" : "none";
+    function addSongsFromDevice(e) {
+      const files = Array.from(e.target.files);
+      files.forEach(f => {
+        songs.unshift({
+          title: f.name.replace(/\.[^/.]+$/, ""),
+          url: URL.createObjectURL(f)
+        });
+      });
+      renderSongs();
+      if (files.length > 0) playSong(0);
+      e.target.value = "";
+    }
+
+    function renderSongs() {
+      const ul = document.getElementById("song-list");
+      ul.innerHTML = "";
+      songs.forEach((s, idx) => {
+        const li = document.createElement("li");
+        li.className = `song-item ${idx === currentSongIdx ? "playing" : ""}`;
+        li.onclick = () => playSong(idx);
+        li.innerHTML = `
+          <div style="min-width:0; flex:1;">
+            <div style="font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${idx === currentSongIdx ? "🔊 " : "🎵 "}${s.title}</div>
+          </div>
+          <span style="font-size:12px; color:#00a884;">Play</span>
+        `;
+        ul.appendChild(li);
       });
     }
 
-    function filterType(type, btn) {
-      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-      btn.classList.add("active");
-      document.querySelectorAll(".chat-item").forEach(item => {
-        if (type === "all" || item.dataset.type === type) {
-          item.style.display = "flex";
-        } else {
-          item.style.display = "none";
-        }
-      });
+    function playSong(idx) {
+      currentSongIdx = idx;
+      const player = document.getElementById("audio-player");
+      player.src = songs[idx].url;
+      player.play();
+      document.getElementById("now-playing-title").textContent = "Playing: " + songs[idx].title;
+      renderSongs();
     }
   </script>
 </body>
