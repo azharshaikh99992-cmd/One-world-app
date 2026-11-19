@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ONE WORLD — Live Global Chat & Full Songs</title>
+  <style>
+    :root {
+      --bg-main: #070a12;
+      --bg-surface: #0f1524;
+      --bg-card: rgba(20, 27, 45, 0.85);
+      --bg-input: #172036;
+      --cyan: #00f2fe;
+      --blue: #4facfe;
+      --pink: #ff2a85;
+      --purple: #8a2be2;
+      --gold: #ffd700;
+      --green: #10b981;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #161d36 0%, var(--bg-main) 55%);
+      color: var(--text-primary);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Glass Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 15px;
+      background: rgba(11, 16, 29, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 20;
+    }
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .logo-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--cyan), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.35);
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      background: linear-gradient(90deg, #ffffff, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .live-pill {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: blink 1.3s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.35); }
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .name-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0;
+      padding: 6px 10px;
+      border-radius: 18px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .vip-share-btn {
+      background: linear-gradient(90deg, #ff2a85, #ff7b00);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(255, 42, 133, 0.4);
+    }
+
+    /* Sponsored Deal Strip */
+    .promo-strip {
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.08), rgba(255, 42, 133, 0.08));
+      border-bottom: 1px solid rgba(255, 215, 0, 0.16);
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+    }
+    .promo-badge {
+      background: rgba(255, 215, 0, 0.2);
+      color: var(--gold);
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 2px 5px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    .promo-cta {
+      color: var(--cyan);
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+
+    /* Primary Navigation Tabs */
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px 14px 6px;
+    }
+    .nav-tab {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+      padding: 10px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .nav-tab.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(255, 42, 133, 0.18));
+      border-color: var(--cyan);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0, 242, 254, 0.18);
+    }
+
+    /* Views */
+    .view {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .view.active {
+      display: flex;
+    }
+
+    /* Chat Rooms */
+    .rooms-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 14px 10px;
+      scrollbar-width: none;
+    }
+    .rooms-bar::-webkit-scrollbar { display: none; }
+    .room-pill {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .room-pill.active {
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      color: #050811;
+      font-weight: 800;
+      border-color: transparent;
+    }
+
+    /* Chat Feed */
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .bubble {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 11px 13px;
+      border-radius: 16px;
+      border-top-left-radius: 4px;
+      max-width: 86%;
+      animation: slideUp 0.22s ease;
+    }
+    .bubble.mine {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #162847, #27183b);
+      border-color: rgba(0, 242, 254, 0.28);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 4px;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .bubble-user {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+    .vip-crown {
+      background: linear-gradient(90deg, #ffd700, #ff9500);
+      color: #000;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 1px 6px;
+      border-radius: 5px;
+    }
+    .bubble-msg {
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: #f1f5f9;
+      word-break: break-word;
+    }
+    .dedicate-card {
+      margin-top: 8px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .mini-play-trigger {
+      background: var(--cyan);
+      color: #000;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Persistent Mini Player in Chat View */
+    .mini-player-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(90deg, #131c31, #1e1633);
+      border-top: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 7px 14px;
+      gap: 10px;
+    }
+    .mini-player-bar.visible {
+      display: flex;
+    }
+    .mini-song-meta {
+      flex: 1;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .mini-song-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mini-song-sub {
+      font-size: 10.5px;
+      color: var(--cyan);
+    }
+    .mini-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mini-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Quick Action Chips & Input */
+    .chips-row {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 7px 14px;
+      background: #0b101d;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      scrollbar-width: none;
+    }
+    .chips-row::-webkit-scrollbar { display: none; }
+    .action-chip {
+      background: var(--bg-input);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #e2e8f0;
+      padding: 5px 11px;
+      border-radius: 16px;
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px 13px;
+      background: #0b101d;
+    }
+    .msg-box {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      padding: 11px 15px;
+      border-radius: 24px;
+      font-size: 13.5px;
+      outline: none;
+    }
+    .msg-box:focus {
+      border-color: var(--cyan);
+    }
+    .send-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--pink));
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 12px rgba(0, 242, 254, 0.35);
+    }
+
+    /* FULL SONGS VIEW */
+    .songs-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cat-switch {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .cat-btn {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-secondary);
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .cat-btn.active {
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      color: #050811;
+      border-color: transparent;
+    }
+
+    /* Swipe Music Card */
+    .music-deck {
+      background: linear-gradient(165deg, #161f36 0%, #0d1221 100%);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 22px;
+      padding: 18px 16px;
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      touch-action: pan-y;
+    }
+    .vinyl-disc {
+      width: 112px;
+      height: 112px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #00f2fe, #ff2a85, #8a2be2, #00f2fe);
+      padding: 4px;
+      box-shadow: 0 0 28px rgba(255, 42, 133, 0.4);
+      animation: rotateDisc 10s linear infinite;
+      animation-play-state: paused;
+    }
+    .vinyl-disc.playing {
+      animation-play-state: running;
+    }
+    .vinyl-inner {
+      width: 100%;
+      height: 100%;
+      background: #0f1524;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+    @keyframes rotateDisc {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Animated Equalizer Bars */
+    .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      height: 16px;
+      margin-bottom: 6px;
+    }
+    .eq-bar {
+      width: 3px;
+      height: 4px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transition: height 0.15s;
+    }
+    .eq-bars.active .eq-bar {
+      animation: bounceEq 0.6s infinite alternate;
+    }
+    .eq-bars.active .eq-bar:nth-child(2) { animation-delay: 0.15s; background: var(--pink); }
+    .eq-bars.active .eq-bar:nth-child(3) { animation-delay: 0.3s; }
+    .eq-bars.active .eq-bar:nth-child(4) { animation-delay: 0.1s; background: var(--pink); }
+    .eq-bars.active .eq-bar:nth-child(5) { animation-delay: 0.25s; }
+    @keyframes bounceEq {
+      0% { height: 4px; }
+      100% { height: 16px; }
+    }
+
+    .track-pill {
+      display: inline-block;
+      background: rgba(255, 42, 133, 0.18);
+      color: #ff85b8;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 5px;
+    }
+    .deck-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 3px;
+    }
+    .deck-artist {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .stream-status {
+      font-size: 11px;
+      color: #34d399;
+      font-weight: 600;
+      margin-bottom: 10px;
+      min-height: 15px;
+    }
+
+    .slider-area {
+      margin-bottom: 14px;
+    }
+    .audio-slider {
+      width: 100%;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+    .timers {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      margin-bottom: 14px;
+    }
+    .skip-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    .main-play-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--pink));
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0, 242, 254, 0.45);
+    }
+    .share-song-btn {
+      width: 100%;
+      background: rgba(0, 242, 254, 0.14);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 10px;
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .gesture-note {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+
+    /* Playlist Box */
+    .queue-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .queue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 0 4px;
+    }
+    .queue-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #e2e8f0;
+    }
+    .queue-count {
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .song-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.2s;
+    }
+    .song-row:last-child { border-bottom: none; }
+    .song-row.active {
+      background: linear-gradient(90deg, rgba(0, 242, 254, 0.15), rgba(255, 42, 133, 0.1));
+      border: 1px solid rgba(0, 242, 254, 0.35);
+    }
+    .song-row-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .song-row-icon {
+      font-size: 20px;
+    }
+    .song-row-text {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .song-row-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .song-row-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .song-row-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      color: #cbd5e1;
+      white-space: nowrap;
+      margin-left: 8px;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 82px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 22px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: 1px solid var(--cyan);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      z-index: 9999;
+      display: none;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand-left">
+      <div class="logo-icon">🌍</div>
+      <div class="brand-title">ONE WORLD</div>
+      <div class="live-pill"><span class="pulse-dot"></span> <span id="liveUsers">436</span> Live</div>
+    </div>
+    <div class="header-actions">
+      <button class="name-btn" onclick="changeNickname()">✏️ <span id="displayMyName">Guest</span></button>
+      <button class="vip-share-btn" onclick="shareApp()">🎁 VIP Share</button>
+    </div>
+  </div>
+
+  <!-- Top Sponsored Strip -->
+  <div class="promo-strip">
+    <div><span class="promo-badge">SPONSORED</span>🎧 Ultra-Bass Wireless Earbuds — Starting ₹299!</div>
+    <span class="promo-cta" onclick="switchTab('songs')">Play Hits →</span>
+  </div>
+
+  <!-- Main Switcher -->
+  <div class="nav-tabs">
+    <button id="btnChatTab" class="nav-tab active" onclick="switchTab('chat')">💬 Global Chat</button>
+    <button id="btnSongsTab" class="nav-tab" onclick="switchTab('songs')">🎵 Full Songs (Swipe)</button>
+  </div>
+
+  <!-- VIEW 1: GLOBAL CHAT -->
+  <div id="chatView" class="view active">
+    <div class="rooms-bar">
+      <button class="room-pill active" onclick="changeRoom(this, 'Global Lounge')">🌐 Global Lounge</button>
+      <button class="room-pill" onclick="changeRoom(this, 'Hollywood & Pop')">🔥 Hollywood & Pop</button>
+      <button class="room-pill" onclick="changeRoom(this, 'Shayari & Love')">💋 Shayari & Love</button>
+      <button class="room-pill" onclick="changeRoom(this, 'Late Night Vibe')">🌙 Late Night Vibe</button>
+    </div>
+
+    <div id="chatFeed" class="chat-list">
+      <div class="bubble">
+        <div class="bubble-user">🔥 Aarav <span class="vip-crown">👑 VIP</span></div>
+        <div class="bubble-msg">Welcome to ONE WORLD! Switch to <b>Full Songs</b> tab, enjoy non-stop Hollywood & Bollywood hits and dedicate songs live in chat 🎧🔥</div>
+      </div>
+      <div class="bubble">
+        <div class="bubble-user">✨ Zoya <span class="vip-crown">👑 VIP</span></div>
+        <div class="bubble-msg">Just played <b>Blinding Lights</b> & <b>Kesariya</b> — full smooth audio without any lag! ❤️🎶</div>
+      </div>
+    </div>
+
+    <!-- Persistent Mini Player when Song is Playing -->
+    <div id="miniPlayer" class="mini-player-bar">
+      <div class="mini-song-meta" onclick="switchTab('songs')">
+        <div id="miniTitle" class="mini-song-title">Blinding Lights</div>
+        <div id="miniSub" class="mini-song-sub">Tap to open full player</div>
+      </div>
+      <div class="mini-controls">
+        <button id="miniPlayBtn" class="mini-btn" onclick="togglePlay()">⏸</button>
+        <button class="mini-btn" onclick="nextSong()">⏭</button>
+      </div>
+    </div>
+
+    <!-- Quick Action Chips -->
+    <div class="chips-row">
+      <button class="action-chip" onclick="dedicateSong()">🎵 Dedicate Playing Song</button>
+      <button class="action-chip" onclick="playTruthDare()">🎯 Truth / Dare</button>
+      <button class="action-chip" onclick="copyCrushLink()">🔗 Secret Crush Link</button>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="input-wrap">
+      <input id="chatInput" class="msg-box" type="text" placeholder="Type a message to the world..." onkeypress="if(event.key==='Enter') sendChat()" />
+      <button class="send-circle" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+
+  <!-- VIEW 2: FULL SONGS PLAYER -->
+  <div id="songsView" class="view">
+    <div class="songs-scroll">
+      <div class="cat-switch">
+        <button class="cat-btn active" onclick="filterPlaylist('ALL', this)">All Hits (20)</button>
+        <button class="cat-btn" onclick="filterPlaylist('HOLLYWOOD', this)">🔥 Hollywood (10)</button>
+        <button class="cat-btn" onclick="filterPlaylist('BOLLYWOOD', this)">💖 Bollywood (10)</button>
+      </div>
+
+      <div id="musicDeck" class="music-deck">
+        <div id="vinylDisc" class="vinyl-disc">
+          <div id="vinylIcon" class="vinyl-inner">🌃</div>
+        </div>
+
+        <div id="eqBars" class="eq-bars">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+
+        <div id="deckBadge" class="track-pill">🔥 HOLLYWOOD #1</div>
+        <div id="deckTitle" class="deck-title">Blinding Lights (Night Drive)</div>
+        <div id="deckArtist" class="deck-artist">The Weeknd Vibe • Global Synthpop</div>
+        <div id="streamStatus" class="stream-status">Ready • Full HD Audio Stream</div>
+
+        <div class="slider-area">
+          <input id="seekSlider" class="audio-slider" type="range" min="0" max="100" value="0" oninput="scrubAudio(this.value)" />
+          <div class="timers">
+            <span id="timeNow">0:00</span>
+            <span id="timeTotal">Full Track</span>
+          </div>
+        </div>
+
+        <div class="deck-controls">
+          <button class="skip-btn" onclick="prevSong()">⏮</button>
+          <button id="mainPlayBtn" class="main-play-btn" onclick="togglePlay()">▶</button>
+          <button class="skip-btn" onclick="nextSong()">⏭</button>
+        </div>
+
+        <button class="share-song-btn" onclick="dedicateSong()">💌 Dedicate This Song in Global Chat</button>
+        <div class="gesture-note">👈 Swipe Left or Right on card for Next / Previous Song 👉</div>
+      </div>
+
+      <div class="queue-card">
+        <div class="queue-header">
+          <span class="queue-title">🎶 Full Playlist (Tap to Play)</span>
+          <span id="queueCount" class="queue-count">20 Full Songs</span>
+        </div>
+        <div id="queueList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastBox" class="toast-msg"></div>
+  <audio id="mainAudio" preload="metadata" crossorigin="anonymous"></audio>
+
+  <script>
+    // 1. Live Counter
+    setInterval(() => {
+      document.getElementById('liveUsers').textContent = 425 + Math.floor(Math.random() * 29);
+    }, 4500);
+
+    // 2. Nickname Management
+    let userName = localStorage.getItem('ow_nick') || ('Viber_' + Math.floor(100 + Math.random() * 899));
+    localStorage.setItem('ow_nick', userName);
+    document.getElementById('displayMyName').textContent = userName;
+
+    function changeNickname() {
+      const next = prompt('Enter your display name for Global Chat:', userName);
+      if (next && next.trim()) {
+        userName = next.trim().slice(0, 18);
+        localStorage.setItem('ow_nick', userName);
+        document.getElementById('displayMyName').textContent = userName;
+        toast('✅ Name updated to ' + userName);
+      }
+    }
+
+    function toast(msg) {
+      const el = document.getElementById('toastBox');
+      el.textContent = msg;
+      el.style.display = 'block';
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { el.style.display = 'none'; }, 2600);
+    }
+
+    // 3. Navigation
+    function switchTab(tab) {
+      document.getElementById('chatView').classList.toggle('active', tab === 'chat');
+      document.getElementById('songsView').classList.toggle('active', tab === 'songs');
+      document.getElementById('btnChatTab').classList.toggle('active', tab === 'chat');
+      document.getElementById('btnSongsTab').classList.toggle('active', tab === 'songs');
+    }
+
+    function changeRoom(btn, room) {
+      document.querySelectorAll('.room-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      addChatBubble('System', `Joined ${room} ✨`, false, true);
+    }
+
+    // 4. Chat Logic
+    function addChatBubble(sender, text, isMine = false, isVip = false, song = null) {
+      const list = document.getElementById('chatFeed');
+      const div = document.createElement('div');
+      div.className = 'bubble' + (isMine ? ' mine' : '');
+      let songBlock = '';
+      if (song) {
+        songBlock = `
+          <div class="dedicate-card">
+            <span>🎵 <b>${song.title}</b> (${song.cat})</span>
+            <button class="mini-play-trigger" onclick="playById(${song.id})">▶ Listen</button>
+          </div>
+        `;
+      }
+      div.innerHTML = `
+        <div class="bubble-user">${sender} ${isVip ? '<span class="vip-crown">👑 VIP</span>' : ''}</div>
+        <div class="bubble-msg">${text}</div>
+        ${songBlock}
+      `;
+      list.appendChild(div);
+      list.scrollTop = list.scrollHeight;
+    }
+
+    function sendChat() {
+      const box = document.getElementById('chatInput');
+      const val = box.value.trim();
+      if (!val) return;
+      addChatBubble(userName, val, true, true);
+      box.value = '';
+    }
+
+    function playTruthDare() {
+      const items = [
+        "🎯 TRUTH: Which Hollywood or Bollywood song describes your love life right now?",
+        "🔥 DARE: Dedicate your favourite track in Global Chat and tag someone!",
+        "🎯 TRUTH: Who was the last person you stalked on Instagram?",
+        "🔥 DARE: Share ONE WORLD with your best friend right now!"
+      ];
+      addChatBubble(userName, items[Math.floor(Math.random() * items.length)], true, true);
+    }
+
+    function copyCrushLink() {
+      const url = window.location.origin + window.location.pathname + '?crush=' + encodeURIComponent(userName);
+      navigator.clipboard?.writeText(url);
+      toast('🔗 Secret Crush Link Copied!');
+    }
+
+    function shareApp() {
+      const url = window.location.origin + window.location.pathname;
+      if (navigator.share) {
+        navigator.share({
+          title: 'ONE WORLD — Global Chat & Full Songs',
+          text: 'Come chat live & listen to 20 full Hollywood & Bollywood hits on ONE WORLD! 🎧🔥',
+          url: url
+        });
+      } else {
+        navigator.clipboard?.writeText(url);
+        toast('🎁 Share Link Copied! VIP Unlocked');
+      }
+    }
+
+    // 5. Cross-Checked 20 Full-Length Songs (Primary + Fallback High-Speed MP3 Streams)
+    const fallbackPool = [
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'
+    ];
+
+    const songsDB = [
+      // HOLLYWOOD LATEST & GLOBAL HITS (10 Full Tracks)
+      { id: 0, cat: 'HOLLYWOOD', badge: '🔥 HOLLYWOOD #1', title: 'Blinding Lights (Night Drive)', artist: 'The Weeknd Vibe • Global Synthpop', icon: '🌃', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { id: 1, cat: 'HOLLYWOOD', badge: '🔥 HOLLYWOOD VIRAL', title: 'Starboy (Midnight Club Mix)', artist: 'The Weeknd & Daft Style', icon: '⚡', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+      { id: 2, cat: 'HOLLYWOOD', badge: '🔥 POP ANTHEM', title: 'Levitating (Neon Dancefloor)', artist: 'Dua Lipa Vibe • Nu-Disco', icon: '🪩', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+      { id: 3, cat: 'HOLLYWOOD', badge: '🔥 EDM SUPERHIT', title: 'Faded (Melodic Electro)', artist: 'Alan Walker Inspired', icon: '🎧', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+      { id: 4, cat: 'HOLLYWOOD', badge: '🔥 GLOBAL CHART', title: 'Stay (High Energy Pop)', artist: 'Justin Bieber & Kid Laroi Vibe', icon: '🚀', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' },
+      { id: 5, cat: 'HOLLYWOOD', badge: '🔥 REELS FAVOURITE', title: 'Runaway (Ethereal Synth)', artist: 'AURORA Vibe • Atmospheric', icon: '🌌', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3' },
+      { id: 6, cat: 'HOLLYWOOD', badge: '🔥 ACOUSTIC GROOVE', title: 'Shape of You (Tropical Mix)', artist: 'Ed Sheeran Style', icon: '🎸', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3' },
+      { id: 7, cat: 'HOLLYWOOD', badge: '🔥 LATE NIGHT R&B', title: 'Die For You (Slowed + Reverb)', artist: 'Dark Pop Midnight Edition', icon: '🖤', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' },
+      { id: 8, cat: 'HOLLYWOOD', badge: '🔥 AFROBEAT HIT', title: 'Calm Down (Summer Remix)', artist: 'Rema & Selena Vibe', icon: '🌴', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3' },
+      { id: 9, cat: 'HOLLYWOOD', badge: '🔥 ARENA ANTHEM', title: 'Believer (Power Bass)', artist: 'Imagine Dragons Style', icon: '🥁', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3' },
+
+      // BOLLYWOOD & DESI HITS (10 Full Tracks)
+      { id: 10, cat: 'BOLLYWOOD', badge: '💖 ROMANTIC #1', title: 'Kesariya (Soulful Lofi)', artist: 'Arijit Singh Vibe • Love', icon: '❤️', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3' },
+      { id: 11, cat: 'BOLLYWOOD', badge: '💖 EVERGREEN LOVE', title: 'Tum Hi Ho (Midnight Piano)', artist: 'Acoustic Romantic Mood', icon: '🎹', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3' },
+      { id: 12, cat: 'BOLLYWOOD', badge: '🔥 PUNJABI HIT', title: 'Excuses (Urban Desi Bass)', artist: 'AP Dhillon Vibe', icon: '🕶️', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3' },
+      { id: 13, cat: 'BOLLYWOOD', badge: '🔥 PARTY BANGER', title: 'Lover (Pop Bhangra Groove)', artist: 'Diljit Dosanjh Vibe', icon: '👑', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3' },
+      { id: 14, cat: 'BOLLYWOOD', badge: '💖 DEEP EMOTION', title: 'Channa Mereya (Unplugged)', artist: 'Heartbreak Acoustic Strings', icon: '🥀', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3' },
+      { id: 15, cat: 'BOLLYWOOD', badge: '🌙 SHAYARI MOOD', title: 'Tera Ban Jaunga (Guitar Mix)', artist: 'Late Night Romantic Chill', icon: '🌙', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3' },
+      { id: 16, cat: 'BOLLYWOOD', badge: '💖 CLASSIC MELODY', title: 'Pehli Nazar Mein (Retro Vibe)', artist: 'Atif Aslam Inspired', icon: '💫', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { id: 17, cat: 'BOLLYWOOD', badge: '🔥 DANCE FLOOR', title: 'Kala Chashma (Club Bass)', artist: 'Bollywood Party Non-Stop', icon: '🕺', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+      { id: 18, cat: 'BOLLYWOOD', badge: '💖 MONSOON CHILL', title: 'Baarish Ban Jaana (Rain Lofi)', artist: 'Romantic Monsoon Vibe', icon: '🌧️', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' },
+      { id: 19, cat: 'BOLLYWOOD', badge: '🔥 COKE STUDIO VIBE', title: 'Pasoori (Global Fusion)', artist: 'Ali Sethi & Shae Gill Style', icon: '🪘', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3' }
+    ];
+
+    let activeList = [...songsDB];
+    let currentIdx = 0;
+    let playingState = false;
+    let retryCount = 0;
+    const player = document.getElementById('mainAudio');
+    const statusLabel = document.getElementById('streamStatus');
+
+    function renderQueue() {
+      const box = document.getElementById('queueList');
+      document.getElementById('queueCount').textContent = activeList.length + ' Full Songs';
+      box.innerHTML = '';
+      activeList.forEach((s, i) => {
+        const row = document.createElement('div');
+        row.className = 'song-row' + (i === currentIdx ? ' active' : '');
+        row.onclick = () => {
+          currentIdx = i;
+          loadTrack(true);
+        };
+        row.innerHTML = `
+          <div class="song-row-left">
+            <span class="song-row-icon">${s.icon}</span>
+            <div class="song-row-text">
+              <span class="song-row-name">${s.title}</span>
+              <span class="song-row-sub">${s.artist}</span>
+            </div>
+          </div>
+          <span class="song-row-badge">${s.cat}</span>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    function filterPlaylist(cat, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeList = cat === 'ALL' ? [...songsDB] : songsDB.filter(x => x.cat === cat);
+      currentIdx = 0;
+      loadTrack(playingState);
+    }
+
+    function loadTrack(shouldPlay = false) {
+      retryCount = 0;
+      const track = activeList[currentIdx];
+      document.getElementById('vinylIcon').textContent = track.icon;
+      document.getElementById('deckBadge').textContent = track.badge;
+      document.getElementById('deckTitle').textContent = track.title;
+      document.getElementById('deckArtist').textContent = track.artist;
+      document.getElementById('miniTitle').textContent = track.icon + ' ' + track.title;
+      document.getElementById('seekSlider').value = 0;
+      document.getElementById('timeNow').textContent = '0:00';
+      statusLabel.textContent = shouldPlay ? '⏳ Connecting Full HD Stream...' : 'Ready • Full Track Loaded';
+
+      player.src = track.url;
+      player.load();
+      renderQueue();
+
+      if (shouldPlay) {
+        const playPromise = player.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            playingState = true;
+            syncPlayerUI();
+          }).catch(() => {
+            playingState = false;
+            statusLabel.textContent = 'Tap ▶ Play button to start audio';
+            syncPlayerUI();
+          });
+        }
+      } else {
+        syncPlayerUI();
+      }
+    }
+
+    function togglePlay() {
+      if (!player.src) {
+        loadTrack(true);
+        return;
+      }
+      if (player.paused) {
+        statusLabel.textContent = '⏳ Starting Full Song...';
+        player.play().then(() => {
+          playingState = true;
+          syncPlayerUI();
+        }).catch(() => {
+          toast('Tap Play once more to unlock mobile audio 🎧');
+        });
+      } else {
+        player.pause();
+        playingState = false;
+        statusLabel.textContent = 'Paused';
+        syncPlayerUI();
+      }
+    }
+
+    function syncPlayerUI() {
+      const icon = playingState ? '⏸' : '▶';
+      document.getElementById('mainPlayBtn').textContent = icon;
+      document.getElementById('miniPlayBtn').textContent = icon;
+      document.getElementById('vinylDisc').classList.toggle('playing', playingState);
+      document.getElementById('eqBars').classList.toggle('active', playingState);
+      if (playingState) {
+        document.getElementById('miniPlayer').classList.add('visible');
+        document.getElementById('miniSub').textContent = 'Now Playing • Tap for Full Player';
+      }
+    }
+
+    function nextSong() {
+      currentIdx = (currentIdx + 1) % activeList.length;
+      loadTrack(true);
+    }
+
+    function prevSong() {
+      currentIdx = (currentIdx - 1 + activeList.length) % activeList.length;
+      loadTrack(true);
+    }
+
+    function playById(id) {
+      switchTab('songs');
+      activeList = [...songsDB];
+      document.querySelectorAll('.cat-btn').forEach((b, idx) => b.classList.toggle('active', idx === 0));
+      const pos = activeList.findIndex(s => s.id === id);
+      if (pos !== -1) {
+        currentIdx = pos;
+        loadTrack(true);
+      }
+    }
+
+    function dedicateSong() {
+      const track = activeList[currentIdx];
+      switchTab('chat');
+      addChatBubble(userName, `Dedicated this song to everyone vibing in ONE WORLD! 💖🎧`, true, true, track);
+      toast('💌 Song Dedicated in Global Chat!');
+    }
+
+    // Audio Events & Seamless Auto-Backup Protection
+    player.addEventListener('playing', () => {
+      playingState = true;
+      statusLabel.textContent = '🔊 Playing Full Track (HD Audio)';
+      syncPlayerUI();
+    });
+
+    player.addEventListener('waiting', () => {
+      statusLabel.textContent = '⏳ Buffering smooth audio...';
+    });
+
+    player.addEventListener('timeupdate', () => {
+      if (player.duration && !isNaN(player.duration)) {
+        const progress = (player.currentTime / player.duration) * 100;
+        document.getElementById('seekSlider').value = progress;
+        document.getElementById('timeNow').textContent = formatSec(player.currentTime);
+        document.getElementById('timeTotal').textContent = formatSec(player.duration);
+      }
+    });
+
+    player.addEventListener('ended', () => {
+      nextSong();
+    });
+
+    player.addEventListener('error', () => {
+      if (retryCount < fallbackPool.length) {
+        statusLabel.textContent = '🔄 Switching to backup high-speed server...';
+        player.src = fallbackPool[retryCount];
+        retryCount++;
+        if (playingState) player.play();
+      } else {
+        statusLabel.textContent = 'Network slow — Tap Next Song ⏭';
+      }
+    });
+
+    function scrubAudio(val) {
+      if (player.duration && !isNaN(player.duration)) {
+        player.currentTime = (val / 100) * player.duration;
+      }
+    }
+
+    function formatSec(s) {
+      const min = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return min + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    // Touch Swipe on Music Card
+    let startX = 0;
+    const deck = document.getElementById('musicDeck');
+    deck.addEventListener('touchstart', e => { startX = e.changedTouches[0].screenX; }, { passive: true });
+    deck.addEventListener('touchend', e => {
+      const delta = e.changedTouches[0].screenX - startX;
+      if (Math.abs(delta) > 45) {
+        if (delta < 0) nextSong();
+        else prevSong();
+      }
+    }, { passive: true });
+
+    // Start Initial Load
+    loadTrack(false);
+  </script>
+
+  <!-- ===================================================================== -->
+  <!-- ADSTERRA SOCIAL BAR MONETIZATION + ?admin=azhar OWNER SAFETY SHIELD   -->
+  <!-- ===================================================================== -->
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('admin') === 'azhar') {
+        localStorage.setItem('oneworld_admin_shield', 'true');
+      }
+      if (params.get('admin') === 'off') {
+        localStorage.removeItem('oneworld_admin_shield');
+      }
+      const isOwner = localStorage.getItem('oneworld_admin_shield') === 'true';
+
+      if (!isOwner) {
+        const s = document.createElement('script');
+        s.setAttribute('data-cfasync', 'false');
+        s.src = 'https://bicea.org/14/93f6be5dc4e08350821b4dc77730732b';
+        document.body.appendChild(s);
+      } else {
+        console.log('Owner Safety Shield Active: Adsterra Ads Hidden');
+      }
+    })();
+  </script>
+</body>
+</html>
