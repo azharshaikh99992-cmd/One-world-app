@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ONE WORLD 3D</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040714;--a:#00f0ff;--b:#ff1e6e;--c:#7b61ff;--g:#ffd000;--ok:#10f981}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:#eaf0ff;font-family:Inter,system-ui,sans-serif}
+body:before{content:"";position:fixed;inset:-25%;z-index:0;opacity:.3;filter:blur(40px);background:radial-gradient(circle at 20% 30%,var(--a),transparent 35%),radial-gradient(circle at 80% 20%,var(--b),transparent 35%),radial-gradient(circle at 70% 80%,var(--c),transparent 40%),radial-gradient(circle at 20% 85%,var(--g),transparent 30%);animation:mesh 18s ease-in-out infinite alternate}
+@keyframes mesh{to{transform:translate(6%,-4%) rotate(8deg) scale(1.15)}}
+.orb{position:fixed;border-radius:50%;z-index:0;filter:blur(2px);animation:fl 9s ease-in-out infinite alternate;opacity:.5}
+.orb:nth-of-type(1){width:90px;height:90px;left:8%;top:20%;background:radial-gradient(circle at 30% 30%,#fff8,var(--a))}
+.orb:nth-of-type(2){width:60px;height:60px;right:10%;top:55%;background:radial-gradient(circle at 30% 30%,#fff8,var(--b));animation-delay:-3s}
+.orb:nth-of-type(3){width:110px;height:110px;left:55%;top:8%;background:radial-gradient(circle at 30% 30%,#fff6,var(--c));animation-delay:-6s}
+@keyframes fl{to{transform:translateY(-40px) translateX(20px)}}
+#app{position:relative;z-index:1;height:100dvh;display:flex;flex-direction:column;max-width:760px;margin:auto}
+.glass{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid color-mix(in srgb,var(--a) 40%,transparent);border-radius:18px;box-shadow:0 0 18px color-mix(in srgb,var(--a) 18%,transparent),0 10px 30px #0007}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:8px 10px 0}
+.cube{width:22px;height:22px;transform-style:preserve-3d;animation:cs 6s linear infinite;margin:0 8px 0 4px}
+.cube i{position:absolute;inset:0;border:1px solid var(--a);background:color-mix(in srgb,var(--a) 20%,transparent)}
+.cube i:nth-child(1){transform:translateZ(11px)}.cube i:nth-child(2){transform:rotateY(180deg) translateZ(11px)}.cube i:nth-child(3){transform:rotateY(90deg) translateZ(11px)}.cube i:nth-child(4){transform:rotateY(-90deg) translateZ(11px)}.cube i:nth-child(5){transform:rotateX(90deg) translateZ(11px)}.cube i:nth-child(6){transform:rotateX(-90deg) translateZ(11px)}
+@keyframes cs{to{transform:rotateX(360deg) rotateY(360deg)}}
+h1{font-size:1.05rem;font-weight:800;letter-spacing:.5px;background:linear-gradient(90deg,var(--a),var(--b),var(--g));-webkit-background-clip:text;background-clip:text;color:transparent;flex:1;white-space:nowrap}
+#live{font-size:.72rem;color:var(--ok)}
+.ib{min-width:40px;height:40px;border:1px solid #fff3;background:#ffffff12;color:#fff;border-radius:12px;font-size:1rem;cursor:pointer;transition:.2s}
+.ib:hover{transform:translateY(-2px);background:#ffffff22}
+.btn{min-height:42px;padding:0 16px;border:0;border-radius:14px;color:#fff;font:600 .9rem Inter,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--c),var(--b));box-shadow:0 6px 18px #0006,0 0 14px color-mix(in srgb,var(--b) 40%,transparent);transition:.2s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.96)}.btn:disabled{opacity:.4;pointer-events:none}
+.btn.alt{background:linear-gradient(135deg,var(--a),var(--c))}.btn.sm{min-height:34px;padding:0 12px;font-size:.78rem}
+.btn.on{background:linear-gradient(135deg,var(--ok),var(--a));color:#041}
+.view{display:none;flex:1;min-height:0;overflow:auto;padding:10px;gap:10px;flex-direction:column}.view.on{display:flex}
+.tabs{position:relative;display:flex;margin:0 10px calc(8px + env(safe-area-inset-bottom,0px));padding:4px}
+.tab{flex:1;height:44px;background:none;border:0;color:#cfd8ff;font:600 .85rem Inter,sans-serif;z-index:1;cursor:pointer}
+.tab.on{color:#fff}
+#ind{position:absolute;left:4px;top:4px;bottom:4px;width:calc((100% - 8px)/3);border-radius:14px;background:linear-gradient(135deg,var(--c),var(--b));box-shadow:0 0 18px var(--b);transition:transform .3s ease}
+.card{padding:14px}
+/* music */
+.np{display:flex;gap:14px;align-items:center;transform:perspective(900px) rotateX(3deg)}
+.disc{width:86px;height:86px;flex:none;border-radius:50%;background:conic-gradient(var(--a),var(--b),var(--g),var(--c),var(--a));box-shadow:0 0 24px var(--b);position:relative}
+.disc:after{content:"";position:absolute;inset:34%;border-radius:50%;background:var(--bg);border:2px solid #fff6}
+.playing .disc{animation:rot 4s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
+.eq{display:flex;gap:3px;align-items:flex-end;height:24px;margin-top:6px}
+.eq span{width:5px;height:4px;background:linear-gradient(var(--a),var(--b));border-radius:2px}
+.playing .eq span{animation:eq .6s ease-in-out infinite alternate}
+.eq span:nth-child(2){animation-delay:.1s!important}.eq span:nth-child(3){animation-delay:.25s!important}.eq span:nth-child(4){animation-delay:.05s!important}.eq span:nth-child(5){animation-delay:.2s!important}
+@keyframes eq{to{height:24px}}
+#nt{font-weight:800;font-size:1.05rem}.sub{font-size:.78rem;color:#aab6e8}
+.row{display:flex;align-items:center;gap:8px}
+input[type=range]{flex:1;accent-color:var(--b);height:28px}
+.ctl{justify-content:center;margin-top:8px}
+.ctl .ib{width:48px;height:48px;font-size:1.2rem}.ctl .ib.on{background:var(--ok);color:#041}
+#pp{width:60px!important;height:60px!important;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 0 20px var(--a)}
+input[type=text]{width:100%;height:42px;padding:0 14px;border-radius:12px;border:1px solid #fff3;background:#0007;color:#fff;font:400 .9rem Inter,sans-serif;outline:0}
+input[type=text]:focus{border-color:var(--a)}
+.pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.pill{flex:none;min-height:36px;padding:0 14px;border-radius:20px;border:1px solid #fff3;background:#ffffff10;color:#fff;font:600 .8rem Inter,sans-serif;cursor:pointer;transition:.2s}
+.pill.on{background:linear-gradient(135deg,var(--a),var(--c));border-color:transparent}
+.song{display:flex;align-items:center;gap:10px;padding:10px 12px;min-height:52px;border-radius:14px;cursor:pointer;border:1px solid transparent;transition:.2s}
+.song:hover{background:#ffffff12}.song.on{background:color-mix(in srgb,var(--b) 22%,transparent);border-color:var(--b);box-shadow:0 0 14px color-mix(in srgb,var(--b) 40%,transparent)}
+.song b{display:block;font-size:.88rem}.song small{color:#aab6e8;font-size:.72rem}
+/* chat */
+#feed{flex:1;min-height:120px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:10px}
+.msg{max-width:84%;padding:8px 12px;border-radius:14px 14px 14px 4px;background:#ffffff14;align-self:flex-start;font-size:.88rem;word-break:break-word}
+.msg.me{align-self:flex-end;background:linear-gradient(135deg,var(--c),var(--b));border-radius:14px 14px 4px 14px}
+.msg b{font-size:.74rem;color:var(--a)}.msg.me b{color:#fff}
+.msg em{font-style:normal;font-size:.6rem;background:var(--g);color:#000;padding:1px 5px;border-radius:6px;font-weight:800}
+.msg small{display:block;font-size:.62rem;opacity:.6;margin-top:3px}.msg .btn{margin-top:4px}
+/* ludo */
+#game[hidden],#lobby[hidden],#win[hidden]{display:none}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pc{padding:6px;border-radius:12px;background:#ffffff10;border:2px solid transparent;text-align:center;font-size:.72rem;transition:.2s}
+.pc i{display:block;width:16px;height:16px;border-radius:50%;margin:0 auto 3px}
+.pc.act{border-color:#fff;box-shadow:0 0 16px currentColor;transform:translateY(-2px)}
+#board{position:relative;display:grid;grid-template:repeat(15,1fr)/repeat(15,1fr);width:min(100%,54dvh);aspect-ratio:1;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 20px 40px #000a,0 0 24px color-mix(in srgb,var(--a) 40%,transparent);transform:perspective(1100px) rotateX(8deg);background:#0b1030}
+.cell{border:1px solid #ffffff1a;background:#ffffff0d;display:flex;align-items:center;justify-content:center;font-size:min(3vw,2.4dvh);color:#fff9}
+.crown{grid-area:7/7/10/10;display:flex;align-items:center;justify-content:center;font-size:min(7vw,5dvh);background:conic-gradient(from -45deg,#10f981 0 25%,#ffd000 0 50%,#2f8cff 0 75%,#ff3b5c 0)}
+#pl{position:absolute;inset:0;pointer-events:none}
+.slot{position:absolute;width:6.4%;height:6.4%;border-radius:50%;transform:translate(-50%,-50%);background:#0007;border:2px solid #fff4}
+.pawn{position:absolute;width:5%;height:5%;transform:translate(-50%,-50%);transition:left .15s linear,top .15s linear;pointer-events:auto;cursor:pointer;z-index:2}
+.pawn i{display:block;width:100%;height:100%;border-radius:50%;border:2px solid #fff;box-shadow:0 3px 6px #000a,inset 0 -3px 5px #0006,inset 0 3px 5px #fff6}
+.pawn.hop i{animation:hop .15s ease-out}@keyframes hop{50%{transform:translateY(-70%) scale(1.15)}}
+.pawn.mv{z-index:5}.pawn.mv i{animation:pulse .7s ease-in-out infinite alternate}
+@keyframes pulse{to{box-shadow:0 0 0 4px #fff8,0 0 14px 6px #fff;transform:scale(1.25)}}
+#dice{width:64px;height:64px;font-size:3rem;line-height:64px;text-align:center;border-radius:14px;background:#fff;color:#111;cursor:pointer;box-shadow:0 8px 20px #000a,0 0 18px var(--a)}
+#dice.spin{animation:dr .6s linear}
+@keyframes dr{to{transform:rotate3d(1,1,1,720deg)}}
+#tt{font-weight:600;text-align:center;font-size:.95rem}
+#win{position:fixed;inset:0;z-index:50;background:#000b;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#win .card{text-align:center;position:relative;z-index:2;padding:28px}
+.cf{position:absolute;top:-20px;width:9px;height:14px;animation:fall 3s linear infinite}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+#toasts{position:fixed;top:70px;left:0;right:0;z-index:99;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+.toast{background:#101840ee;border:1px solid var(--a);padding:8px 16px;border-radius:20px;font-size:.82rem;animation:ti .25s ease}
+@keyframes ti{from{opacity:0;transform:translateY(-10px)}}
+
+.song.bad{opacity:.55}.ytb{flex:none;width:34px;height:34px;border-radius:10px;border:1px solid #fff3;background:#ffffff14;color:#fff;cursor:pointer}
+#board{width:min(100%,56dvh);background:#1a1240;border:6px solid #3b2a8f;border-radius:18px;transform:perspective(1100px) rotateX(12deg);box-shadow:0 26px 40px #000b,0 0 30px color-mix(in srgb,var(--c) 55%,transparent)}
+.cell{background:#f8f5ff;border:1px solid #2a1f6633;color:#3b2a8f;font-weight:800}
+.slot{background:var(--sc);border:3px solid #fff;box-shadow:inset 0 3px 6px #0005,0 0 10px var(--sc)}
+.pawn{width:6%;height:7.4%;filter:drop-shadow(0 4px 2px #0009);transition:left .15s linear,top .15s linear}
+.pawn i{position:relative;background:none!important;border:0!important;box-shadow:none!important}
+.pawn i:before{content:"";position:absolute;left:20%;right:20%;top:0;height:48%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 60%);border:1.5px solid #fff}
+.pawn i:after{content:"";position:absolute;left:6%;right:6%;bottom:0;height:60%;border-radius:50% 50% 25% 25%/90% 90% 15% 15%;background:linear-gradient(90deg,#fff6,var(--pc) 40%,#0008 140%);border:1.5px solid #fff}
+.pawn.hop i{animation:hop2 .15s ease-out}@keyframes hop2{50%{transform:translateY(-45%)}}
+.pawn.mv{filter:drop-shadow(0 0 8px #fff) drop-shadow(0 4px 2px #0009)}.pawn.mv i{animation:bob .45s ease-in-out infinite alternate}@keyframes bob{to{transform:translateY(-30%) scale(1.12)}}
+#dice{width:64px;height:64px;perspective:380px;background:none;box-shadow:none;font-size:0;line-height:0;margin:6px}
+.cb{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .35s ease-out}
+.cb.spin{animation:tum .6s linear;transition:none}@keyframes tum{to{transform:rotateX(720deg) rotateY(540deg) rotateZ(180deg)}}
+.fc{position:absolute;inset:0;background:linear-gradient(145deg,#fff,#d9d4ff);border-radius:12px;border:1px solid #0003;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:9px;box-shadow:inset 0 0 8px #0003}
+.fc b{width:11px;height:11px;border-radius:50%;background:#1b1440;place-self:center;box-shadow:inset 0 2px 3px #000a}
+.mu{min-width:44px!important;height:42px}
+.pc{position:relative}.pc.off{display:none}
+.gl{font-size:.72rem;font-weight:800;color:var(--g);margin:6px 2px 2px;letter-spacing:.4px}.pw{display:flex;flex-wrap:wrap;gap:6px}.pills#pills{display:block;overflow:visible}.song small{display:block;line-height:1.4}
+</style></head>
+<body>
+<div class="orb"></div><div class="orb"></div><div class="orb"></div>
+<div id="toasts"></div>
+<div id="app">
+<header class="glass">
+<div class="cube"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<h1>ONE WORLD 3D</h1><span id="live">🟢 0 online</span>
+<button class="ib" onclick="theme()" title="Theme">🎨</button>
+<button class="ib" onclick="editNick()" title="Nickname">✏️</button>
+</header>
+
+<section class="view on" id="v0">
+<div class="glass card" id="npc"><div class="np"><div class="disc"></div><div style="min-width:0"><div id="nt">—</div><div class="sub" id="na"></div><div class="sub" id="nb"></div><div class="eq"><span></span><span></span><span></span><span></span><span></span></div></div></div>
+<div class="row" style="margin-top:12px"><span class="sub" id="tc">0:00</span><input type="range" id="seek" min="0" max="1000" value="0"><span class="sub" id="td">0:00</span></div>
+<div class="row ctl"><button class="ib" id="shb" onclick="toggleShuf()">🔀</button><button class="ib" onclick="prev()">⏮</button><button class="ib" id="pp" onclick="toggle()">▶</button><button class="ib" onclick="next()">⏭</button><button class="ib" id="reb" onclick="toggleRep()">🔁</button></div>
+<div class="row" style="margin-top:8px"><span>🔈</span><input type="range" id="vol" min="0" max="100" value="80"><span>🔊</span></div></div>
+<input type="text" id="sq" placeholder="🔎 Koi bhi song, DJ remix ya artist search karo">
+<div class="pills" id="pills"></div><div class="sub" id="cnt">📚 library load ho rahi hai…</div>
+<div class="glass" id="list" style="padding:6px"></div>
+</section>
+
+<section class="view" id="v1">
+<div class="pills" id="rooms"></div>
+<div class="glass" id="feed"></div>
+<div class="row"><button class="btn sm alt" onclick="dedicate()">🎵 Dedicate Song</button><button class="btn sm" onclick="shareLudo()">🎲 Share Ludo Room</button></div>
+<div class="row"><input type="text" id="ci" placeholder="Type a message…" maxlength="300"><button class="btn" onclick="send()">Send</button></div>
+</section>
+
+<section class="view" id="v2">
+<div id="lobby">
+<div class="glass card"><h2 style="margin-bottom:10px">🎲 Ludo</h2>
+<div class="row" style="flex-wrap:wrap"><button class="btn" style="flex:1" onclick="start('ai')">🤖 vs 3 Bots</button><button class="btn" style="flex:1" onclick="start('ai2')">⚔️ 1v1 vs Bot</button><button class="btn alt" style="flex:1" onclick="start('pp')">👥 Pass &amp; Play</button></div>
+<div class="row" style="margin-top:12px"><input type="text" id="rc" readonly><button class="btn sm" onclick="copyRoom()">📋 Copy</button></div>
+<p class="sub" style="margin-top:6px">Room code: paste it in Chat to invite friends to a table.</p></div>
+<div class="glass card" style="margin-top:10px;font-size:.84rem;line-height:1.6"><b>How to play</b><br>• Roll a 6 to bring a pawn out.<br>• A 6, a capture or reaching home gives an extra roll. Three 6s in a row lose the turn.<br>• Landing on an opponent sends it back (not on ★ safe cells).<br>• Get all 4 pawns to the center with an exact count to win.<br>• vs AI: you are Red. Pass &amp; Play: Red → Green → Yellow → Blue.</div></div>
+<div id="game" hidden>
+<div class="hud" id="hud"></div>
+<div id="board"></div>
+<div id="tt" style="margin-top:6px"></div>
+<div class="row" style="justify-content:center;gap:14px"><div id="dice" onclick="humanRoll()"><div class="cb" id="cb"></div></div><button class="btn" id="rollb" onclick="humanRoll()">ROLL</button><button class="btn alt mu" id="mub" onclick="toggleSnd()">🔊</button><button class="btn alt" onclick="exitGame()">Exit</button></div>
+<div class="sub" style="text-align:center" id="rmd"></div>
+</div>
+</section>
+
+<nav class="tabs glass"><div id="ind"></div>
+<button class="tab on" onclick="tab(0)">🎧 Music</button><button class="tab" onclick="tab(1)">💬 Chat</button><button class="tab" onclick="tab(2)">🎲 Ludo</button></nav>
+</div>
+
+<div id="win" hidden><div class="card glass"><div style="font-size:3rem">🏆</div><h2 id="wn" style="margin:8px 0 16px"></h2><button class="btn" onclick="again()">Play Again</button> <button class="btn alt" onclick="exitGame()">Lobby</button></div></div>
+<audio id="audioEngine" preload="auto"></audio>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;$('#toasts').append(t);setTimeout(()=>t.remove(),2400)}
+function tab(i){$$('.view').forEach((v,k)=>v.classList.toggle('on',k===i));$$('.tab').forEach((v,k)=>v.classList.toggle('on',k===i));$('#ind').style.transform='translateX('+i*100+'%)';if(i===1)chat()}
+const THEMES=[['Aqua','#00f0ff','#ff1e6e','#7b61ff'],['Inferno','#ff5a1f','#ff1e6e','#ffd000'],['Aurora','#10f981','#7b61ff','#00f0ff']];let th=0;
+function theme(){th=(th+1)%3;const t=THEMES[th],s=document.documentElement.style;s.setProperty('--a',t[1]);s.setProperty('--b',t[2]);s.setProperty('--c',t[3]);toast('Mood: '+t[0])}
+let nick='Guest'+(100+Math.random()*900|0);try{nick=localStorage.ow_nick||nick}catch(e){}
+function editNick(){const n=prompt('Your nickname',nick);if(n&&n.trim()){nick=n.trim().slice(0,16);try{localStorage.ow_nick=nick}catch(e){}toast('Hello, '+nick)}}
+function liveTick(){$('#live').textContent='🟢 '+(1200+Math.random()*300|0)+' online'}liveTick();setInterval(liveTick,4000);
+
+/* ===== MUSIC ===== */
+const APP='ONEWORLD3D',HOSTS=['https://api.audius.co','https://discoveryprovider.audius.co'];
+const CATS={
+'🔥 Trending 2026':{g:'b',t:[['Tu Mil Jaaye','Various Artists','King (2026)'],['Tera Mera Rishta','Mithoon, Mustafa Zahid','Awarapan 2'],['Kya Kamaal Hai','Diljit Dosanjh, A.R. Rahman','Main Vaapas Aaunga'],['Chatni','Various Artists','Dhamaal 4'],['Saiyaara','Faheem Abdullah, Arslan Nizami','Saiyaara'],['Aaj Ki Raat','Madhubanti Bagchi, Divya Kumar','Stree 2'],['Tauba Tauba','Karan Aujla','Bad Newz'],['Tere Vaaste','Varun Jain, Sachin-Jigar','Zara Hatke Zara Bachke'],['Heeriye','Arijit Singh, Jasleen Royal','Heeriye (Single)'],['Tum Kya Mile','Arijit Singh, Shreya Ghoshal','Rocky Aur Rani Kii Prem Kahaani'],['Pehle Bhi Main','Vishal Mishra','Animal'],['Pushpa Pushpa','Nakash Aziz','Pushpa 2: The Rule']],q:['new hindi songs 2026','bollywood new song','bollywood hits','arijit singh','jubin nautiyal','vishal mishra','b praak','neha kakkar','badshah','shreya ghoshal']},
+'❤️ Romantic':{g:'b',t:[['Tum Hi Ho','Arijit Singh','Aashiqui 2'],['Channa Mereya','Arijit Singh','Ae Dil Hai Mushkil'],['Agar Tum Saath Ho','Alka Yagnik, Arijit Singh','Tamasha'],['Raataan Lambiyan','Jubin Nautiyal, Asees Kaur','Shershaah'],['Tera Ban Jaunga','Akhil Sachdeva, Tulsi Kumar','Kabir Singh'],['Kesariya','Arijit Singh','Brahmastra'],['Apna Bana Le','Arijit Singh','Bhediya'],['Hawayein','Arijit Singh','Jab Harry Met Sejal'],['Gerua','Arijit Singh, Antara Mitra','Dilwale'],['Tum Se Hi','Mohit Chauhan','Jab We Met'],['Kabira','Arijit Singh, Tochi Raina','Yeh Jawaani Hai Deewani'],['Dil Diyan Gallan','Atif Aslam','Tiger Zinda Hai']],q:['hindi romantic song','hindi love song','hindi cover','unplugged hindi','acoustic hindi','hindi duet']},
+'💔 Sad':{g:'b',t:[['Tadap Tadap','KK','Hum Dil De Chuke Sanam'],['Phir Le Aaya Dil','Arijit Singh','Barfi!'],['Bekhayali','Sachet Tandon','Kabir Singh'],['Kabhi Alvida Naa Kehna','Sonu Nigam, Alka Yagnik','Kabhi Alvida Naa Kehna'],['Ae Dil Hai Mushkil','Arijit Singh','Ae Dil Hai Mushkil'],['Tujhe Kitna Chahne Lage','Arijit Singh','Kabir Singh'],['Judaai','Arijit Singh','Badlapur']],q:['hindi sad song','heartbreak hindi','sad hindi lofi','bewafa song hindi']},
+'💃 Party / Dance':{g:'b',t:[['Badtameez Dil','Benny Dayal','Yeh Jawaani Hai Deewani'],['Swag Se Swagat','Vishal Dadlani, Neha Bhasin','Tiger Zinda Hai'],['Sheila Ki Jawani','Sunidhi Chauhan','Tees Maar Khan'],['Munni Badnaam Hui','Mamta Sharma, Aishwarya Nigam','Dabangg'],['Chikni Chameli','Shreya Ghoshal','Agneepath'],['Lungi Dance','Honey Singh','Chennai Express'],['London Thumakda','Labh Janjua, Sonu Kakkar, Neha Kakkar','Queen'],['Balam Pichkari','Vishal Dadlani, Shalmali Kholgade','Yeh Jawaani Hai Deewani'],['Kala Chashma','Badshah, Amar Arshi, Neha Kakkar','Baar Baar Dekho'],['Nachde Ne Saare','Jasleen Royal','Baar Baar Dekho'],['Zingaat','Ajay-Atul','Dhadak'],['Kar Gayi Chull','Badshah, Neha Kakkar','Kapoor & Sons'],['Dhoom Machale','Sunidhi Chauhan','Dhoom'],['Desi Girl','Shankar Mahadevan, Sunidhi Chauhan','Dostana']],q:['bollywood party mix','hindi dance song','item song','wedding song hindi','sangeet song']},
+'📻 90s Retro':{g:'b',t:[['Tujhe Dekha To','Kumar Sanu, Lata Mangeshkar','Dilwale Dulhania Le Jayenge'],['Chura Ke Dil Mera','Kumar Sanu, Alka Yagnik','Main Khiladi Tu Anari'],['Tip Tip Barsa Paani','Udit Narayan, Alka Yagnik','Mohra'],['Ek Ladki Ko Dekha','Kumar Sanu','1942: A Love Story'],['Kuch Kuch Hota Hai','Udit Narayan, Alka Yagnik','Kuch Kuch Hota Hai'],['Kal Ho Naa Ho','Sonu Nigam','Kal Ho Naa Ho'],['Pehla Nasha','Udit Narayan, Sadhana Sargam','Jo Jeeta Wohi Sikandar'],['Pardesi Pardesi','Udit Narayan, Alka Yagnik','Raja Hindustani'],['Chaiyya Chaiyya','Sukhwinder Singh, Sapna Awasthi','Dil Se'],['Dil To Pagal Hai','Lata Mangeshkar, Udit Narayan','Dil To Pagal Hai']],q:['90s hindi song','kumar sanu','udit narayan','alka yagnik','old hindi remix','evergreen hindi']},
+'🎼 Old Classics':{g:'b',t:[['Lag Jaa Gale','Lata Mangeshkar','Woh Kaun Thi'],['Chaudhvin Ka Chand','Mohammed Rafi','Chaudhvin Ka Chand'],['Mere Sapno Ki Rani','Kishore Kumar','Aradhana'],['Roop Tera Mastana','Kishore Kumar','Aradhana'],['Yeh Shaam Mastani','Kishore Kumar','Kati Patang'],['Pyar Hua Ikrar Hua','Lata Mangeshkar, Manna Dey','Shree 420'],['Dum Maro Dum','Asha Bhosle','Hare Rama Hare Krishna'],['Piya Tu Ab To Aaja','Asha Bhosle','Caravan']],q:['kishore kumar','mohammed rafi','lata mangeshkar','mukesh','asha bhosle','70s bollywood','80s bollywood']},
+'🌙 Sufi / Lofi':{g:'b',t:[['Kun Faya Kun','A.R. Rahman, Javed Ali, Mohit Chauhan','Rockstar'],['Khwaja Mere Khwaja','A.R. Rahman','Jodhaa Akbar'],['Arziyaan','Javed Ali, Kailash Kher','Delhi-6'],['Tere Bina','A.R. Rahman','Guru'],['Bulleya','Amit Mishra, Shilpa Rao','Ae Dil Hai Mushkil'],['Maula Mere Maula','Roop Kumar Rathod','Anwar']],q:['hindi lofi','bollywood lofi','sufi','qawwali','slowed reverb hindi','bhajan']},
+'🎤 Punjabi':{g:'b',t:[['Lahore','Guru Randhawa','Lahore (Single)'],['Brown Munde','AP Dhillon, Gurinder Gill, Shinda Kahlon','Brown Munde (Single)'],['Excuses','AP Dhillon, Gurinder Gill','Hidden Gems'],['Softly','Karan Aujla','Softly (Single)'],['Patola','Guru Randhawa','Blackmail'],['High Rated Gabru','Guru Randhawa','High Rated Gabru (Single)'],['Born To Shine','Diljit Dosanjh','G.O.A.T.'],['295','Sidhu Moose Wala','Moosetape'],['Suit Suit','Guru Randhawa, Arjun','Hindi Medium']],q:['punjabi song','diljit dosanjh','sidhu moose wala','ap dhillon','karan aujla','guru randhawa','bhangra']},
+'🎧 DJ Bollywood':{g:'d',dj:1,t:[['Chaiyya Chaiyya','Sukhwinder Singh, Sapna Awasthi','Dil Se • DJ Remix'],['Kala Chashma','Badshah, Neha Kakkar','Baar Baar Dekho • DJ Remix'],['Tunak Tunak Tun','Daler Mehndi','Tunak Tunak Tun • DJ Remix'],['Aaj Ki Raat','Madhubanti Bagchi, Divya Kumar','Stree 2 • DJ Remix'],['Jhoome Jo Pathaan','Arijit Singh','Pathaan • DJ Remix'],['Besharam Rang','Shilpa Rao, Caralisa Monteiro','Pathaan • DJ Remix'],['Badtameez Dil','Benny Dayal','Yeh Jawaani Hai Deewani • DJ Remix'],['Zingaat','Ajay-Atul','Dhadak • DJ Remix'],['Dhoom Machale','Sunidhi Chauhan','Dhoom • DJ Remix'],['Desi Girl','Shankar Mahadevan, Sunidhi Chauhan','Dostana • DJ Remix'],['Munni Badnaam Hui','Mamta Sharma','Dabangg • DJ Remix'],['Chaleya','Arijit Singh, Shilpa Rao','Jawan • DJ Remix']],q:['dj remix hindi','bollywood dj remix','dj bollywood','dj mashup hindi','dj nonstop hindi','dj hard bass hindi','dj trending hindi']},
+'🎧 DJ Punjabi':{g:'d',dj:1,t:[['Laung Laachi','Mannat Noor','Laung Laachi • DJ Remix'],['Lahore','Guru Randhawa','DJ Remix'],['Brown Munde','AP Dhillon','DJ Remix'],['295','Sidhu Moose Wala','Moosetape • DJ Remix'],['Patola','Guru Randhawa','Blackmail • DJ Remix'],['Suit Suit','Guru Randhawa, Arjun','Hindi Medium • DJ Remix'],['Tauba Tauba','Karan Aujla','Bad Newz • DJ Remix'],['Born To Shine','Diljit Dosanjh','G.O.A.T. • DJ Remix']],q:['punjabi dj remix','dj punjabi','punjabi dhol remix','punjabi dj nonstop']},
+'🎧 DJ Haryanvi':{g:'d',dj:1,t:[['52 Gaj Ka Daman','Renuka Panwar','Haryanvi • DJ Remix'],['Teri Aakhya Ka Yo Kajal','Sapna Choudhary','Haryanvi • DJ Remix'],['Solid Body','Sapna Choudhary','Haryanvi • DJ Remix']],q:['haryanvi dj','haryanvi dj remix','haryanvi song','sapna choudhary','rajasthani dj']},
+'🎧 DJ Bhojpuri':{g:'d',dj:1,t:[['Lollipop Lagelu','Pawan Singh','Bhojpuri • DJ Remix']],q:['bhojpuri dj remix','bhojpuri dj','bhojpuri song','pawan singh','khesari lal','bhojpuri holi dj']},
+'🎧 DJ Garba / Dandiya':{g:'d',dj:1,t:[['Nagada Sang Dhol','Osman Mir, Shreya Ghoshal','Goliyon Ki Raasleela Ram-Leela • DJ Remix'],['Chogada','Darshan Raval, Lijo George, Dj Chetas','Loveyatri • DJ Remix'],['Ghoomar','Shreya Ghoshal, Swaroop Khan','Padmaavat • DJ Remix']],q:['garba dj','dandiya dj','navratri dj','garba song']},
+'🎧 DJ Retro 90s':{g:'d',dj:1,t:[['Tip Tip Barsa Paani','Udit Narayan, Alka Yagnik','Mohra • DJ Remix'],['Chura Ke Dil Mera','Kumar Sanu, Alka Yagnik','Main Khiladi Tu Anari • DJ Remix'],['Ek Ladki Ko Dekha','Kumar Sanu','1942: A Love Story • DJ Remix'],['Kajra Re','Alisha Chinai, Shankar Mahadevan, Javed Ali','Bunty Aur Babli • DJ Remix']],q:['90s dj remix','old hindi dj remix','retro dj hindi','dj evergreen hindi']},
+'🎧 DJ South / Pushpa':{g:'d',dj:1,t:[['Srivalli','Sid Sriram','Pushpa: The Rise • DJ Remix'],['Oo Antava','Indravathi Chauhan','Pushpa: The Rise • DJ Remix'],['Naatu Naatu','Rahul Sipligunj, Kaala Bhairava','RRR • DJ Remix']],q:['pushpa dj','south dj remix','tamil dj remix','telugu dj']},
+'🎧 DJ Wedding / Sangeet':{g:'d',dj:1,t:[['Gallan Goodiyan','Various Artists','Dil Dhadakne Do • DJ Remix'],['London Thumakda','Labh Janjua, Sonu Kakkar, Neha Kakkar','Queen • DJ Remix'],['Nachde Ne Saare','Jasleen Royal','Baar Baar Dekho • DJ Remix'],['Kar Gayi Chull','Badshah, Neha Kakkar','Kapoor & Sons • DJ Remix']],q:['dj wedding hindi','sangeet dj','dj dholki','dj bollywood wedding']},
+'📚 All Songs':{g:'a',t:[],q:[]}
+};
+const GN=Object.keys(CATS);
+let CAT=[],cur=-1,shuf=false,rep=false,filt=GN[0],drag=false,loading=false,qtimer,tok=0;const au=$('#audioEngine');
+const fmt=s=>isFinite(s)?(s/60|0)+':'+String(s%60|0).padStart(2,'0'):'0:00';
+async function api(path){let err;for(const h of HOSTS){try{const r=await fetch(h+path+(path.includes('?')?'&':'?')+'app_name='+APP);if(r.ok)return await r.json()}catch(e){err=e}}throw err||new Error('api')}
+const okT=t=>t.is_streamable!==false&&!t.is_stream_gated&&!t.is_delete&&(t.duration||0)>90;
+function mk(t,g){return{tid:t.id,title:t.title,artist:(t.user&&t.user.name)||'Unknown',album:(t.album_backlink&&t.album_backlink.playlist_name)||(t.genre?'Single • '+t.genre:'Single'),genre:g||'Music',dur:t.duration||0,audioUrl:'https://api.audius.co/v1/tracks/'+t.id+'/stream?app_name='+APP}}
+async function resolve(s){try{const d=await api('/v1/tracks/search?limit=10&query='+encodeURIComponent(s.dj?s.title+' dj remix':(s.title+' '+(s.artist||'').split(',')[0]).trim()));const w=s.title.toLowerCase().split(' ').find(x=>x.length>2)||s.title.toLowerCase();const t=(d.data||[]).find(t=>okT(t)&&t.title.toLowerCase().includes(w));if(!t)return s.bad=true,false;s.tid=t.id;s.dur=t.duration;s.audioUrl='https://api.audius.co/v1/tracks/'+t.id+'/stream?app_name='+APP;s.bad=false;return true}catch(e){s.bad=true;return false}}
+function setNow(s){$('#nt').textContent=s.title;$('#na').textContent=s.artist;$('#nb').textContent=(s.album||'Single')+' • Full song';$('#tc').textContent='0:00';$('#td').textContent=s.dur?fmt(s.dur):'0:00';$('#seek').value=0}
+const BK={},CURC={},SEEN=new Set();let SHOW=60,cname=GN[0],rtimer,searching=false;
+function addTr(name,t){if(!okT(t)||SEEN.has(t.id))return;SEEN.add(t.id);const m=mk(t,name.replace(/^\S+\s/,''));(BK[name]=BK[name]||[]).push(m)}
+function total(){return SEEN.size+Object.values(CURC).reduce((a,b)=>a+b.length,0)}
+function catList(n){const c=CATS[n];CURC[n]=CURC[n]||c.t.map(([t,a,al])=>({title:t,artist:a,album:al||'Bollywood',dj:c.dj,genre:n.replace(/^\S+\s/,''),dur:0}));return CURC[n].concat(n==='📚 All Songs'?[].concat(...Object.values(BK)):(BK[n]||[]))}
+function refresh(){if(searching)return;const cs=CAT[cur];CAT=catList(cname);CAT.forEach((x,i)=>x.id=i);cur=cs?CAT.indexOf(cs):-1;if(cur<0&&cs&&cs.tid)cur=CAT.findIndex(x=>x.tid===cs.tid);drawList()}
+function cnt(){$('#cnt').textContent='📚 '+SEEN.size.toLocaleString('en-IN')+' full-length songs library me'+(building?' (aur load ho rahe hain…)':'');clearTimeout(rtimer);rtimer=setTimeout(refresh,700)}
+let building=true;
+async function pull(name,q){for(let off=0;off<300;off+=100){let d;try{d=await api('/v1/tracks/search?limit=100&offset='+off+'&query='+encodeURIComponent(q))}catch(e){return}const a=d.data||[];a.forEach(t=>addTr(name,t));cnt();if(a.length<100)return}}
+async function buildLib(){const jobs=[];GN.forEach(n=>CATS[n].q.forEach(q=>jobs.push([n,q])));let i=0;await Promise.all([0,1,2,3].map(async()=>{while(i<jobs.length){const j=jobs[i++];await pull(j[0],j[1])}}));building=false;cnt();if(!SEEN.size)$('#cnt').textContent='⚠️ Songs server se connect nahi ho paya. File ko seedha Chrome/Safari me kholo aur internet check karo.'}
+function showCat(name,q){searching=!!q;SHOW=60;if(!q){cname=name;filt=name;drawPills();CAT=catList(name);CAT.forEach((x,i)=>x.id=i);cur=-1;drawList();return}
+filt='';drawPills();loading=true;drawList();api('/v1/tracks/search?limit=100&query='+encodeURIComponent(q)).then(d=>{CAT=(d.data||[]).filter(okT).map(t=>mk(t,'Search'));CAT.forEach((x,i)=>x.id=i);cur=-1;loading=false;drawList()}).catch(()=>{loading=false;CAT=[];drawList('Internet issue — songs load nahi hue.')})}
+async function load(i,play,dir=1,n=0){cur=i;const s=CAT[i],my=++tok;setNow(s);drawList();
+if(!s.audioUrl){$('#nb').textContent='Full song dhoondh rahe hain…';const ok=await resolve(s);if(my!==tok)return;
+if(!ok){drawList();if(n<8&&play&&CAT.length>1){return load((i+dir+CAT.length)%CAT.length,true,dir,n+1)}toast('Is song ka full version yahan nahi — ↗ se YouTube par suno');return}
+setNow(s)}
+au.src=s.audioUrl;drawList();if(play)au.play().catch(()=>toast('Tap play to start'))}
+function playTrack(t){let i=CAT.findIndex(x=>x.tid&&x.tid===t.tid);if(i<0){CAT.push(Object.assign({},t));i=CAT.length-1;CAT[i].id=i}load(i,true,1,99)}
+function toggle(){if(cur<0){if(CAT.length)load(0,true);return}if(au.paused)au.play().catch(()=>toast('Track unavailable, try next'));else au.pause()}
+function next(){if(!CAT.length)return;let n;if(shuf&&CAT.length>1){do{n=Math.random()*CAT.length|0}while(n===cur)}else n=(cur+1)%CAT.length;load(n,true,1)}
+function prev(){if(!CAT.length)return;if(au.currentTime>3){au.currentTime=0;return}load((cur-1+CAT.length)%CAT.length,true,-1)}
+function toggleShuf(){shuf=!shuf;$('#shb').classList.toggle('on',shuf);toast('Shuffle '+(shuf?'on':'off'))}
+function toggleRep(){rep=!rep;$('#reb').classList.toggle('on',rep);toast('Repeat '+(rep?'on':'off'))}
+au.addEventListener('play',()=>{$('#npc').classList.add('playing');$('#pp').textContent='⏸'});
+au.addEventListener('pause',()=>{$('#npc').classList.remove('playing');$('#pp').textContent='▶'});
+au.addEventListener('timeupdate',()=>{if(!drag&&au.duration)$('#seek').value=au.currentTime/au.duration*1000;$('#tc').textContent=fmt(au.currentTime)});
+au.addEventListener('loadedmetadata',()=>{$('#td').textContent=fmt(au.duration);if(au.duration<60){toast('Ye sirf preview tha — agla full song');next()}});
+au.addEventListener('ended',()=>{if(rep){au.currentTime=0;au.play()}else next()});
+au.addEventListener('error',()=>{if(!au.getAttribute('src'))return;$('#npc').classList.remove('playing');$('#pp').textContent='▶';toast('Ye song nahi chala, next try karo')});
+const sk=$('#seek');sk.addEventListener('pointerdown',()=>drag=true);sk.addEventListener('pointerup',()=>drag=false);
+sk.addEventListener('input',()=>{if(au.duration)au.currentTime=sk.value/1000*au.duration});
+$('#vol').addEventListener('input',e=>au.volume=e.target.value/100);au.volume=.8;
+$('#sq').addEventListener('input',()=>{clearTimeout(qtimer);const v=$('#sq').value.trim();qtimer=setTimeout(()=>{if(v)showCat(GN[0],v);else showCat(cname)},500)});
+function drawPills(){const p=$('#pills');p.innerHTML='';const G=[['🎵 Bollywood Categories','b'],['🎧 DJ Songs Categories','d'],['📚 Library','a']];
+G.forEach(([lab,k])=>{const h=document.createElement('div');h.className='gl';h.textContent=lab;p.append(h);const w=document.createElement('div');w.className='pw';GN.filter(n=>CATS[n].g===k).forEach(g=>{const b=document.createElement('button');b.className='pill'+(g===filt?' on':'');b.textContent=g;b.onclick=()=>{$('#sq').value='';searching=false;showCat(g)};w.append(b)});p.append(w)})}
+function drawList(msg){const l=$('#list');l.innerHTML='';
+if(loading&&!CAT.length){l.innerHTML='<p class="sub" style="padding:14px">⏳ Songs load ho rahe hain…</p>';return}
+if(!CAT.length){l.innerHTML='<p class="sub" style="padding:14px"></p>';l.firstChild.textContent=msg||'Koi song nahi mila. Kuch aur search karo.';return}
+CAT.slice(0,Math.max(SHOW,cur+1)).forEach(s=>{const d=document.createElement('div');d.className='song'+(s.id===cur?' on':'')+(s.bad?' bad':'');d.innerHTML='<span>'+(s.id===cur&&!au.paused?'🔊':'🎵')+'</span><div style="flex:1;min-width:0"><b></b><small></small></div><button class="ytb" title="YouTube par kholo">↗</button>';
+d.querySelector('b').textContent=s.title;d.querySelector('small').textContent='🎤 '+(s.artist||'Various')+' • 💿 '+(s.album||'Single')+(s.bad?' • sirf YouTube par':s.dur?' • '+fmt(s.dur):'');
+d.querySelector('.ytb').onclick=e=>{e.stopPropagation();window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(s.title+' '+s.artist+' full song'),'_blank')};
+d.onclick=()=>load(s.id,true,1,99);l.append(d)});
+if(CAT.length>SHOW){const b=document.createElement('button');b.className='btn sm alt';b.style.cssText='margin:8px auto;display:block';b.textContent='Aur dikhao ('+(CAT.length-SHOW)+' baaki)';b.onclick=()=>{SHOW+=100;drawList()};l.append(b)}}
+au.addEventListener('play',()=>drawList());au.addEventListener('pause',()=>drawList());
+drawPills();showCat(GN[0]);buildLib();api('/v1/tracks/trending?limit=1').then(()=>{$('#cnt').dataset.ok=1}).catch(()=>{$('#cnt').textContent='⚠️ Songs server se connect nahi ho paya. Is file ko seedha Chrome/Safari me kholo (preview ya app ke andar network block hota hai) aur internet check karo.'});
+
+/* ===== CHAT ===== */
+const ROOMS=['Global Lounge','90s Nostalgia','Hollywood Hits','Ludo Room'];let room=0,MSG={};
+try{MSG=JSON.parse(localStorage.ow_msgs||'{}')}catch(e){}
+ROOMS.forEach(r=>{if(!MSG[r]||!MSG[r].length)MSG[r]=[{n:'Prism Bot',vip:1,t:'Welcome to '+r+'! Say hi 👋',time:'now'}]});
+function save(){try{localStorage.ow_msgs=JSON.stringify(MSG)}catch(e){}}
+function drawRooms(){const p=$('#rooms');p.innerHTML='';ROOMS.forEach((r,i)=>{const b=document.createElement('button');b.className='pill'+(i===room?' on':'');b.textContent=r;b.onclick=()=>{room=i;drawRooms();chat()};p.append(b)})}
+function chat(){const f=$('#feed');f.innerHTML='';MSG[ROOMS[room]].forEach(m=>{const d=document.createElement('div');d.className='msg'+(m.me?' me':'');const h=document.createElement('b');h.textContent=m.n;if(m.vip){const v=document.createElement('em');v.textContent='VIP';h.append(' ',v)}const p=document.createElement('div');p.textContent=m.t;d.append(h,p);
+if(m.track){const b=document.createElement('button');b.className='btn sm';b.textContent='▶ Play';b.onclick=()=>{playTrack(m.track);tab(0)};d.append(b)}
+if(m.ludo){const b=document.createElement('button');b.className='btn sm alt';b.textContent='🎲 Open Ludo';b.onclick=()=>tab(2);d.append(b)}
+const s=document.createElement('small');s.textContent=m.time;d.append(s);f.append(d)});f.scrollTop=f.scrollHeight}
+function post(o){o.n=nick;o.me=1;o.vip=o.vip||0;o.time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});MSG[ROOMS[room]].push(o);save();chat()}
+function send(){const i=$('#ci'),t=i.value.trim();if(!t)return;post({t});i.value=''}
+$('#ci').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+function dedicate(){const s=CAT[cur];if(!s){toast('Pehle koi song chalao');return}post({t:'🎵 Dedicating "'+s.title+'" to everyone!',track:{tid:s.tid,title:s.title,artist:s.artist,genre:s.genre,dur:s.dur,audioUrl:s.audioUrl}})}
+const ROOM=Array.from({length:5},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.random()*32|0]).join('');$('#rc').value=ROOM;
+function shareLudo(){post({t:'🎲 Join my Ludo table! Room code: '+ROOM,ludo:1})}
+function copyRoom(){try{navigator.clipboard.writeText(ROOM).then(()=>toast('Copied '+ROOM),()=>toast('Code: '+ROOM))}catch(e){toast('Code: '+ROOM)}}
+drawRooms();chat();
+
+/* ===== LUDO ===== */
+let AC=null,SND=true;
+function snd(f,d,type='sine',v=.15,when=0){if(!SND)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+when;o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const sRoll=()=>{for(let k=0;k<6;k++)snd(300+Math.random()*300,.05,'square',.06,k*.09)},sStep=()=>snd(520,.07,'triangle',.12),sCap=()=>{[500,380,260,160].forEach((f,k)=>snd(f,.14,'sawtooth',.12,k*.08));try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}},sHome=()=>[523,659,784,1047].forEach((f,k)=>snd(f,.2,'triangle',.14,k*.1)),sWin=()=>[523,659,784,1047,784,1047,1319].forEach((f,k)=>snd(f,.25,'triangle',.16,k*.14));
+function toggleSnd(){SND=!SND;$('#mub').textContent=SND?'🔊':'🔇'}
+const PIP={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]},FR={1:'',6:'rotateY(180deg)',2:'rotateY(90deg)',5:'rotateY(-90deg)',3:'rotateX(90deg)',4:'rotateX(-90deg)'},FV={1:'',2:'rotateY(-90deg)',3:'rotateX(-90deg)',4:'rotateX(90deg)',5:'rotateY(90deg)',6:'rotateY(180deg)'};
+function buildDice(){const c=$('#cb');c.innerHTML='';for(let n=1;n<=6;n++){const f=document.createElement('div');f.className='fc';f.style.transform=FR[n]+' translateZ(32px)';for(let k=0;k<9;k++){const b=document.createElement('b');b.style.visibility=PIP[n].includes(k)?'visible':'hidden';f.append(b)}c.append(f)}setDice(1)}
+function setDice(d){$('#cb').style.transform=FV[d]}
+
+const COL=[{n:'Red',c:'#ff3b5c',e:'🔴'},{n:'Green',c:'#10f981',e:'🟢'},{n:'Yellow',c:'#ffd000',e:'🟡'},{n:'Blue',c:'#2f8cff',e:'🔵'}];
+const OFF=[0,13,26,39],HO=[[0,0],[0,9],[9,9],[9,0]],SAFE=new Set([0,8,13,21,26,34,39,47]);
+const PATH=[];[[6,1,0,1,5],[5,6,-1,0,6],[0,7,0,1,2],[1,8,1,0,5],[6,9,0,1,6],[7,14,1,0,2],[8,13,0,-1,5],[9,8,1,0,6],[14,7,0,-1,2],[13,6,-1,0,5],[8,5,0,-1,6],[7,0,-1,0,2]].forEach(([r,c,dr,dc,n])=>{for(let k=0;k<n;k++)PATH.push([r+dr*k,c+dc*k])});
+const HC=[0,1,2,3,4].map(()=>[]);for(let k=0;k<5;k++){HC[0].push([7,1+k]);HC[1].push([1+k,7]);HC[2].push([7,13-k]);HC[3].push([13-k,7])}
+let G=null,pawnEls=[];
+function buildBoard(){const b=$('#board');b.innerHTML='';const pm={};PATH.forEach((p,i)=>pm[p]=i);const hm={};HC.forEach((a,p)=>a.forEach(x=>hm[x]=p));
+for(let r=0;r<15;r++)for(let c=0;c<15;c++){if(r>=6&&r<=8&&c>=6&&c<=8)continue;const d=document.createElement('div');d.className='cell';
+if((r<6||r>8)&&(c<6||c>8)){const p=r<6?(c<6?0:1):(c<6?3:2),o=HO[p],inn=r-o[0]>=1&&r-o[0]<=4&&c-o[1]>=1&&c-o[1]<=4;d.style.background=inn?'#fffffff0':COL[p].c;d.style.border='0'}
+else{const k=r+','+c;if(k in hm)d.style.background=COL[hm[k]].c;const i=pm[k];if(i!==undefined){const si=OFF.indexOf(i);if(si>=0)d.style.background=COL[si].c;if(SAFE.has(i))d.textContent='★'}}
+b.append(d)}
+const cr=document.createElement('div');cr.className='crown';cr.textContent='👑';b.append(cr);
+const pl=document.createElement('div');pl.id='pl';b.append(pl);
+for(let p=0;p<4;p++)for(let i=0;i<4;i++){const o=HO[p],s=document.createElement('div');s.className='slot';s.style.left=(o[1]+(i%2?4:2))/15*100+'%';s.style.top=(o[0]+(i<2?2:4))/15*100+'%';s.style.setProperty('--sc',COL[p].c+'cc');if(G.pl[p].off)s.style.display='none';pl.append(s)}
+pawnEls=[];for(let p=0;p<4;p++){pawnEls[p]=[];for(let i=0;i<4;i++){const e=document.createElement('div');e.className='pawn';e.innerHTML='<i></i>';e.style.setProperty('--pc',COL[p].c);if(G.pl[p].off)e.style.display='none';e.onclick=()=>pick(p,i);pl.append(e);pawnEls[p][i]=e}}}
+function xy(p,i){const s=G.pl[p].pw[i];if(s<0){const o=HO[p];return[o[1]+(i%2?4:2),o[0]+(i<2?2:4)]}
+if(s===56)return[7.5+(p===0?-.7:p===2?.7:0),7.5+(p===1?-.7:p===3?.7:0)];
+const rc=s<=50?PATH[(OFF[p]+s)%52]:HC[p][s-51];return[rc[1]+.5,rc[0]+.5]}
+function render(){const grp={};for(let p=0;p<4;p++)for(let i=0;i<4;i++){const [x,y]=xy(p,i),k=x+','+y;(grp[k]=grp[k]||[]).push([p,i,x,y])}
+Object.values(grp).forEach(a=>a.forEach(([p,i,x,y],k)=>{const e=pawnEls[p][i],n=a.length,yard=G.pl[p].pw[i]<0,dx=yard?0:(k-(n-1)/2)*.3;e.style.left=(x+dx)/15*100+'%';e.style.top=y/15*100+'%';e.style.width=(n>1&&!yard?4.4:6)+'%';e.style.height=(n>1&&!yard?5.4:7.4)+'%';
+e.classList.toggle('mv',!!G.pick&&G.t===p&&G.pick.includes(i)&&!G.pl[p].ai)}))}
+function hop(p,i){const e=pawnEls[p][i];e.classList.remove('hop');void e.offsetWidth;e.classList.add('hop')}
+function hud(){const h=$('#hud');h.innerHTML='';G.pl.forEach((P,p)=>{if(P.off)return;const d=document.createElement('div');d.className='pc'+(p===G.t?' act':'');d.style.color=COL[p].c;d.innerHTML='<i style="background:'+COL[p].c+'"></i><span style="color:#fff"></span><br><span style="color:#fff;opacity:.8"></span>';const s=d.querySelectorAll('span');s[0].textContent=P.n;s[1].textContent=P.pw.filter(z=>z===56).length+'/4 home';h.append(d)})}
+function ui(){const P=G.pl[G.t];$('#tt').textContent=COL[G.t].e+' '+P.n+"'s Turn — "+(P.ai?'thinking…':G.pick?'Pick a glowing pawn':G.rolled?'…':'Tap ROLL');$('#rollb').disabled=P.ai||G.rolled||G.busy;$('#rmd').textContent='Room '+ROOM+' • '+({ai:'vs 3 Bots',ai2:'1v1 vs Bot',pp:'Pass & Play'}[G.mode]);hud()}
+function start(mode){const names=['Red','Green','Yellow','Blue'],vs=mode!=='pp';G={mode,t:0,d:0,rolled:false,busy:false,over:false,six:0,pick:null,pl:names.map((n,i)=>({n:vs&&i===0?'You':(vs?'Bot '+n:n),ai:vs&&i>0,off:mode==='ai2'&&(i===1||i===3),pw:[-1,-1,-1,-1]}))};
+$('#lobby').hidden=true;$('#game').hidden=false;$('#win').hidden=true;buildDice();buildBoard();render();turnStart()}
+function turnStart(){ui();if(G.pl[G.t].ai){const g=G;setTimeout(()=>{if(G===g&&!g.over)roll()},800)}}
+function humanRoll(){if(G&&!G.pl[G.t].ai)roll()}
+const can=(t,i,d)=>{const s=G.pl[t].pw[i];return s<0?d===6:s<56&&s+d<=56};
+async function roll(){const g=G;if(!g||g.over||g.busy||g.rolled)return;g.busy=g.rolled=true;ui();const cb=$('#cb');cb.classList.add('spin');sRoll();const d=1+Math.random()*6|0;await sleep(600);if(G!==g)return;cb.classList.remove('spin');g.d=d;setDice(d);
+g.six=d===6?g.six+1:0;if(g.six===3){toast('Three 6s — turn lost');return endTurn()}
+const m=[0,1,2,3].filter(i=>can(g.t,i,d));
+if(!m.length){toast(g.pl[g.t].n+' rolled '+d+' — no move');await sleep(800);if(G!==g)return;return endTurn()}
+if(m.length===1||g.pl[g.t].ai){await sleep(g.pl[g.t].ai?500:250);if(G!==g)return;return move(m.length===1?m[0]:aiPick(m))}
+g.pick=m;g.busy=false;ui();render()}
+function pick(p,i){if(!G||G.busy||!G.pick||G.t!==p||G.pl[p].ai||!G.pick.includes(i))return;G.pick=null;move(i)}
+function hits(t,n){if(n>50)return false;const ab=(OFF[t]+n)%52;if(SAFE.has(ab))return false;return G.pl.some((Q,q)=>q!==t&&Q.pw.some(z=>z>=0&&z<=50&&(OFF[q]+z)%52===ab))}
+function aiPick(m){const t=G.t,d=G.d;let best=m[0],bs=-1;m.forEach(i=>{const s=G.pl[t].pw[i],n=s<0?0:s+d;let sc=s+d>0?s/10:0;if(hits(t,n))sc+=100;else if(s<0)sc+=80;else if(n===56)sc+=70;if(n<=50&&SAFE.has((OFF[t]+n)%52))sc+=15;if(sc>bs){bs=sc;best=i}});return best}
+async function move(i){const g=G,t=g.t,P=g.pl[t],d=g.d;g.busy=true;g.pick=null;render();
+if(P.pw[i]<0){P.pw[i]=0;hop(t,i);render();await sleep(250)}else for(let k=0;k<d;k++){P.pw[i]++;hop(t,i);sStep();render();await sleep(150);if(G!==g)return}
+if(G!==g)return;const s=P.pw[i];let cap=false;
+if(s<=50){const ab=(OFF[t]+s)%52;if(!SAFE.has(ab))g.pl.forEach((Q,q)=>{if(q!==t)Q.pw.forEach((z,j)=>{if(z>=0&&z<=50&&(OFF[q]+z)%52===ab){Q.pw[j]=-1;cap=true}})})}
+if(cap){sCap();toast('💥 '+P.n+' ne pawn kaat diya!')}if(s===56){sHome();toast('🏁 '+P.n+' ka pawn ghar pahunch gaya!')}
+render();hud();if(P.pw.every(z=>z===56))return win(t);
+await sleep(250);if(G!==g)return;
+if(d===6||cap||s===56){g.rolled=g.busy=false;turnStart()}else endTurn()}
+function endTurn(){do{G.t=(G.t+1)%4}while(G.pl[G.t].off);G.rolled=G.busy=false;G.six=0;G.pick=null;render();turnStart()}
+function win(t){G.over=true;sWin();ui();$('#wn').textContent=COL[t].e+' '+G.pl[t].n+(G.pl[t].n==='You'?' win!':' wins!');const w=$('#win');w.querySelectorAll('.cf').forEach(x=>x.remove());
+for(let k=0;k<70;k++){const c=document.createElement('i');c.className='cf';c.style.left=Math.random()*100+'%';c.style.background=COL[k%4].c;c.style.animationDelay=Math.random()*2+'s';c.style.animationDuration=2+Math.random()*2+'s';w.append(c)}w.hidden=false}
+function again(){start(G.mode)}
+function exitGame(){G=null;$('#win').hidden=true;$('#game').hidden=true;$('#lobby').hidden=false}
+</script>
+</body></html>
